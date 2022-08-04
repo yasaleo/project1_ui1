@@ -14,11 +14,10 @@ class _NeumorphicWidgetState extends State<NeumorphicWidget> {
   @override
   Widget build(BuildContext context) {
     return Listener(
-      onPointerUp: (_)=> setState(() => _iselevated = true),
-      onPointerDown: (_)=> setState(() => _iselevated = false),
-
+      onPointerUp: (_) => setState(() => _iselevated = true),
+      onPointerDown: (_) => setState(() => _iselevated = false),
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 180),
+        duration: const Duration(milliseconds: 110),
         curve: Curves.easeInOutQuad,
         padding: const EdgeInsets.all(8),
         child: widget.child,
@@ -39,6 +38,34 @@ class _NeumorphicWidgetState extends State<NeumorphicWidget> {
                     ),
                   ]
                 : null),
+      ),
+    );
+  }
+}
+
+class NormalNeumorphism extends StatelessWidget {
+  const NormalNeumorphism({Key? key, required this.child}) : super(key: key);
+  final child;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: child,
+      decoration: BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromARGB(179, 225, 225, 225),
+            offset: Offset(-7, -5),
+            blurRadius: 15,
+          ),
+          BoxShadow(
+            color: Colors.black54,
+            offset: Offset(5, 7),
+            blurRadius: 15,
+          ),
+        ],
       ),
     );
   }

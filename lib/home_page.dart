@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 40),
-              NeumorphicWidget(
+              NormalNeumorphism(
                 child: Column(
                   children: [
                     ClipRRect(
@@ -95,21 +95,24 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(
                 height: 46,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    '0.0',
-                    style: TextStyle(fontSize: 17),
-                  ),
-                  Text(
-                    '4.48',
-                    style: TextStyle(fontSize: 17),
-                  )
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text(
+                      '0.0',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    Text(
+                      '4.48',
+                      style: TextStyle(fontSize: 17),
+                    )
+                  ],
+                ),
               ),
               const SizedBox(
-                height: 46,
+                height: 16,
               ),
               LinearPercentIndicator(
                 backgroundColor: const Color.fromARGB(255, 194, 194, 194),
@@ -132,9 +135,7 @@ class HomeScreen extends StatelessWidget {
                         size: 55,
                       ),
                     ),
-                    AnimatedNeumorphism(
-
-                    ),
+                    AnimatedNeumorphism(),
                     NeumorphicWidget(
                       child: Icon(
                         Icons.skip_next_rounded,
