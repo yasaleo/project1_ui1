@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:project1_ui1/animated_neu.dart';
 import 'package:project1_ui1/neumorphism.dart';
@@ -81,10 +82,30 @@ class HomeScreen extends StatelessWidget {
                               )
                             ],
                           ),
-                          const Icon(
-                            Icons.favorite_rounded,
-                            color: Color.fromARGB(255, 159, 11, 0),
-                            size: 30,
+                          LikeButton(
+                            animationDuration:
+                                const Duration(milliseconds: 1450),
+                            bubblesSize: 70,
+                            circleSize: 50,
+                            circleColor: const CircleColor(
+                              start: Color.fromARGB(255, 10, 10, 10),
+                              end: Color.fromARGB(255, 255, 0, 0),
+                            ),
+                            bubblesColor: const BubblesColor(
+                              dotPrimaryColor: Color.fromARGB(255, 255, 22, 1),
+                              dotSecondaryColor: Color.fromARGB(255, 125, 0, 0),
+                              dotThirdColor: Color.fromARGB(255, 255, 95, 92),
+                              dotLastColor: Color.fromARGB(255, 80, 5, 0),
+                            ),
+                            likeBuilder: (isLiked) {
+                              return Icon(
+                                Icons.favorite,
+                                color: isLiked
+                                    ? const Color.fromARGB(255, 129, 9, 0)
+                                    : Colors.black,
+                                size: 33,
+                              );
+                            },
                           )
                         ],
                       ),
