@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
                 children: const [
                   NeumorphicWidget(
                     child: Icon(
-                      Icons.arrow_back_rounded,
+                      Icons.arrow_downward,
                       size: 38,
                     ),
                   ),

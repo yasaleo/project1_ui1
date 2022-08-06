@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:project1_ui1/front_screen.dart';
+import 'package:project1_ui1/front_screen2.dart';
 import 'package:project1_ui1/home_page.dart';
 
 void main() {
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
         
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
+      home: const FrontScreen(),
     );
   }
 }
