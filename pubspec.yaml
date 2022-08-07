@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  
   like_button: ^2.0.4
   percent_indicator: ^4.2.2
 

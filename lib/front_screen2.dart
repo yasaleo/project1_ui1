@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project1_ui1/home_page.dart';
 import 'package:project1_ui1/my_colors.dart';
 
-final mycolors = MyColors();
+// final mycolors = MyColors();
 
 class FrontScreen2 extends StatefulWidget {
   const FrontScreen2({Key? key}) : super(key: key);
@@ -13,36 +13,8 @@ class FrontScreen2 extends StatefulWidget {
 
 class _FrontScreenState extends State<FrontScreen2>
     with SingleTickerProviderStateMixin {
-  late Animation<Color> _animation;
-  late AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 1),
-    );
-
-    Tween<Color> _colortween = Tween(
-        begin: Colors.black12,
-        end: Colors.amber);
     
-    _animation = _colortween.animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOutExpo))
-      ..addListener(() {
-        setState(() {});
-      });
-
-      // _controller.repeat();
-  }
-
-  
-
-  // @override
-  // void dispose() {
-  //   _controller.dispose();
-  //   super.dispose();
-  // }
+   
 
   @override
   Widget build(BuildContext context) {
@@ -51,83 +23,47 @@ class _FrontScreenState extends State<FrontScreen2>
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Colors.grey,
-        child: AnimatedBuilder(
-          animation: _animation,
-          builder: (context, child) {
-            return CustomPaint(
-              painter: LinePainter(colorss: _animation.value),
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    const Text(
-                      'bello0000000',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 0, 95, 3),
-                          fontSize: 50,
-                          fontWeight: FontWeight.w700),
-                    ),
-                    ElevatedButton.icon(
+        
+        
+          
+          child: CustomPaint(
+            painter: LinePainter(colorss: Colors.black),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  const Text(
+                    'bello0000000',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 0, 95, 3),
+                        fontSize: 50,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      setState(() {
+                        // mycolors.shufflemycolors();
+                        // print(mycolors.color1);
+                        // controller.forward();
+                      });
+                    },
+                    icon: const Icon(Icons.shuffle_rounded),
+                    label: const Text('Shuffle'),
+                  ),
+                  IconButton(
                       onPressed: () {
-                        setState(() {
-                          mycolors.shufflemycolors();
-                          print(mycolors.color1);
-                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomeScreen(),
+                          ),
+                        );
                       },
-                      icon: const Icon(Icons.shuffle_rounded),
-                      label: const Text('Shuffle'),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(),
-                            ),
-                          );
-                        },
-                        icon: Icon(Icons.navigate_next_sharp))
-                  ],
-                ),
+                      icon: Icon(Icons.navigate_next_sharp))
+                ],
               ),
-            );
-          },
-          // child: CustomPaint(
-          //   painter: LinePainter(),
-          //   child: SafeArea(
-          //     child: Column(
-          //       children: [
-          //         const Text(
-          //           'bello0000000',
-          //           style: TextStyle(
-          //               color: Color.fromARGB(255, 0, 95, 3),
-          //               fontSize: 50,
-          //               fontWeight: FontWeight.w700),
-          //         ),
-          //         ElevatedButton.icon(
-          //           onPressed: () {
-          //             setState(() {
-          //               mycolors.shufflemycolors();
-          //               print(mycolors.color1);
-          //             });
-          //           },
-          //           icon: const Icon(Icons.shuffle_rounded),
-          //           label: const Text('Shuffle'),
-          //         ),
-          //         IconButton(
-          //             onPressed: () {
-          //               Navigator.push(
-          //                 context,
-          //                 MaterialPageRoute(
-          //                   builder: (context) => HomeScreen(),
-          //                 ),
-          //               );
-          //             },
-          //             icon: Icon(Icons.navigate_next_sharp))
-          //       ],
-          //     ),
-          //   ),
-          // ),
-        ),
+            ),
+          ),
+        
       ),
     );
   }

@@ -15,92 +15,180 @@ class _FrontScreenState extends State<FrontScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        color: Colors.grey,
-        // child: TweenAnimationBuilder(
-        //   duration: Duration(seconds: 3),
-        //   tween: ColorTween(begin: Colors.grey,end: Color.fromARGB(255, mycolors.color1, mycolors.color2, mycolors.color3)),
-        //   builder: (context, Color, child) {
-        //     return  CustomPaint(
-        //     painter: LinePainter(colorss: value),
-        //     child: SafeArea(
-        //       child: Column(
-        //         children: [
-        //           const Text(
-        //             'bello0000000',
-        //             style: TextStyle(
-        //                 color: Color.fromARGB(255, 0, 95, 3),
-        //                 fontSize: 50,
-        //                 fontWeight: FontWeight.w700),
-        //           ),
-        //           ElevatedButton.icon(
-        //             onPressed: (){
-        //               setState(() {
-        //                 mycolors.shufflemycolors();
-        //                 print(mycolors.color1);
-        //               });
-        //             },
-        //             icon: const Icon(Icons.shuffle_rounded),
-        //             label: const Text('Shuffle'))
-        //         ],
-        //       ),
-        //     ),
-        //   );
-        //   },
-        child: CustomPaint(
-          painter: LinePainter(),
-          child: SafeArea(
-            child: Column(
-              children: [
-                const Text(
-                  'bello0000000',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 0, 95, 3),
-                      fontSize: 50,
-                      fontWeight: FontWeight.w700),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    setState(() {
-                      mycolors.shufflemycolors();
-                    });
-                  },
-                  icon: const Icon(Icons.shuffle_rounded),
-                  label: const Text('Shuffle'),
-                ),
-                IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomeScreen(),
+      body: AnimatedContainer(
+          duration: const Duration(milliseconds: 550),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Color.fromARGB(
+              255, mycolors.color1, mycolors.color2, mycolors.color3),
+          child: CustomPaint(
+            painter: LinePainter(),
+            child: CustomScrollView(
+              slivers: [
+                 SliverAppBar(
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
+                  leading: const Icon(Icons.menu),
+                  expandedHeight: 300,
+                  flexibleSpace: FlexibleSpaceBar(
+                    stretchModes: [],
+                    background: Container(
+                      color: Colors.black12,
+                      child: SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 190,top: 40),
+                          child: Column(
+                            
+                            
+                            children: const [
+                              Text('  Heal',style: TextStyle(color: Colors.white,fontSize: 60),),
+                              Text('   yourself ',style: TextStyle(color: Colors.white,fontSize: 50),),
+                              Text('with',style: TextStyle(color: Colors.white,fontSize: 50),),
+                      
+                            ],
+                          ),
                         ),
-                      );
-                    },
-                    icon: Icon(Icons.navigate_next_sharp))
+                      ),
+                    ),
+                    title: const Text('m u s i c',style: TextStyle(color: Colors.white,fontSize: 30)),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            mycolors.shufflemycolors();
+                          });
+                        },
+                        child: const Text('Shuffle'),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green 
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text(' Home '),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: Colors.black,
+                        ),
+                      ),Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: Colors.black,
+                        ),
+                      ),Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: Colors.black,
+                        ),
+                      ),Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: Colors.black,
+                        ),
+                      ),Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
-          ),
-        ),
-      ),
+          )),
     );
   }
 }
 
 class LinePainter extends CustomPainter {
-  // final Color colorss;
-
-  // LinePainter({required this.colorss});
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..strokeWidth = 20
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.fill
-      ..color = Color.fromARGB(
-          255, mycolors.color1, mycolors.color2, mycolors.color3);
+      ..color = Colors.grey;
+    // Color.fromARGB(255, mycolors.color1, mycolors.color2, mycolors.color3);
 
     canvas.drawLine(Offset(size.width * 0, size.height * 0),
         Offset(size.width * 7 / 20, size.height * 7 / 20), paint);
