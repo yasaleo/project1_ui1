@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:project1_ui1/home_page.dart';
 import 'package:project1_ui1/my_colors.dart';
@@ -25,32 +26,105 @@ class _FrontScreenState extends State<FrontScreen> {
             painter: LinePainter(),
             child: CustomScrollView(
               slivers: [
-                 SliverAppBar(
-                  elevation: 0,
-                  backgroundColor: Colors.transparent,
-                  leading: const Icon(Icons.menu),
-                  expandedHeight: 300,
-                  flexibleSpace: FlexibleSpaceBar(
-                    stretchModes: [],
-                    background: Container(
-                      color: Colors.black12,
-                      child: SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 190,top: 40),
+                PreferredSize(
+                  preferredSize: const Size.fromHeight(180),
+                  child: SliverAppBar(
+                    pinned: true,
+                    collapsedHeight: 65,
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
+                    leading: const Icon(
+                      Icons.menu_rounded,
+                      color: Colors.black,
+                      size: 37,
+                    ),
+                    expandedHeight: 300,
+                    flexibleSpace: FlexibleSpaceBar(
+                      collapseMode: CollapseMode.pin,
+                      background: Container(
+                        color: Colors.transparent,
+                        child: SafeArea(
                           child: Column(
-                            
-                            
-                            children: const [
-                              Text('  Heal',style: TextStyle(color: Colors.white,fontSize: 60),),
-                              Text('   yourself ',style: TextStyle(color: Colors.white,fontSize: 50),),
-                              Text('with',style: TextStyle(color: Colors.white,fontSize: 50),),
-                      
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: SingleChildScrollView(
+                                  child: Row(
+                                    children: const [
+                                      SizedBox(
+                                        width: 60,
+                                      ),
+                                      Text(
+                                        'O',
+                                        style: TextStyle(
+                                          color:
+                                              Color.fromARGB(185, 19, 19, 19),
+                                          fontSize: 80,
+                                        ),
+                                      ),
+                                   
+                                      Text(
+                                        'utburst',
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 60,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(right: 49),
+                                child: Text(
+                                  'your soul ',
+                                  style: TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 47,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(right: 180),
+                                child: Text(
+                                  'with',
+                                  style: TextStyle(
+                                      color: Colors.black38, fontSize: 40),
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
+                      title: SizedBox(
+                        height: 50,
+                        width: 100,
+                        child: Center(
+                          child: AnimatedTextKit(
+                            animatedTexts: [
+                              RotateAnimatedText('Musify',
+                                  textStyle: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w500),
+                                  rotateOut: false)
+                            ],
+                            isRepeatingAnimation: false,
+                          ),
+                        ),
+                      ),
+
+                      //  Text(
+                      //   'Musify',
+                      //   style: TextStyle(
+                      //       color: Colors.black,
+                      //       fontSize: 30,
+                      //       letterSpacing: 6),
+                      // ),
                     ),
-                    title: const Text('m u s i c',style: TextStyle(color: Colors.white,fontSize: 30)),
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -65,9 +139,7 @@ class _FrontScreenState extends State<FrontScreen> {
                         child: const Text('Shuffle'),
                       ),
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.green 
-                        ),
+                        style: ElevatedButton.styleFrom(primary: Colors.green),
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -83,7 +155,7 @@ class _FrontScreenState extends State<FrontScreen> {
                         child: Container(
                           height: 100,
                           width: 400,
-                          color: Colors.black,
+                          color: const Color.fromARGB(79, 0, 0, 0),
                         ),
                       ),
                       Padding(
@@ -91,7 +163,7 @@ class _FrontScreenState extends State<FrontScreen> {
                         child: Container(
                           height: 100,
                           width: 400,
-                          color: Colors.black,
+                          color: const Color.fromARGB(79, 0, 0, 0),
                         ),
                       ),
                       Padding(
@@ -99,7 +171,7 @@ class _FrontScreenState extends State<FrontScreen> {
                         child: Container(
                           height: 100,
                           width: 400,
-                          color: Colors.black,
+                          color: const Color.fromARGB(79, 0, 0, 0),
                         ),
                       ),
                       Padding(
@@ -107,7 +179,7 @@ class _FrontScreenState extends State<FrontScreen> {
                         child: Container(
                           height: 100,
                           width: 400,
-                          color: Colors.black,
+                          color: const Color.fromARGB(79, 0, 0, 0),
                         ),
                       ),
                       Padding(
@@ -115,7 +187,7 @@ class _FrontScreenState extends State<FrontScreen> {
                         child: Container(
                           height: 100,
                           width: 400,
-                          color: Colors.black,
+                          color: const Color.fromARGB(79, 0, 0, 0),
                         ),
                       ),
                       Padding(
@@ -123,35 +195,7 @@ class _FrontScreenState extends State<FrontScreen> {
                         child: Container(
                           height: 100,
                           width: 400,
-                          color: Colors.black,
-                        ),
-                      ),Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: 100,
-                          width: 400,
-                          color: Colors.black,
-                        ),
-                      ),Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: 100,
-                          width: 400,
-                          color: Colors.black,
-                        ),
-                      ),Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: 100,
-                          width: 400,
-                          color: Colors.black,
-                        ),
-                      ),Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: 100,
-                          width: 400,
-                          color: Colors.black,
+                          color: const Color.fromARGB(79, 0, 0, 0),
                         ),
                       ),
                       Padding(
@@ -159,7 +203,7 @@ class _FrontScreenState extends State<FrontScreen> {
                         child: Container(
                           height: 100,
                           width: 400,
-                          color: Colors.black,
+                          color: const Color.fromARGB(79, 0, 0, 0),
                         ),
                       ),
                       Padding(
@@ -167,7 +211,39 @@ class _FrontScreenState extends State<FrontScreen> {
                         child: Container(
                           height: 100,
                           width: 400,
-                          color: Colors.black,
+                          color: const Color.fromARGB(79, 0, 0, 0),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: const Color.fromARGB(79, 0, 0, 0),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: const Color.fromARGB(79, 0, 0, 0),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: const Color.fromARGB(79, 0, 0, 0),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 400,
+                          color: const Color.fromARGB(79, 0, 0, 0),
                         ),
                       ),
                     ],
