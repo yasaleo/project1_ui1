@@ -18,7 +18,7 @@ class _AnimatedNeumorphismState extends State<AnimatedNeumorphism>
   @override
   void initState() {
     _controller =
-        AnimationController(duration: Duration(milliseconds: 800), vsync: this);
+        AnimationController(duration: const Duration(milliseconds: 800), vsync: this);
     super.initState();
   }
 
@@ -48,22 +48,22 @@ class _AnimatedNeumorphismState extends State<AnimatedNeumorphism>
         },
         child: AnimatedContainer(
           curve: Curves.easeOutExpo,
-          duration: Duration(seconds: 1),
+          duration: const Duration(seconds: 1),
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
               color: coustomwhiteColor,
               borderRadius: BorderRadius.circular(20),
               boxShadow:  [
                 BoxShadow(
-                  color: Color.fromARGB(179, 225, 225, 225),
+                  color: const Color.fromARGB(179, 225, 225, 225),
                   offset: isclicked
-                  ?Offset(5, 5)
-                  :Offset(-5, -5),
+                  ?const Offset(5, 5)
+                  :const Offset(-5, -5),
                   blurRadius: 15,
                 ),
                 BoxShadow(
                   color: Colors.black54,
-                  offset: isclicked?Offset(-5, -5) : Offset(5, 7),
+                  offset: isclicked?const Offset(-5, -5) : const Offset(5, 7),
                   blurRadius: 15,
                 ),
               ]),
