@@ -18,11 +18,16 @@ class HomeScreen extends StatelessWidget {
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  NeumorphicWidget(
-                    child: Icon(
-                      Icons.arrow_downward,
-                      size: 38,
+                children:  [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: NeumorphicWidget(
+                      child: Icon(
+                        Icons.arrow_downward,
+                        size: 38,
+                      ),
                     ),
                   ),
                   Text(
