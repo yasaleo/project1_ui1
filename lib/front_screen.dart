@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:like_button/like_button.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:project1_ui1/listcard.dart';
 import 'package:project1_ui1/navigation_drawer_widget.dart';
@@ -18,7 +19,23 @@ class FrontScreen extends StatefulWidget {
   State<FrontScreen> createState() => _FrontScreenState();
 }
 
-class _FrontScreenState extends State<FrontScreen> {
+class _FrontScreenState extends State<FrontScreen>
+    with TickerProviderStateMixin {
+  late AnimationController _controller;
+  bool isclicked = false;
+  @override
+  void initState() {
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1000));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,8 +44,10 @@ class _FrontScreenState extends State<FrontScreen> {
         duration: const Duration(milliseconds: 550),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Color.fromARGB(
-            255, mycolors.color1, mycolors.color2, mycolors.color3),
+        color: isclicked
+            ? Color.fromARGB(
+                255, mycolors.color1, mycolors.color2, mycolors.color3)
+            : Colors.grey,
         child: CustomPaint(
           painter: LinePainter(),
           child: Stack(
@@ -39,7 +58,8 @@ class _FrontScreenState extends State<FrontScreen> {
                     preferredSize: const Size.fromHeight(180),
                     child: SliverAppBar(
                       pinned: true,
-                      collapsedHeight: 70,
+                      collapsedHeight:
+                          MediaQuery.of(context).size.height * 9.2 / 100,
                       elevation: 0,
                       centerTitle: true,
                       backgroundColor: Colors.transparent,
@@ -102,7 +122,7 @@ class _FrontScreenState extends State<FrontScreen> {
                           ),
                         ),
                         title: SizedBox(
-                          height: 50,
+                          height: 70,
                           width: 94.5,
                           child: Center(
                             child: AnimatedTextKit(
@@ -110,6 +130,12 @@ class _FrontScreenState extends State<FrontScreen> {
                                 RotateAnimatedText('Musify',
                                     textStyle: GoogleFonts.k2d(
                                       textStyle: const TextStyle(
+                                          shadows: [
+                                            Shadow(
+                                                color: Colors.black45,
+                                                offset: Offset(2, 3),
+                                                blurRadius: 8)
+                                          ],
                                           color: Colors.black,
                                           fontSize: 30,
                                           fontWeight: FontWeight.w700),
@@ -129,6 +155,9 @@ class _FrontScreenState extends State<FrontScreen> {
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Row(
@@ -151,11 +180,7 @@ class _FrontScreenState extends State<FrontScreen> {
                                       ),
                                       primary: Colors.black12,
                                       elevation: 0),
-                                  onPressed: () {
-                                    setState(() {
-                                      mycolors.shufflemycolors();
-                                    });
-                                  },
+                                  onPressed: () {},
                                   child: const Text(
                                     'more',
                                     style: TextStyle(
@@ -167,11 +192,13 @@ class _FrontScreenState extends State<FrontScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: 175,
+                          height: 165,
                           child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               return const Padding(
-                                padding: EdgeInsets.all(10.0),
+                                padding: EdgeInsets.only(
+                                    top: 10, right: 10, left: 10),
                                 child: PlaylistCard(),
                               );
                             },
@@ -189,15 +216,11 @@ class _FrontScreenState extends State<FrontScreen> {
                                 fontWeight: FontWeight.w500),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 60),
-                          child: Divider(
-                            color: Colors.black,
-                          ),
-                        ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 1 / 1.8,
                           child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.only(bottom: 90),
                             itemBuilder: (context, index) {
                               return const Padding(
                                   padding: EdgeInsets.only(
@@ -213,52 +236,130 @@ class _FrontScreenState extends State<FrontScreen> {
                 ],
               ),
               Positioned(
-                left: MediaQuery.of(context).size.width * 1 / 50,
-                right: MediaQuery.of(context).size.width * 1 / 50,
-                top: MediaQuery.of(context).size.height * 9 / 10,
-                bottom: MediaQuery.of(context).size.height * 1 / 60,
+                left: MediaQuery.of(context).size.width * 1.5 / 100,
+                right: MediaQuery.of(context).size.width * 1.5 / 100,
+                top: MediaQuery.of(context).size.height * 8.95 / 10,
+                bottom: MediaQuery.of(context).size.height * .6 / 100,
                 child: GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(
                       PageTransition(
-                          curve: Curves.easeInSine,
-                          child: const HomeScreen(),
-                          type: PageTransitionType.size,
-                          alignment: Alignment.bottomCenter,
-                          duration: const Duration(milliseconds: 320),
-                          reverseDuration: const Duration(milliseconds: 320)),
+                        curve: Curves.easeInSine,
+                        child: const HomeScreen(),
+                        type: PageTransitionType.size,
+                        alignment: Alignment.bottomCenter,
+                        duration: const Duration(milliseconds: 320),
+                        reverseDuration: const Duration(milliseconds: 320),
+                      ),
                     );
                   },
                   child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: const Color.fromARGB(227, 108, 108, 108),
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            color: Color.fromARGB(147, 0, 0, 0),
+                            blurRadius: 12,
+                            spreadRadius: 3)
+                      ],
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25),
+                          topRight: Radius.circular(25),
+                          bottomRight: Radius.circular(7),
+                          bottomLeft: Radius.circular(7)),
+                      color: Color.fromARGB(250, 149, 149, 149),
                     ),
-                    // height: 100,
-                    // width: 100,
                     child: Row(
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(25),
+                              bottomLeft: Radius.circular(5)),
                           child: AspectRatio(
-                            aspectRatio: 1.6/1,
+                            aspectRatio: 1.6 / 1,
                             child: ShaderMask(
                               blendMode: BlendMode.dstOut,
-                              shaderCallback: (rect)=>const LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors:[
-                                  Colors.transparent,
-                                  Color.fromARGB(243, 0, 0, 0)
-                                ] 
-                                ).createShader(rect),
+                              shaderCallback: (rect) => const LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Colors.transparent,
+                                    Colors.black
+                                  ]).createShader(rect),
                               child: Image.asset(
                                 'assets/artistic-album-cover-design-template-d12ef0296af80b58363dc0deef077ecc_screen.jpg',
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
-                        )
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: const [
+                            Text(
+                              'songssss',
+                              style: TextStyle(
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 10, 10, 10)),
+                            ),
+                            Text(
+                              'Artist 1',
+                              style: TextStyle(fontSize: 20),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(
+                              () {
+                                mycolors.shufflemycolors();
+
+                                if (isclicked) {
+                                  _controller.reverse();
+                                } else {
+                                  _controller.forward();
+                                }
+                              },
+                            );
+                            isclicked = !isclicked;
+                          },
+                          child: SizedBox(
+                            child: AnimatedIcon(
+                                size: 55,
+                                icon: AnimatedIcons.play_pause,
+                                progress: _controller),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 19,
+                        ),
+                        LikeButton(
+                          animationDuration: const Duration(milliseconds: 1450),
+                          bubblesSize: 70,
+                          circleSize: 50,
+                          circleColor: const CircleColor(
+                            start: Color.fromARGB(52, 10, 10, 10),
+                            end: Color.fromARGB(255, 255, 0, 0),
+                          ),
+                          bubblesColor: const BubblesColor(
+                            dotPrimaryColor: Color.fromARGB(255, 255, 22, 1),
+                            dotSecondaryColor: Color.fromARGB(255, 125, 0, 0),
+                            dotThirdColor: Color.fromARGB(255, 255, 95, 92),
+                            dotLastColor: Color.fromARGB(255, 80, 5, 0),
+                          ),
+                          likeBuilder: (isLiked) {
+                            return Icon(
+                              Icons.favorite,
+                              color: isLiked
+                                  ? const Color.fromARGB(255, 129, 9, 0)
+                                  : Colors.black,
+                              size: 33,
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),

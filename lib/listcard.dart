@@ -21,7 +21,7 @@ class ListCard extends StatelessWidget {
                 color: Color.fromARGB(35, 11, 11, 11),
                 blurRadius: 13,
                 spreadRadius: 1,
-                offset: Offset(9, 0),
+                offset: Offset(0, 0),
               ),
             ],
             borderRadius: BorderRadius.circular(17),

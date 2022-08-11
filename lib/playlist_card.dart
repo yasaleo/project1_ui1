@@ -27,8 +27,8 @@ class PlaylistCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(17),
             // color: Colors.grey[400],
           ),
-          height: 175,
-          width: 175,
+          // height: 135,
+          width: 155,
           child: Column(
             children: [
               AspectRatio(
@@ -51,7 +51,7 @@ class PlaylistCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontSize: 25
+                  fontSize: 23
                 ),
                 ),
               )

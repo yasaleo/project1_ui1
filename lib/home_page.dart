@@ -23,21 +23,21 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: NeumorphicWidget(
+                    child: const NeumorphicWidget(
                       child: Icon(
                         Icons.arrow_downward,
                         size: 38,
                       ),
                     ),
                   ),
-                  Text(
+                  const Text(
                     'Music',
                     style: TextStyle(
                         fontSize: 30,
                         letterSpacing: 10,
                         fontWeight: FontWeight.w500),
                   ),
-                  NeumorphicWidget(
+                  const NeumorphicWidget(
                     child: Icon(
                       Icons.menu,
                       size: 38,

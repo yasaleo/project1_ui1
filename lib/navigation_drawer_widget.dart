@@ -8,7 +8,7 @@ class NavigationDrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       elevation: 20,
-      backgroundColor: const Color.fromARGB(236, 158, 158, 158),
+      backgroundColor: const Color.fromARGB(253, 158, 158, 158),
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(20), bottomRight: Radius.circular(10))),
