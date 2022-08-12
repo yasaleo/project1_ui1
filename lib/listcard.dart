@@ -5,7 +5,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:like_button/like_button.dart';
 
 class ListCard extends StatelessWidget {
-  const ListCard({Key? key}) : super(key: key);
+  final title;
+  final artist;
+  const ListCard({Key? key,required this.artist,required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class ListCard extends StatelessWidget {
                 offset: Offset(0, 0),
               ),
             ],
-            borderRadius: BorderRadius.circular(17),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Slidable(
             useTextDirection: true,
@@ -56,15 +58,15 @@ class ListCard extends StatelessWidget {
                   ),
                 ),
               ),
-              title: const Text(
-                'Song 12 233578909',
+              title:  Text(
+                '$title',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
+                style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
               ),
-              subtitle: const Text(
-                'Artist 1',
-                style: TextStyle(fontSize: 20),
+              subtitle:  Text(
+                '$title',
+                style: const TextStyle(fontSize: 20),
               ),
               trailing: SizedBox(
                 height: 40,

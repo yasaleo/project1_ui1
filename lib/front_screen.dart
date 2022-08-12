@@ -2,7 +2,9 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:project1_ui1/listcard.dart';
 import 'package:project1_ui1/navigation_drawer_widget.dart';
 import 'package:project1_ui1/playlist_card.dart';
@@ -21,13 +23,29 @@ class FrontScreen extends StatefulWidget {
 
 class _FrontScreenState extends State<FrontScreen>
     with TickerProviderStateMixin {
+      final audioquery = OnAudioQuery();
   late AnimationController _controller;
   bool isclicked = false;
   @override
   void initState() {
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    setState(() {
+    requestPermission();
+      
+    });
     super.initState();
+  }
+
+  void requestPermission()async{
+    Permission.storage.request();
+    // if (await Permission.storage.isGranted) {
+      
+    // } else {
+      
+    // }
   }
 
   @override
@@ -156,7 +174,7 @@ class _FrontScreenState extends State<FrontScreen>
                     child: Column(
                       children: [
                         const SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -194,11 +212,12 @@ class _FrontScreenState extends State<FrontScreen>
                         SizedBox(
                           height: 165,
                           child: ListView.builder(
+                            
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               return const Padding(
                                 padding: EdgeInsets.only(
-                                    top: 10, right: 10, left: 10),
+                                    top: 10, right: 4.8, left: 4.8),
                                 child: PlaylistCard(),
                               );
                             },
@@ -206,28 +225,65 @@ class _FrontScreenState extends State<FrontScreen>
                             scrollDirection: Axis.horizontal,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 250, top: 20),
-                          child: Text(
-                            'Audio files',
-                            style: TextStyle(
-                                fontSize: 23,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(top: 20, bottom: 10),
+                            child: Row(
+                              children: const [
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  'Audio files',
+                                  style: TextStyle(
+                                      fontSize: 23,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            )),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 1 / 1.8,
-                          child: ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.only(bottom: 90),
-                            itemBuilder: (context, index) {
-                              return const Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 10, right: 10, bottom: 10),
-                                  child: ListCard());
+                          child: FutureBuilder<List<SongModel>>(
+                            future: audioquery.querySongs(
+                              sortType: null,
+                              orderType: OrderType.ASC_OR_SMALLER,
+                              uriType: UriType.EXTERNAL,
+                              ignoreCase: true
+                            ),
+                            builder: (context, item) {
+                             if (item.data==null) {
+                               return const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.black,
+                                ),
+                               );
+                             }if (!item.hasData) {
+
+                               return const Center(
+                                child: Text('no songs'),
+                               );
+                             }
+                               return  ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              padding: const EdgeInsets.only(bottom: 90),
+                              itemBuilder: (context, index) {
+                                final songg = item.data!;
+                                return  Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 6, right: 6, bottom: 1),
+                                  child: ListCard(
+                                    title: songg[index].displayNameWOExt,
+                                    artist: songg[index].artist,
+                                    
+                                  ),
+                                );
+                              },
+                              itemCount: item.data!.length,
+                              
+                            );
                             },
-                            itemCount: 10,
+                            
+                            
                           ),
                         ),
                       ],
@@ -235,6 +291,7 @@ class _FrontScreenState extends State<FrontScreen>
                   ),
                 ],
               ),
+              // Nowplaying()
               Positioned(
                 left: MediaQuery.of(context).size.width * 1.5 / 100,
                 right: MediaQuery.of(context).size.width * 1.5 / 100,
@@ -257,23 +314,24 @@ class _FrontScreenState extends State<FrontScreen>
                     decoration: const BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                            color: Color.fromARGB(147, 0, 0, 0),
-                            blurRadius: 12,
-                            spreadRadius: 3)
+                          color: Color.fromARGB(255, 87, 87, 87),
+                          blurRadius: 3,
+                          spreadRadius: 1,
+                        )
                       ],
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(25),
-                          topRight: Radius.circular(25),
+                          topRight: Radius.circular(7),
                           bottomRight: Radius.circular(7),
-                          bottomLeft: Radius.circular(7)),
+                          bottomLeft: Radius.circular(25)),
                       color: Color.fromARGB(250, 149, 149, 149),
                     ),
                     child: Row(
                       children: [
                         ClipRRect(
                           borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(25),
-                              bottomLeft: Radius.circular(5)),
+                              topLeft: Radius.circular(23),
+                              bottomLeft: Radius.circular(23)),
                           child: AspectRatio(
                             aspectRatio: 1.6 / 1,
                             child: ShaderMask(
@@ -381,7 +439,6 @@ class LinePainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.fill
       ..color = Colors.grey;
-    // Color.fromARGB(255, mycolors.color1, mycolors.color2, mycolors.color3);
 
     canvas.drawLine(Offset(size.width * 0, size.height * 0),
         Offset(size.width * 7 / 20, size.height * 7 / 20), paint);
