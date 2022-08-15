@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:like_button/like_button.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:project1_ui1/commonvariables.dart';
 import 'package:project1_ui1/listcard.dart';
 import 'package:project1_ui1/navigation_drawer_widget.dart';
 import 'package:project1_ui1/playlist_card.dart';
@@ -23,9 +27,21 @@ class FrontScreen extends StatefulWidget {
 
 class _FrontScreenState extends State<FrontScreen>
     with TickerProviderStateMixin {
-      final audioquery = OnAudioQuery();
+  final audioquery = OnAudioQuery();
+  final AudioPlayer audioplayer = AudioPlayer();
+  SongModel? songModell;
+
+  List<SongModel> songlist = [];
+  late int passedindex;
+
+  
+
+  String songname = '';
+  String songartist = '';
+  bool isvisible = false;
+
   late AnimationController _controller;
-  bool isclicked = false;
+   bool isclicked = false;
   @override
   void initState() {
     _controller = AnimationController(
@@ -33,25 +49,28 @@ class _FrontScreenState extends State<FrontScreen>
       duration: const Duration(milliseconds: 1000),
     );
     setState(() {
-    requestPermission();
-      
+      requestPermission();
     });
     super.initState();
   }
 
-  void requestPermission()async{
+  void requestPermission() async {
     Permission.storage.request();
-    // if (await Permission.storage.isGranted) {
-      
-    // } else {
-      
-    // }
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  playsong(String? uri) {
+    try {
+      audioplayer.setAudioSource(AudioSource.uri(Uri.parse(uri!)));
+      audioplayer.play();
+    } on Exception {
+      log('Error parsing song');
+    }
   }
 
   @override
@@ -212,7 +231,6 @@ class _FrontScreenState extends State<FrontScreen>
                         SizedBox(
                           height: 165,
                           child: ListView.builder(
-                            
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               return const Padding(
@@ -245,45 +263,64 @@ class _FrontScreenState extends State<FrontScreen>
                           height: MediaQuery.of(context).size.height * 1 / 1.8,
                           child: FutureBuilder<List<SongModel>>(
                             future: audioquery.querySongs(
-                              sortType: null,
-                              orderType: OrderType.ASC_OR_SMALLER,
-                              uriType: UriType.EXTERNAL,
-                              ignoreCase: true
-                            ),
+                                sortType: null,
+                                orderType: OrderType.ASC_OR_SMALLER,
+                                uriType: UriType.EXTERNAL,
+                                ignoreCase: true),
                             builder: (context, item) {
-                             if (item.data==null) {
-                               return const Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.black,
-                                ),
-                               );
-                             }if (!item.hasData) {
-
-                               return const Center(
-                                child: Text('no songs'),
-                               );
-                             }
-                               return  ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              padding: const EdgeInsets.only(bottom: 90),
-                              itemBuilder: (context, index) {
-                                final songg = item.data!;
-                                return  Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 6, right: 6, bottom: 1),
-                                  child: ListCard(
-                                    title: songg[index].displayNameWOExt,
-                                    artist: songg[index].artist,
-                                    
+                              if (item.data == null) {
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.black,
                                   ),
                                 );
-                              },
-                              itemCount: item.data!.length,
-                              
-                            );
+                              }
+                              if (!item.hasData) {
+                                return const Center(
+                                  child: Text('no songs'),
+                                );
+                              }
+                              return ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                padding: const EdgeInsets.only(bottom: 90),
+                                itemBuilder: (context, index) {
+                                  final songg = item.data!;
+
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8, right: 8, bottom: 5),
+                                    child: ListCard(
+                                      ontap: () {
+                                        setState(() {
+                                          playsong(songg[index].uri);
+                                          songModell = songg[index];
+                                          songlist = songg;
+                                          passedindex = index;
+                                          isvisible = true;
+                                          isclicked = true;
+                                          _controller.forward();
+                                          mycolors.shufflemycolors();
+                                          songname =
+                                              songg[index].displayNameWOExt;
+                                          songartist = songg[index]
+                                                      .artist
+                                                      .toString() ==
+                                                  "<unknown>"
+                                              ? 'Unknown Artist'
+                                              : songg[index].artist.toString();
+                                        });
+                                      },
+                                      title: songg[index].displayNameWOExt,
+                                      artist: songg[index].artist.toString() ==
+                                              "<unknown>"
+                                          ? 'Unknown Artist'
+                                          : songg[index].artist.toString(),
+                                    ),
+                                  );
+                                },
+                                itemCount: item.data!.length,
+                              );
                             },
-                            
-                            
                           ),
                         ),
                       ],
@@ -291,134 +328,157 @@ class _FrontScreenState extends State<FrontScreen>
                   ),
                 ],
               ),
-              // Nowplaying()
-              Positioned(
-                left: MediaQuery.of(context).size.width * 1.5 / 100,
-                right: MediaQuery.of(context).size.width * 1.5 / 100,
-                top: MediaQuery.of(context).size.height * 8.95 / 10,
-                bottom: MediaQuery.of(context).size.height * .6 / 100,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      PageTransition(
-                        curve: Curves.easeInSine,
-                        child: const HomeScreen(),
-                        type: PageTransitionType.size,
-                        alignment: Alignment.bottomCenter,
-                        duration: const Duration(milliseconds: 320),
-                        reverseDuration: const Duration(milliseconds: 320),
+              Visibility(
+                visible: isvisible,
+                child: Positioned(
+                  left: MediaQuery.of(context).size.width * 1.5 / 100,
+                  right: MediaQuery.of(context).size.width * 1.5 / 100,
+                  top: MediaQuery.of(context).size.height * 8.95 / 10,
+                  bottom: MediaQuery.of(context).size.height * .6 / 100,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        PageTransition(
+                          curve: Curves.easeInSine,
+                          child: HomeScreen(
+                              songModel: songModell!,
+                              songlist: songlist,
+                              passedindex: passedindex,
+                              audioPlayer: audioplayer,
+                              isclicked: isclicked,
+                              ),
+                          type: PageTransitionType.size,
+                          alignment: Alignment.bottomCenter,
+                          duration: const Duration(milliseconds: 320),
+                          reverseDuration: const Duration(milliseconds: 320),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(255, 87, 87, 87),
+                            blurRadius: 3,
+                            spreadRadius: 1,
+                          )
+                        ],
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                            topRight: Radius.circular(7),
+                            bottomRight: Radius.circular(7),
+                            bottomLeft: Radius.circular(25)),
+                        color: Color.fromARGB(250, 149, 149, 149),
                       ),
-                    );
-                  },
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 87, 87, 87),
-                          blurRadius: 3,
-                          spreadRadius: 1,
-                        )
-                      ],
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          topRight: Radius.circular(7),
-                          bottomRight: Radius.circular(7),
-                          bottomLeft: Radius.circular(25)),
-                      color: Color.fromARGB(250, 149, 149, 149),
-                    ),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: const BorderRadius.only(
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(23),
-                              bottomLeft: Radius.circular(23)),
-                          child: AspectRatio(
-                            aspectRatio: 1.6 / 1,
-                            child: ShaderMask(
-                              blendMode: BlendMode.dstOut,
-                              shaderCallback: (rect) => const LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Colors.transparent,
-                                    Colors.black
-                                  ]).createShader(rect),
-                              child: Image.asset(
-                                'assets/artistic-album-cover-design-template-d12ef0296af80b58363dc0deef077ecc_screen.jpg',
-                                fit: BoxFit.cover,
+                              bottomLeft: Radius.circular(23),
+                            ),
+                            child: AspectRatio(
+                              aspectRatio: 1.6 / 1,
+                              child: ShaderMask(
+                                blendMode: BlendMode.dstOut,
+                                shaderCallback: (rect) => const LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Colors.transparent,
+                                      Colors.black
+                                    ]).createShader(rect),
+                                child: Image.asset(
+                                  'assets/artistic-album-cover-design-template-d12ef0296af80b58363dc0deef077ecc_screen.jpg',
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            Text(
-                              'songssss',
-                              style: TextStyle(
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 10, 10, 10)),
+                          SizedBox(
+                            width: 115,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  songname,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 10, 10, 10),
+                                  ),
+                                ),
+                                Text(
+                                  songartist,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 15),
+                                )
+                              ],
                             ),
-                            Text(
-                              'Artist 1',
-                              style: TextStyle(fontSize: 20),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(
-                              () {
-                                mycolors.shufflemycolors();
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(
+                                () {
+                                  mycolors.shufflemycolors();
 
-                                if (isclicked) {
-                                  _controller.reverse();
-                                } else {
-                                  _controller.forward();
-                                }
-                              },
-                            );
-                            isclicked = !isclicked;
-                          },
-                          child: SizedBox(
-                            child: AnimatedIcon(
-                                size: 55,
-                                icon: AnimatedIcons.play_pause,
-                                progress: _controller),
+                                  if (isclicked) {
+                                    _controller.reverse();
+                                  } else {
+                                    _controller.forward();
+                                  }
+                                },
+                              );
+
+                              if (isclicked) {
+                                audioplayer.pause();
+                              } else {
+                                audioplayer.play();
+                              }
+                             isclicked  =!isclicked ;
+                            },
+                            child: SizedBox(
+                              child: AnimatedIcon(
+                                  size: 55,
+                                  icon: AnimatedIcons.play_pause,
+                                  progress: _controller),
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 19,
-                        ),
-                        LikeButton(
-                          animationDuration: const Duration(milliseconds: 1450),
-                          bubblesSize: 70,
-                          circleSize: 50,
-                          circleColor: const CircleColor(
-                            start: Color.fromARGB(52, 10, 10, 10),
-                            end: Color.fromARGB(255, 255, 0, 0),
+                          const SizedBox(
+                            width: 19,
                           ),
-                          bubblesColor: const BubblesColor(
-                            dotPrimaryColor: Color.fromARGB(255, 255, 22, 1),
-                            dotSecondaryColor: Color.fromARGB(255, 125, 0, 0),
-                            dotThirdColor: Color.fromARGB(255, 255, 95, 92),
-                            dotLastColor: Color.fromARGB(255, 80, 5, 0),
+                          LikeButton(
+                            animationDuration:
+                                const Duration(milliseconds: 1450),
+                            bubblesSize: 70,
+                            circleSize: 50,
+                            circleColor: const CircleColor(
+                              start: Color.fromARGB(52, 10, 10, 10),
+                              end: Color.fromARGB(255, 255, 0, 0),
+                            ),
+                            bubblesColor: const BubblesColor(
+                              dotPrimaryColor: Color.fromARGB(255, 255, 22, 1),
+                              dotSecondaryColor: Color.fromARGB(255, 125, 0, 0),
+                              dotThirdColor: Color.fromARGB(255, 255, 95, 92),
+                              dotLastColor: Color.fromARGB(255, 80, 5, 0),
+                            ),
+                            likeBuilder: (isLiked) {
+                              return Icon(
+                                Icons.favorite,
+                                color: isLiked
+                                    ? const Color.fromARGB(255, 129, 9, 0)
+                                    : Colors.black,
+                                size: 33,
+                              );
+                            },
                           ),
-                          likeBuilder: (isLiked) {
-                            return Icon(
-                              Icons.favorite,
-                              color: isLiked
-                                  ? const Color.fromARGB(255, 129, 9, 0)
-                                  : Colors.black,
-                              size: 33,
-                            );
-                          },
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

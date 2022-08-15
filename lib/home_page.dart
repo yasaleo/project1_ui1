@@ -1,12 +1,51 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:like_button/like_button.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:project1_ui1/animated_neu.dart';
 import 'package:project1_ui1/neumorphism.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  final SongModel songModel;
+  final AudioPlayer audioPlayer;
+  List<SongModel> songlist;
+  bool isclicked;
 
+  int passedindex;
+
+  HomeScreen(
+      {Key? key,
+      required this.songModel,
+      required this.audioPlayer,
+      required this.songlist,
+      required this.isclicked,
+      required this.passedindex})
+      : super(key: key);
+  ValueNotifier<List<SongModel>> songnotifier = ValueNotifier([]);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+
+  playsong(String? uri) {
+    try {
+      widget.audioPlayer.setAudioSource(
+        AudioSource.uri(
+          Uri.parse(uri!)
+        )
+
+      );
+      widget.audioPlayer.play();
+    } on Exception {
+      log('Error parsing song');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +57,7 @@ class HomeScreen extends StatelessWidget {
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:  [
+                children: [
                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
@@ -68,21 +107,35 @@ class HomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(
-                            children: const [
-                              Text(
-                                'Mr.Kitty - ',
-                                style: TextStyle(
-                                  fontSize: 20,
+                            children: [
+                              SizedBox(
+                                width: 270,
+                                child: Text(
+                                  widget.songlist[widget.passedindex].displayNameWOExt,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                  ),
                                 ),
                               ),
-                              Divider(
+                              const Divider(
                                 height: 10,
                               ),
-                              Text(
-                                'After Dark',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 23,
+                              SizedBox(
+                                width: 230,
+                                child: Text(
+                                 widget.songlist[widget.passedindex].artist.toString() ==
+                                          "<unknown>"
+                                      ? 'Unknown Artist'
+                                      : widget.songlist[widget.passedindex].artist.toString(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 23,
+                                  ),
                                 ),
                               )
                             ],
@@ -154,18 +207,54 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 23),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    NeumorphicWidget(
-                      child: Icon(
-                        Icons.skip_previous_rounded,
-                        size: 55,
+                  children:  [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (widget.passedindex<0) {
+                          widget.passedindex=0;
+                        playsong(widget.songlist[widget.passedindex].uri);
+
+                        } else{
+                          widget.passedindex--;
+                        playsong(widget.songlist[widget.passedindex].uri);
+                        }
+                        
+                        });
+                        
+                      },
+                      child: const NeumorphicWidget(
+                        child: Icon(
+                          Icons.skip_previous_rounded,
+                          size: 55,
+                        ),
                       ),
                     ),
-                    AnimatedNeumorphism(),
-                    NeumorphicWidget(
-                      child: Icon(
-                        Icons.skip_next_rounded,
-                        size: 55,
+                    AnimatedNeumorphism(
+                      audioPlayer: widget.audioPlayer,
+                      isclickedd: widget.isclicked,
+
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (widget.passedindex>widget.songlist.length) {
+                          widget.passedindex=widget.songlist.length;
+                        playsong(widget.songlist[widget.passedindex].uri);
+
+                        } else{
+                          widget.passedindex++;
+                        playsong(widget.songlist[widget.passedindex].uri);
+                        }
+                        
+                        });
+                        
+                      },
+                      child: const NeumorphicWidget(
+                        child: Icon(
+                          Icons.skip_next_rounded,
+                          size: 55,
+                        ),
                       ),
                     ),
                   ],

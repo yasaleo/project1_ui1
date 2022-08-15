@@ -18,7 +18,7 @@ class _NeumorphicWidgetState extends State<NeumorphicWidget> {
       onPointerDown: (_) => setState(() => _iselevated = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 110),
-        curve: Curves.easeInOutQuad,
+        curve: Curves.easeInOutSine,
         padding: const EdgeInsets.all(8),
         child: widget.child,
         decoration: BoxDecoration(

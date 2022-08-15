@@ -7,12 +7,18 @@ import 'package:like_button/like_button.dart';
 class ListCard extends StatelessWidget {
   final title;
   final artist;
-  const ListCard({Key? key,required this.artist,required this.title}) : super(key: key);
+  Function ontap;
+  ListCard(
+      {Key? key,
+      required this.artist,
+      required this.title,
+      required this.ontap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(5),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
         child: Container(
@@ -48,8 +54,9 @@ class ListCard extends StatelessWidget {
                   ),
                 ]),
             child: ListTile(
+              onTap: () => ontap(),
               leading: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(5),
                 child: AspectRatio(
                   aspectRatio: 1.5 / 1,
                   child: Image.asset(
@@ -58,14 +65,17 @@ class ListCard extends StatelessWidget {
                   ),
                 ),
               ),
-              title:  Text(
+              title: Text(
                 '$title',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
               ),
-              subtitle:  Text(
+              subtitle: Text(
                 '$title',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 20),
               ),
               trailing: SizedBox(

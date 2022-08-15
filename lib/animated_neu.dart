@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:project1_ui1/commonvariables.dart';
+import 'package:project1_ui1/front_screen.dart';
 
 class AnimatedNeumorphism extends StatefulWidget {
-  const AnimatedNeumorphism({Key? key}) : super(key: key);
+  final AudioPlayer audioPlayer;
+   bool isclickedd;
+   AnimatedNeumorphism({Key? key,required this.audioPlayer,required this.isclickedd}) : super(key: key);
 
   @override
   State<AnimatedNeumorphism> createState() => _AnimatedNeumorphismState();
@@ -20,6 +25,11 @@ class _AnimatedNeumorphismState extends State<AnimatedNeumorphism>
     _controller =
         AnimationController(duration: const Duration(milliseconds: 800), vsync: this);
     super.initState();
+    if (widget.isclickedd) {
+            setState(() => turns -= 1 / 2);
+            _controller.forward();
+            isclicked = !isclicked;
+          } 
   }
 
 
@@ -38,13 +48,19 @@ class _AnimatedNeumorphismState extends State<AnimatedNeumorphism>
       child: GestureDetector(
         onTap: () {
           if (isclicked) {
+            widget.audioPlayer.pause();
             setState(() => turns -= 1 / 2);
+            
             _controller.reverse();
           } else {
+            widget.audioPlayer.play();
+
             setState(() => turns += 1 / 2);
             _controller.forward();
           }
           isclicked = !isclicked;
+          widget.isclickedd=!widget.isclickedd;
+
         },
         child: AnimatedContainer(
           curve: Curves.easeOutExpo,
