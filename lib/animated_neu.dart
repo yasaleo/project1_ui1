@@ -5,8 +5,8 @@ import 'package:project1_ui1/front_screen.dart';
 
 class AnimatedNeumorphism extends StatefulWidget {
   final AudioPlayer audioPlayer;
-   bool isclickedd;
-   AnimatedNeumorphism({Key? key,required this.audioPlayer,required this.isclickedd}) : super(key: key);
+  //  bool isclickedd;
+   AnimatedNeumorphism({Key? key,required this.audioPlayer}) : super(key: key);
 
   @override
   State<AnimatedNeumorphism> createState() => _AnimatedNeumorphismState();
@@ -25,7 +25,7 @@ class _AnimatedNeumorphismState extends State<AnimatedNeumorphism>
     _controller =
         AnimationController(duration: const Duration(milliseconds: 800), vsync: this);
     super.initState();
-    if (widget.isclickedd) {
+    if (Variableclass.instance.isclickedd.value) {
             setState(() => turns -= 1 / 2);
             _controller.forward();
             isclicked = !isclicked;
@@ -59,7 +59,7 @@ class _AnimatedNeumorphismState extends State<AnimatedNeumorphism>
             _controller.forward();
           }
           isclicked = !isclicked;
-          widget.isclickedd=!widget.isclickedd;
+          Variableclass.instance.isclickedd.value=!Variableclass.instance.isclickedd.value;
 
         },
         child: AnimatedContainer(

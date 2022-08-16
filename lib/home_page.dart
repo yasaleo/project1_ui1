@@ -6,6 +6,7 @@ import 'package:like_button/like_button.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:project1_ui1/animated_neu.dart';
+import 'package:project1_ui1/commonvariables.dart';
 import 'package:project1_ui1/neumorphism.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,28 +25,62 @@ class HomeScreen extends StatefulWidget {
       required this.isclicked,
       required this.passedindex})
       : super(key: key);
-  ValueNotifier<List<SongModel>> songnotifier = ValueNotifier([]);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ValueNotifier <Duration> _duration= ValueNotifier(const Duration()) ;
+  final ValueNotifier <Duration> _position = ValueNotifier(const Duration()) ;
 
+   
 
   playsong(String? uri) {
     try {
-      widget.audioPlayer.setAudioSource(
-        AudioSource.uri(
-          Uri.parse(uri!)
-        )
-
-      );
+      widget.audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(uri!)));
       widget.audioPlayer.play();
     } on Exception {
       log('Error parsing song');
     }
+
+     
   }
+
+   songduration(){
+    widget.audioPlayer.durationStream.listen((event) {
+    
+       
+      _duration.value = event!;
+      
+
+    
+      });
+
+      widget.audioPlayer.positionStream.listen((e) { 
+        
+        
+        _position.value=e;
+          
+      
+      });
+   }
+
+   void seektoduration(int seconds){
+    Duration duration = Duration(seconds: seconds);
+    widget.audioPlayer.seek(duration);
+
+   }
+ 
+
+ @override
+  void initState() {
+    // TODO: implement initState
+    songduration();
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,10 +97,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: const NeumorphicWidget(
-                      child: Icon(
-                        Icons.arrow_downward,
-                        size: 38,
+                    child: NeumorphicWidget(
+                      child: Transform.rotate(
+                        angle: 4.7,
+                        child:   Icon(size: 38, 
+                        Icons.arrow_back_ios_new),
                       ),
                     ),
                   ),
@@ -86,14 +122,23 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 40),
               NormalNeumorphism(
+                height: 340,
+                width: 400,
                 child: Column(
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: AspectRatio(
                         aspectRatio: 1.5 / 1,
-                        child: Image.asset(
-                            'assets/keagan-henman-6etHcucBiRg-unsplash.jpg'),
+                        child: QueryArtworkWidget(
+                          artworkBorder: BorderRadius.circular(10),
+                          id: widget.songlist[widget.passedindex].id,
+                          type: ArtworkType.AUDIO,
+                          nullArtworkWidget:
+                               const Icon(Icons.music_note_outlined,
+                              size: 50,
+                              ),
+                        ),
                       ),
                     ),
                     const Divider(
@@ -111,10 +156,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(
                                 width: 270,
                                 child: Text(
-                                  widget.songlist[widget.passedindex].displayNameWOExt,
+                                  widget.songlist[widget.passedindex]
+                                      .displayNameWOExt,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  
                                   style: const TextStyle(
                                     fontSize: 20,
                                   ),
@@ -126,10 +171,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(
                                 width: 230,
                                 child: Text(
-                                 widget.songlist[widget.passedindex].artist.toString() ==
+                                  widget.songlist[widget.passedindex].artist
+                                              .toString() ==
                                           "<unknown>"
                                       ? 'Unknown Artist'
-                                      : widget.songlist[widget.passedindex].artist.toString(),
+                                      : widget
+                                          .songlist[widget.passedindex].artist
+                                          .toString(),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
@@ -176,30 +224,54 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      '0.0',
-                      style: TextStyle(fontSize: 17),
-                    ),
-                    Text(
-                      '4.48',
-                      style: TextStyle(fontSize: 17),
-                    )
-                  ],
-                ),
+                child:ValueListenableBuilder(
+                  valueListenable: _position,
+                  builder: (BuildContext context,Duration newduration,Widget?_) {
+                    return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children:  [
+                            Text(
+                              newduration.toString().split(".")[0],
+                              style: const TextStyle(fontSize: 17),
+                            ),
+                            Text(
+                              _duration.value.toString().split(".")[0],
+                              style: const TextStyle(fontSize: 17),
+                            )
+                          ],
+                        );
+                  }
+                )
               ),
               const SizedBox(
                 height: 16,
               ),
-              LinearPercentIndicator(
-                backgroundColor: const Color.fromARGB(255, 194, 194, 194),
-                lineHeight: 10,
-                percent: 0.8,
-                progressColor: Colors.black,
-                barRadius: const Radius.circular(8),
-              ),
+                ValueListenableBuilder(
+                  valueListenable: _position,
+                  builder: (BuildContext context, Duration newd,Widget?_) {
+                    return Slider(
+                      activeColor: Colors.black,
+                      inactiveColor: const Color.fromARGB(242, 92, 92, 92),
+                      min: const Duration(microseconds: 0).inSeconds.toDouble(),
+                      max: _duration.value.inSeconds.toDouble(),
+                      value: _position.value.inSeconds.toDouble(), 
+
+                      onChanged: (value) {
+                        seektoduration(value.toInt());
+                        value=value;
+                      },
+                      
+                      );
+                  }
+                ),
+
+              // LinearPercentIndicator(
+              //   backgroundColor: const Color.fromARGB(255, 194, 194, 194),
+              //   lineHeight: 10,
+              //   percent: 1,
+              //   progressColor: Colors.black,
+              //   barRadius: const Radius.circular(8),
+              // ),
               const SizedBox(
                 height: 60,
               ),
@@ -207,21 +279,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 23),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children:  [
+                  children: [
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          if (widget.passedindex<0) {
-                          widget.passedindex=0;
-                        playsong(widget.songlist[widget.passedindex].uri);
+                          if (widget.passedindex < 0) {
+                            widget.passedindex = 0;
+                            playsong(widget.songlist[widget.passedindex].uri);
+                          } else {
+                            widget.passedindex--;
+                            playsong(widget.songlist[widget.passedindex].uri);
+                          }
+                          
 
-                        } else{
-                          widget.passedindex--;
-                        playsong(widget.songlist[widget.passedindex].uri);
-                        }
-                        
                         });
-                        
                       },
                       child: const NeumorphicWidget(
                         child: Icon(
@@ -232,23 +303,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     AnimatedNeumorphism(
                       audioPlayer: widget.audioPlayer,
-                      isclickedd: widget.isclicked,
-
                     ),
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          if (widget.passedindex>widget.songlist.length) {
-                          widget.passedindex=widget.songlist.length;
-                        playsong(widget.songlist[widget.passedindex].uri);
-
-                        } else{
-                          widget.passedindex++;
-                        playsong(widget.songlist[widget.passedindex].uri);
-                        }
-                        
+                          if (widget.passedindex > widget.songlist.length) {
+                            widget.passedindex = widget.songlist.length;
+                            playsong(widget.songlist[widget.passedindex].uri);
+                          } else {
+                            widget.passedindex++;
+                            playsong(widget.songlist[widget.passedindex].uri);
+                          }
                         });
-                        
                       },
                       child: const NeumorphicWidget(
                         child: Icon(

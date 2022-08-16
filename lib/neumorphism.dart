@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class NeumorphicWidget extends StatefulWidget {
   const NeumorphicWidget({Key? key, required this.child}) : super(key: key);
   final child;
+  
 
   @override
   State<NeumorphicWidget> createState() => _NeumorphicWidgetState();
@@ -44,11 +45,15 @@ class _NeumorphicWidgetState extends State<NeumorphicWidget> {
 }
 
 class NormalNeumorphism extends StatelessWidget {
-  const NormalNeumorphism({Key? key, required this.child}) : super(key: key);
+   NormalNeumorphism({Key? key, required this.child,required this.height,required this.width}) : super(key: key);
   final child;
+  double height;
+  double width;
   @override
   Widget build(BuildContext context) {
     return Container(
+      height:height ,
+      width: width,
       padding: const EdgeInsets.all(8),
       child: child,
       decoration: BoxDecoration(

@@ -3,16 +3,21 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:like_button/like_button.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class ListCard extends StatelessWidget {
   final title;
   final artist;
+  final id;
   Function ontap;
   ListCard(
       {Key? key,
       required this.artist,
       required this.title,
-      required this.ontap})
+      required this.ontap,
+      required this.id
+      
+      })
       : super(key: key);
 
   @override
@@ -55,16 +60,12 @@ class ListCard extends StatelessWidget {
                 ]),
             child: ListTile(
               onTap: () => ontap(),
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: AspectRatio(
-                  aspectRatio: 1.5 / 1,
-                  child: Image.asset(
-                    'assets/kobu-agency-3hWg9QKl5k8-unsplash.jpg',
-                    fit: BoxFit.cover,
-                  ),
+              leading: QueryArtworkWidget(
+                id: id, 
+                type: ArtworkType.AUDIO,
+                nullArtworkWidget: const Icon(Icons.music_note_outlined),
+                
                 ),
-              ),
               title: Text(
                 '$title',
                 maxLines: 1,
