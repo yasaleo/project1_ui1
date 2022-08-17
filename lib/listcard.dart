@@ -15,9 +15,7 @@ class ListCard extends StatelessWidget {
       required this.artist,
       required this.title,
       required this.ontap,
-      required this.id
-      
-      })
+      required this.id})
       : super(key: key);
 
   @override
@@ -59,13 +57,18 @@ class ListCard extends StatelessWidget {
                   ),
                 ]),
             child: ListTile(
+              horizontalTitleGap: 8,
               onTap: () => ontap(),
-              leading: QueryArtworkWidget(
-                id: id, 
-                type: ArtworkType.AUDIO,
-                nullArtworkWidget: const Icon(Icons.music_note_outlined),
-                
+              leading: CircleAvatar(
+                radius: 25,
+                backgroundColor: Color.fromARGB(13, 0, 0, 0),
+                foregroundColor: Colors.black54,
+                child: QueryArtworkWidget(
+                  id: id,
+                  type: ArtworkType.AUDIO,
+                  nullArtworkWidget: const Icon(Icons.music_note_outlined),
                 ),
+              ),
               title: Text(
                 '$title',
                 maxLines: 1,
@@ -80,8 +83,8 @@ class ListCard extends StatelessWidget {
                 style: const TextStyle(fontSize: 20),
               ),
               trailing: SizedBox(
-                height: 40,
-                width: 40,
+                height: 25,
+                width: 35,
                 child: LikeButton(
                   animationDuration: const Duration(milliseconds: 1450),
                   bubblesSize: 70,
@@ -102,7 +105,7 @@ class ListCard extends StatelessWidget {
                       color: isLiked
                           ? const Color.fromARGB(255, 129, 9, 0)
                           : Colors.black,
-                      size: 33,
+                      size: 29.5,
                     );
                   },
                 ),

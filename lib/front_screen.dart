@@ -36,7 +36,7 @@ class _FrontScreenState extends State<FrontScreen>
   String songname = '';
   String songartist = '';
   bool isvisible = false;
-  int id=0;
+  int id = 0;
 
   static late AnimationController _controller;
   //  bool isclicked = false;
@@ -308,7 +308,7 @@ class _FrontScreenState extends State<FrontScreen>
 
                                         return Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8, right: 8, bottom: 5),
+                                              left: 8, right: 8, bottom: 8),
                                           child: ListCard(
                                             ontap: () {
                                               setState(() {
@@ -321,7 +321,7 @@ class _FrontScreenState extends State<FrontScreen>
                                                     .isclickedd.value = true;
                                                 _controller.forward();
                                                 mycolors.shufflemycolors();
-                                                id=songg[index].id;
+                                                id = songg[index].id;
                                                 songname = songg[index]
                                                     .displayNameWOExt;
                                                 songartist = songg[index]
@@ -369,6 +369,7 @@ class _FrontScreenState extends State<FrontScreen>
                           decoration: const BoxDecoration(
                             boxShadow: [
                               BoxShadow(
+                                offset: Offset(2.5, 3.4),
                                 color: Color.fromARGB(255, 87, 87, 87),
                                 blurRadius: 3,
                                 spreadRadius: 1,
@@ -384,7 +385,7 @@ class _FrontScreenState extends State<FrontScreen>
                           child: Row(
                             children: [
                               ClipRRect(
-                                borderRadius:  BorderRadius.only(
+                                borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(23),
                                   bottomLeft: Radius.circular(23),
                                 ),
@@ -401,11 +402,12 @@ class _FrontScreenState extends State<FrontScreen>
                                           Colors.black
                                         ]).createShader(rect),
                                     child: QueryArtworkWidget(
-                                      artworkBorder: BorderRadius.circular(20),
+                                      artworkBorder:
+                                          BorderRadius.circular(20),
                                       id: id,
                                       type: ArtworkType.AUDIO,
-                                      nullArtworkWidget:  Icon(
-                                          Icons.music_note_outlined),
+                                      nullArtworkWidget:
+                                          Icon(Icons.music_note_outlined),
                                     ),
                                   ),
                                 ),
@@ -476,42 +478,42 @@ class _FrontScreenState extends State<FrontScreen>
                               GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).push(
-                            PageTransition(
-                              curve: Curves.easeInSine,
-                              child: HomeScreen(
-                                songModel: songModell!,
-                                songlist: songlist,
-                                passedindex: passedindex,
-                                audioPlayer: audioplayer,
-                                isclicked:
-                                    Variableclass.instance.isclickedd.value,
-                              ),
-                              type: PageTransitionType.size,
-                              alignment: Alignment.bottomCenter,
-                              duration: const Duration(milliseconds: 320),
-                              reverseDuration:
-                                  const Duration(milliseconds: 320),
-                            ),
-                          );
-                        
+                                    PageTransition(
+                                      curve: Curves.easeInSine,
+                                      child: HomeScreen(
+                                        songModel: songModell!,
+                                        songlist: songlist,
+                                        passedindex: passedindex,
+                                        audioPlayer: audioplayer,
+                                        isclicked: Variableclass
+                                            .instance.isclickedd.value,
+                                      ),
+                                      type: PageTransitionType.size,
+                                      alignment: Alignment.bottomCenter,
+                                      duration:
+                                          const Duration(milliseconds: 320),
+                                      reverseDuration:
+                                          const Duration(milliseconds: 320),
+                                    ),
+                                  );
                                 },
                                 child: Container(
-                                 alignment: Alignment.center,
-                                 height: 45
-                                 ,
-                                 width: 40,
-                                 decoration: BoxDecoration(
-                                   color: Color.fromARGB(255, 133, 133, 133),
-                                   border: Border.all(
-                                     color: Color.fromARGB(255, 84, 84, 84)                                 ),
-                                   borderRadius: BorderRadius.circular(12)
-                                 ),
-                                 child: Transform.rotate(
-                                  angle: 1.54,
-                                   child: Icon(
-                                     size: 25, 
-                                     Icons.arrow_back_ios_new),
-                                 )),
+                                    alignment: Alignment.center,
+                                    height: 45,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                        color: Color.fromARGB(
+                                            255, 133, 133, 133),
+                                        border: Border.all(
+                                            color: Color.fromARGB(
+                                                255, 84, 84, 84)),
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    child: Transform.rotate(
+                                      angle: 1.54,
+                                      child: Icon(
+                                          size: 25, Icons.arrow_back_ios_new),
+                                    )),
                               )
                             ],
                           ),

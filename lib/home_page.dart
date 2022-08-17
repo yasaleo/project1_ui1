@@ -4,18 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:like_button/like_button.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:project1_ui1/animated_neu.dart';
-import 'package:project1_ui1/commonvariables.dart';
 import 'package:project1_ui1/neumorphism.dart';
 
 class HomeScreen extends StatefulWidget {
   final SongModel songModel;
   final AudioPlayer audioPlayer;
-  List<SongModel> songlist;
-  bool isclicked;
+  final List<SongModel> songlist;
+  final bool isclicked;
 
-  int passedindex;
+   int passedindex;
 
   HomeScreen(
       {Key? key,
@@ -75,7 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
  @override
   void initState() {
-    // TODO: implement initState
     songduration();
     super.initState();
   }
@@ -265,13 +263,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                 ),
 
-              // LinearPercentIndicator(
-              //   backgroundColor: const Color.fromARGB(255, 194, 194, 194),
-              //   lineHeight: 10,
-              //   percent: 1,
-              //   progressColor: Colors.black,
-              //   barRadius: const Radius.circular(8),
-              // ),
+              LinearPercentIndicator(
+                
+                backgroundColor: const Color.fromARGB(255, 194, 194, 194),
+                lineHeight: 10,
+                percent: 1,
+                progressColor: Colors.black,
+                barRadius: const Radius.circular(8),
+              ),
               const SizedBox(
                 height: 60,
               ),
