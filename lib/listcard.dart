@@ -6,11 +6,11 @@ import 'package:like_button/like_button.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class ListCard extends StatelessWidget {
-  final title;
-  final artist;
-  final id;
-  Function ontap;
-  ListCard(
+  final String title;
+  final String artist;
+  final int id;
+  final Function ontap;
+  const ListCard(
       {Key? key,
       required this.artist,
       required this.title,
@@ -29,8 +29,8 @@ class ListCard extends StatelessWidget {
           decoration: BoxDecoration(
             boxShadow: const [
               BoxShadow(
-                color: Color.fromARGB(35, 11, 11, 11),
-                blurRadius: 13,
+                color: Color.fromARGB(26, 0, 0, 0),
+                blurRadius: 8,
                 spreadRadius: 1,
                 offset: Offset(0, 0),
               ),
@@ -40,17 +40,43 @@ class ListCard extends StatelessWidget {
           child: Slidable(
             useTextDirection: true,
             endActionPane: ActionPane(
-                extentRatio: 1 / 2.5,
+                extentRatio: 1 / 4.5,
                 motion: const StretchMotion(),
                 children: [
                   SlidableAction(
-                    onPressed: ((context) {}),
-                    icon: Icons.delete_forever_outlined,
-                    backgroundColor: const Color.fromARGB(145, 159, 135, 135),
-                    foregroundColor: const Color.fromARGB(255, 115, 8, 0),
-                  ),
-                  SlidableAction(
-                    onPressed: ((context) {}),
+                    onPressed: ((context) {
+                      showModalBottomSheet(
+                        enableDrag: true,
+                        backgroundColor: Colors.grey,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20))),
+                        context: context,
+                        builder: (context) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 20),
+                            child: ListView.separated(
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return index == 0
+                                      ? const Padding(
+                                          padding:  EdgeInsets.symmetric(
+                                              vertical: 12, horizontal: 130),
+                                          child: Text('Select a Playlist'),
+                                        )
+                                      : ListTile(
+                                          title: Text('Playlist $index'),
+                                        );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return const Divider();
+                                },
+                                itemCount: 10),
+                          );
+                        },
+                      );
+                    }),
                     icon: Icons.playlist_add,
                     backgroundColor: const Color.fromARGB(145, 158, 158, 158),
                     foregroundColor: const Color.fromARGB(255, 7, 7, 7),
@@ -61,7 +87,7 @@ class ListCard extends StatelessWidget {
               onTap: () => ontap(),
               leading: CircleAvatar(
                 radius: 25,
-                backgroundColor: Color.fromARGB(13, 0, 0, 0),
+                backgroundColor: const Color.fromARGB(13, 0, 0, 0),
                 foregroundColor: Colors.black54,
                 child: QueryArtworkWidget(
                   id: id,
@@ -70,14 +96,14 @@ class ListCard extends StatelessWidget {
                 ),
               ),
               title: Text(
-                '$title',
+                title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style:
                     const TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
               ),
               subtitle: Text(
-                '$title',
+                title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 20),

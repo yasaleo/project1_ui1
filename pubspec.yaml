@@ -28,11 +28,14 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animated_text_kit: ^4.2.2
+  animations: ^2.0.3
+  build_runner: ^2.2.0
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
   flutter_slidable: ^2.0.0
   google_fonts: ^3.0.1
+  hive: ^2.2.3
   just_audio: ^0.9.28
   like_button: ^2.0.4
   on_audio_query: ^2.6.1

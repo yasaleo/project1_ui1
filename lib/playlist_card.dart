@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 
 class PlaylistCard extends StatelessWidget {
-  const PlaylistCard({Key? key}) : super(key: key);
+  String playlistname;
+   PlaylistCard({Key? key, required this.playlistname}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +20,9 @@ class PlaylistCard extends StatelessWidget {
           decoration: BoxDecoration(
             boxShadow: const [
               BoxShadow(
-                color: Color.fromARGB(34, 0, 0, 0),
+                color: Color.fromARGB(26, 0, 0, 0),
                 blurRadius: 8,
-                spreadRadius: .5,
+                spreadRadius: 5,
               )
             ],
             borderRadius: BorderRadius.circular(17),
@@ -44,14 +45,14 @@ class PlaylistCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const Padding(
+               Padding(
                 padding: EdgeInsets.only(top: 20,right: 30,left: 20),
-                child: Text('Playlist 1 2 3 4 5 6 7',
+                child: Text('$playlistname',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontSize: 23
+                  fontSize: 18
                 ),
                 ),
               )

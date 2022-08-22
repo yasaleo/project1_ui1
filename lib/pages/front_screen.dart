@@ -1,15 +1,19 @@
 import 'dart:developer';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:project1_ui1/add_fav.dart';
 import 'package:project1_ui1/commonvariables.dart';
 import 'package:project1_ui1/listcard.dart';
 import 'package:project1_ui1/navigation_drawer_widget.dart';
+import 'package:project1_ui1/pages/addplaylist.dart';
+import 'package:project1_ui1/pages/favorites.dart';
 import 'package:project1_ui1/playlist_card.dart';
 import 'package:project1_ui1/my_colors.dart';
 
@@ -62,6 +66,7 @@ class _FrontScreenState extends State<FrontScreen>
   @override
   void dispose() {
     _controller.dispose();
+    audioplayer.dispose();
     super.dispose();
   }
 
@@ -69,6 +74,7 @@ class _FrontScreenState extends State<FrontScreen>
     try {
       audioplayer.setAudioSource(AudioSource.uri(Uri.parse(uri!)));
       audioplayer.play();
+      audioplayer.setLoopMode(LoopMode.all);
     } on Exception {
       log('Error parsing song');
     }
@@ -103,6 +109,10 @@ class _FrontScreenState extends State<FrontScreen>
                         PreferredSize(
                           preferredSize: const Size.fromHeight(180),
                           child: SliverAppBar(
+                            iconTheme: const IconThemeData(
+                              size: 35,
+                              color: Colors.black
+                            ),
                             pinned: true,
                             collapsedHeight:
                                 MediaQuery.of(context).size.height * 9.2 / 100,
@@ -120,39 +130,34 @@ class _FrontScreenState extends State<FrontScreen>
                                       SingleChildScrollView(
                                         child: Row(
                                           children: [
-                                            const SizedBox(
-                                              width: 60,
-                                            ),
+                                            const SizedBox(width: 60),
                                             Text('O',
                                                 style: GoogleFonts.capriola(
                                                   textStyle: const TextStyle(
-                                                    color: Color.fromARGB(
-                                                        185, 19, 19, 19),
-                                                    fontSize: 80,
-                                                  ),
+                                                      color: Color.fromARGB(
+                                                          185, 19, 19, 19),
+                                                      fontSize: 80),
                                                 )),
                                             Text('utburst',
                                                 style: GoogleFonts.capriola(
-                                                  textStyle: const TextStyle(
-                                                      color: Colors.black54,
-                                                      fontSize: 54,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                )),
+                                                    textStyle: const TextStyle(
+                                                        color: Colors.black54,
+                                                        fontSize: 54,
+                                                        fontWeight:
+                                                            FontWeight.w500))),
                                           ],
                                         ),
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 21),
-                                        child: Text('your soul ',
-                                            style: GoogleFonts.capriola(
-                                              textStyle: const TextStyle(
-                                                  color: Colors.black54,
-                                                  fontSize: 47,
-                                                  fontWeight: FontWeight.w400),
-                                            )),
-                                      ),
+                                          padding:
+                                              const EdgeInsets.only(right: 21),
+                                          child: Text('your soul ',
+                                              style: GoogleFonts.capriola(
+                                                  textStyle: const TextStyle(
+                                                      color: Colors.black54,
+                                                      fontSize: 47,
+                                                      fontWeight:
+                                                          FontWeight.w400)))),
                                       const SizedBox(
                                         height: 10,
                                       ),
@@ -244,21 +249,167 @@ class _FrontScreenState extends State<FrontScreen>
                                   ],
                                 ),
                               ),
+//---------------------------PLAYLISTS---------------------------------------------------------------------------------------------------
                               SizedBox(
                                 height: 165,
                                 child: ListView.builder(
                                   physics: const BouncingScrollPhysics(),
                                   itemBuilder: (context, index) {
-                                    return const Padding(
-                                      padding: EdgeInsets.only(
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
                                           top: 10, right: 4.8, left: 4.8),
-                                      child: PlaylistCard(),
+                                      child: index == 0
+                                          ? Row(
+                                              children: [
+                                                const SizedBox(
+                                                  width: 6,
+                                                ),
+                                                OpenContainer(
+                                                  openElevation: 0,
+                                                  closedElevation: 0,
+                                                  middleColor:  Colors.grey,
+                                                  openShape:
+                                                      const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          26))),
+                                                  closedShape:
+                                                      const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          90))),
+                                                  transitionDuration:
+                                                      const Duration(
+                                                          milliseconds: 550),
+                                                  closedColor:
+                                                      Colors.transparent,
+                                                  transitionType:
+                                                      ContainerTransitionType
+                                                          .fadeThrough,
+                                                  closedBuilder:
+                                                      (BuildContext context,
+                                                          VoidCallback
+                                                              opencontainer) {
+                                                    return GestureDetector(
+                                                      child: AddFavCard(
+                                                        widget2:const Padding(
+                                                          padding:  EdgeInsets.only(top: 8),
+                                                          child: Text('New'),
+                                                        ),
+                                                        height: 110,
+                                                        width: 110,
+                                                        borderRadius: 100,
+                                                        widget: const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 3.8),
+                                                          child: Icon(
+                                                            Icons
+                                                                .create_new_folder_rounded,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    0,
+                                                                    0,
+                                                                    0),
+                                                            size: 45,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  openBuilder:
+                                                      (context, action) {
+                                                    return const AddPlaylist();
+                                                  },
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                OpenContainer(
+                                                  openElevation: 0,
+                                                  closedElevation: 0,
+                                                  middleColor: Colors.grey,
+                                                  openShape:
+                                                      const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          26))),
+                                                  closedShape:
+                                                      const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          20))),
+                                                  transitionDuration:
+                                                      const Duration(
+                                                          milliseconds: 550),
+                                                  closedColor:
+                                                      Colors.transparent,
+                                                  transitionType:
+                                                      ContainerTransitionType
+                                                          .fadeThrough,
+                                                  closedBuilder:
+                                                      (BuildContext context,
+                                                          VoidCallback
+                                                              opencontainer) {
+                                                    return GestureDetector(
+                                                      onTap: opencontainer,
+                                                      child: AddFavCard(
+                                                        widget2: Padding(
+                                                          padding: const EdgeInsets.only(top: 20),
+                                                          child: Text(
+                                                            'Favorites',
+                                                            maxLines: 1,
+                                                            overflow: TextOverflow
+                                                                .ellipsis,
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontSize: 18),
+                                                          ),
+                                                        ),
+                                                        height: 155,
+                                                        width: 155,
+                                                        borderRadius: 8,
+                                                        playlistname:
+                                                            'Favorites',
+                                                        widget: const Icon(
+                                                          Icons
+                                                              .favorite_rounded,
+                                                          color: Color.fromARGB(
+                                                              255, 120, 0, 0),
+                                                          size: 60,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  openBuilder:
+                                                      (context, action) {
+                                                    return const Favoritescreen();
+                                                  },
+                                                )
+                                              ],
+                                            )
+                                          : PlaylistCard(
+                                              playlistname: 'playlist',
+                                            ),
                                     );
                                   },
                                   itemCount: 10,
                                   scrollDirection: Axis.horizontal,
                                 ),
                               ),
+//--------------------------AUDIO_FILES_LIST--------------------------------------------------------------------------------------------------------
                               Padding(
                                   padding: const EdgeInsets.only(
                                       top: 20, bottom: 10),
@@ -313,6 +464,7 @@ class _FrontScreenState extends State<FrontScreen>
                                             ontap: () {
                                               setState(() {
                                                 playsong(songg[index].uri);
+
                                                 songModell = songg[index];
                                                 songlist = songg;
                                                 passedindex = index;
@@ -369,10 +521,10 @@ class _FrontScreenState extends State<FrontScreen>
                           decoration: const BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                offset: Offset(2.5, 3.4),
-                                color: Color.fromARGB(255, 87, 87, 87),
-                                blurRadius: 3,
-                                spreadRadius: 1,
+
+                                color: Color.fromARGB(100, 61, 61, 61),
+                                blurRadius: 10,
+                                spreadRadius: 9,
                               )
                             ],
                             borderRadius: BorderRadius.only(
@@ -385,7 +537,7 @@ class _FrontScreenState extends State<FrontScreen>
                           child: Row(
                             children: [
                               ClipRRect(
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(23),
                                   bottomLeft: Radius.circular(23),
                                 ),
@@ -402,12 +554,11 @@ class _FrontScreenState extends State<FrontScreen>
                                           Colors.black
                                         ]).createShader(rect),
                                     child: QueryArtworkWidget(
-                                      artworkBorder:
-                                          BorderRadius.circular(20),
+                                      artworkBorder: BorderRadius.circular(20),
                                       id: id,
                                       type: ArtworkType.AUDIO,
                                       nullArtworkWidget:
-                                          Icon(Icons.music_note_outlined),
+                                          const Icon(Icons.music_note_outlined),
                                     ),
                                   ),
                                 ),
@@ -425,8 +576,7 @@ class _FrontScreenState extends State<FrontScreen>
                                       style: const TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
-                                        color:
-                                            Color.fromARGB(255, 10, 10, 10),
+                                        color: Color.fromARGB(255, 10, 10, 10),
                                       ),
                                     ),
                                     Text(
@@ -455,15 +605,13 @@ class _FrontScreenState extends State<FrontScreen>
                                     },
                                   );
 
-                                  if (Variableclass
-                                      .instance.isclickedd.value) {
+                                  if (Variableclass.instance.isclickedd.value) {
                                     audioplayer.pause();
                                   } else {
                                     audioplayer.play();
                                   }
                                   Variableclass.instance.isclickedd.value =
-                                      !Variableclass
-                                          .instance.isclickedd.value;
+                                      !Variableclass.instance.isclickedd.value;
                                 },
                                 child: SizedBox(
                                   child: AnimatedIcon(
@@ -502,10 +650,10 @@ class _FrontScreenState extends State<FrontScreen>
                                     height: 45,
                                     width: 40,
                                     decoration: BoxDecoration(
-                                        color: Color.fromARGB(
+                                        color: const Color.fromARGB(
                                             255, 133, 133, 133),
                                         border: Border.all(
-                                            color: Color.fromARGB(
+                                            color: const Color.fromARGB(
                                                 255, 84, 84, 84)),
                                         borderRadius:
                                             BorderRadius.circular(12)),

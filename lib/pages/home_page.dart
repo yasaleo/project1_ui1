@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
   final List<SongModel> songlist;
   final bool isclicked;
 
-   int passedindex;
+  int passedindex;
 
   HomeScreen(
       {Key? key,
@@ -30,10 +30,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final ValueNotifier <Duration> _duration= ValueNotifier(const Duration()) ;
-  final ValueNotifier <Duration> _position = ValueNotifier(const Duration()) ;
-
-   
+  final ValueNotifier<Duration> _duration = ValueNotifier(const Duration());
+  final ValueNotifier<Duration> _position = ValueNotifier(const Duration());
 
   playsong(String? uri) {
     try {
@@ -42,42 +40,28 @@ class _HomeScreenState extends State<HomeScreen> {
     } on Exception {
       log('Error parsing song');
     }
-
-     
   }
 
-   songduration(){
+  songduration() {
     widget.audioPlayer.durationStream.listen((event) {
-    
-       
       _duration.value = event!;
-      
+    });
 
-    
-      });
+    widget.audioPlayer.positionStream.listen((e) {
+      _position.value = e;
+    });
+  }
 
-      widget.audioPlayer.positionStream.listen((e) { 
-        
-        
-        _position.value=e;
-          
-      
-      });
-   }
-
-   void seektoduration(int seconds){
+  void seektoduration(int seconds) {
     Duration duration = Duration(seconds: seconds);
     widget.audioPlayer.seek(duration);
+  }
 
-   }
- 
-
- @override
+  @override
   void initState() {
     songduration();
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -98,8 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: NeumorphicWidget(
                       child: Transform.rotate(
                         angle: 4.7,
-                        child:   Icon(size: 38, 
-                        Icons.arrow_back_ios_new),
+                        child: Icon(size: 38, Icons.arrow_back_ios_new),
                       ),
                     ),
                   ),
@@ -132,10 +115,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           artworkBorder: BorderRadius.circular(10),
                           id: widget.songlist[widget.passedindex].id,
                           type: ArtworkType.AUDIO,
-                          nullArtworkWidget:
-                               const Icon(Icons.music_note_outlined,
-                              size: 50,
-                              ),
+                          nullArtworkWidget: const Icon(
+                            Icons.music_note_outlined,
+                            size: 50,
+                          ),
                         ),
                       ),
                     ),
@@ -221,13 +204,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 46,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child:ValueListenableBuilder(
-                  valueListenable: _position,
-                  builder: (BuildContext context,Duration newduration,Widget?_) {
-                    return Row(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: ValueListenableBuilder(
+                      valueListenable: _position,
+                      builder: (BuildContext context, Duration newduration,
+                          Widget? _) {
+                        return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:  [
+                          children: [
                             Text(
                               newduration.toString().split(".")[0],
                               style: const TextStyle(fontSize: 17),
@@ -238,39 +222,25 @@ class _HomeScreenState extends State<HomeScreen> {
                             )
                           ],
                         );
-                  }
-                )
-              ),
+                      })),
               const SizedBox(
                 height: 16,
               ),
-                ValueListenableBuilder(
+              ValueListenableBuilder(
                   valueListenable: _position,
-                  builder: (BuildContext context, Duration newd,Widget?_) {
+                  builder: (BuildContext context, Duration newd, Widget? _) {
                     return Slider(
                       activeColor: Colors.black,
                       inactiveColor: const Color.fromARGB(242, 92, 92, 92),
                       min: const Duration(microseconds: 0).inSeconds.toDouble(),
                       max: _duration.value.inSeconds.toDouble(),
-                      value: _position.value.inSeconds.toDouble(), 
-
+                      value: _position.value.inSeconds.toDouble(),
                       onChanged: (value) {
                         seektoduration(value.toInt());
-                        value=value;
+                        value = value;
                       },
-                      
-                      );
-                  }
-                ),
-
-              LinearPercentIndicator(
-                
-                backgroundColor: const Color.fromARGB(255, 194, 194, 194),
-                lineHeight: 10,
-                percent: 1,
-                progressColor: Colors.black,
-                barRadius: const Radius.circular(8),
-              ),
+                    );
+                  }),
               const SizedBox(
                 height: 60,
               ),
@@ -289,8 +259,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             widget.passedindex--;
                             playsong(widget.songlist[widget.passedindex].uri);
                           }
-                          
-
                         });
                       },
                       child: const NeumorphicWidget(

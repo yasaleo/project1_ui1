@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:project1_ui1/commonvariables.dart';
-import 'package:project1_ui1/front_screen.dart';
+import 'package:project1_ui1/pages/front_screen.dart';
 
 class AnimatedNeumorphism extends StatefulWidget {
   final AudioPlayer audioPlayer;
