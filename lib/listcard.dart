@@ -47,7 +47,7 @@ class ListCard extends StatelessWidget {
                     onPressed: ((context) {
                       showModalBottomSheet(
                         enableDrag: true,
-                        backgroundColor: Colors.grey,
+                        backgroundColor: const Color.fromARGB(255, 158, 158, 158),
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(20))),

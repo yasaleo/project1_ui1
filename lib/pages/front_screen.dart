@@ -109,6 +109,7 @@ class _FrontScreenState extends State<FrontScreen>
                         PreferredSize(
                           preferredSize: const Size.fromHeight(180),
                           child: SliverAppBar(
+                            stretch: true,
                             iconTheme: const IconThemeData(
                               size: 35,
                               color: Colors.black
@@ -253,7 +254,8 @@ class _FrontScreenState extends State<FrontScreen>
                               SizedBox(
                                 height: 165,
                                 child: ListView.builder(
-                                  physics: const BouncingScrollPhysics(),
+                                  physics: const BouncingScrollPhysics(
+                                  ),
                                   itemBuilder: (context, index) {
                                     return Padding(
                                       padding: const EdgeInsets.only(
@@ -297,8 +299,8 @@ class _FrontScreenState extends State<FrontScreen>
                                                     return GestureDetector(
                                                       child: AddFavCard(
                                                         widget2:const Padding(
-                                                          padding:  EdgeInsets.only(top: 8),
-                                                          child: Text('New'),
+                                                          padding:  EdgeInsets.only(top: 4),
+                                                          child: Text('New playlist',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
                                                         ),
                                                         height: 110,
                                                         width: 110,
@@ -311,12 +313,8 @@ class _FrontScreenState extends State<FrontScreen>
                                                             Icons
                                                                 .create_new_folder_rounded,
                                                             color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    0,
-                                                                    0,
-                                                                    0),
-                                                            size: 45,
+                                                                Color.fromARGB(255, 37, 37, 37),
+                                                            size: 50,
                                                           ),
                                                         ),
                                                       ),
@@ -331,9 +329,10 @@ class _FrontScreenState extends State<FrontScreen>
                                                   width: 10,
                                                 ),
                                                 OpenContainer(
+                                                  
                                                   openElevation: 0,
                                                   closedElevation: 0,
-                                                  middleColor: Colors.grey,
+                                                  middleColor:  Colors.grey,
                                                   openShape:
                                                       const RoundedRectangleBorder(
                                                           borderRadius:
@@ -363,26 +362,28 @@ class _FrontScreenState extends State<FrontScreen>
                                                     return GestureDetector(
                                                       onTap: opencontainer,
                                                       child: AddFavCard(
-                                                        widget2: Padding(
-                                                          padding: const EdgeInsets.only(top: 20),
-                                                          child: Text(
-                                                            'Favorites',
-                                                            maxLines: 1,
-                                                            overflow: TextOverflow
-                                                                .ellipsis,
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    fontSize: 18),
+                                                        widget2: const Padding(
+                                                          padding: EdgeInsets.only(top: 20),
+                                                          child: Padding(
+                                                            padding: EdgeInsets.only(top: 10),
+                                                            child: Text(
+                                                              'Favorites',
+                                                              maxLines: 1,
+                                                              overflow: TextOverflow
+                                                                  .ellipsis,
+                                                              style:
+                                                                  TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      fontSize: 18),
+                                                            ),
                                                           ),
                                                         ),
                                                         height: 155,
                                                         width: 155,
                                                         borderRadius: 8,
-                                                        playlistname:
-                                                            'Favorites',
+                                                       
                                                         widget: const Icon(
                                                           Icons
                                                               .favorite_rounded,
@@ -401,7 +402,7 @@ class _FrontScreenState extends State<FrontScreen>
                                               ],
                                             )
                                           : PlaylistCard(
-                                              playlistname: 'playlist',
+                                              playlistname: 'playlist 123456',
                                             ),
                                     );
                                   },
@@ -531,7 +532,7 @@ class _FrontScreenState extends State<FrontScreen>
                                 topLeft: Radius.circular(25),
                                 topRight: Radius.circular(7),
                                 bottomRight: Radius.circular(7),
-                                bottomLeft: Radius.circular(25)),
+                                bottomLeft: Radius.circular(10)),
                             color: Color.fromARGB(250, 149, 149, 149),
                           ),
                           child: Row(
@@ -539,7 +540,7 @@ class _FrontScreenState extends State<FrontScreen>
                               ClipRRect(
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(23),
-                                  bottomLeft: Radius.circular(23),
+                                  bottomLeft: Radius.circular(7),
                                 ),
                                 child: AspectRatio(
                                   aspectRatio: 1.6 / 1,
@@ -554,7 +555,9 @@ class _FrontScreenState extends State<FrontScreen>
                                           Colors.black
                                         ]).createShader(rect),
                                     child: QueryArtworkWidget(
-                                      artworkBorder: BorderRadius.circular(20),
+                                      artworkBorder: BorderRadius.only(
+                                        bottomLeft: Radius.circular(10)
+                                      ),
                                       id: id,
                                       type: ArtworkType.AUDIO,
                                       nullArtworkWidget:
@@ -659,7 +662,7 @@ class _FrontScreenState extends State<FrontScreen>
                                             BorderRadius.circular(12)),
                                     child: Transform.rotate(
                                       angle: 1.54,
-                                      child: Icon(
+                                      child:  Icon(
                                           size: 25, Icons.arrow_back_ios_new),
                                     )),
                               )

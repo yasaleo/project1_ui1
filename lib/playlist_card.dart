@@ -46,8 +46,8 @@ class PlaylistCard extends StatelessWidget {
                 ),
               ),
                Padding(
-                padding: EdgeInsets.only(top: 20,right: 30,left: 20),
-                child: Text('$playlistname',
+                padding: EdgeInsets.only(top: 24,right: 10,left: 14),
+                child: Text(playlistname,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(

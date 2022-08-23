@@ -16,10 +16,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(AssetImage('assets/imageee2.jpg'), context);
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primaryColor: Colors.black,
+          primarySwatch: Colors.grey,
           androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
       home: const FrontScreen(),
     );
