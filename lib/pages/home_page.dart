@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:like_button/like_button.dart';
+import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:project1_ui1/animated_neu.dart';
@@ -87,10 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const Text(
-                    'Music',
+                    'Now Playing',
                     style: TextStyle(
-                        fontSize: 30,
-                        letterSpacing: 10,
+                        fontSize: 25,
+                        letterSpacing: 4.5,
                         fontWeight: FontWeight.w500),
                   ),
                   const NeumorphicWidget(
@@ -112,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: AspectRatio(
                         aspectRatio: 1.5 / 1,
                         child: QueryArtworkWidget(
+                          artworkFit: BoxFit.fill,
                           artworkBorder: BorderRadius.circular(10),
                           id: widget.songlist[widget.passedindex].id,
                           type: ArtworkType.AUDIO,
@@ -135,23 +137,35 @@ class _HomeScreenState extends State<HomeScreen> {
                           Column(
                             children: [
                               SizedBox(
-                                width: 270,
-                                child: Text(
-                                  widget.songlist[widget.passedindex]
+                                height: 30,
+                                width: 200,
+                                child: Marquee(
+                                  showFadingOnlyWhenScrolling: false,
+                                  fadingEdgeStartFraction: .2,
+                                  fadingEdgeEndFraction: .17,
+                                  text: widget.songlist[widget.passedindex]
                                       .displayNameWOExt,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     fontSize: 20,
+                                    fontWeight: FontWeight.w600
                                   ),
+                                  blankSpace: 90,
+                                  velocity: 35,
+                                  pauseAfterRound:
+                                      const Duration(milliseconds: 900),
                                 ),
+
+                                
                               ),
                               const Divider(
                                 height: 10,
                               ),
                               SizedBox(
-                                width: 230,
-                                child: Text(
+                                height: 30,
+                                width: 190,
+                                child:
+
+                                Text(
                                   widget.songlist[widget.passedindex].artist
                                               .toString() ==
                                           "<unknown>"
@@ -162,8 +176,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 23,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18,
                                   ),
                                 ),
                               )

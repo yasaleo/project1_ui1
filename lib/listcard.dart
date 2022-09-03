@@ -90,6 +90,7 @@ class ListCard extends StatelessWidget {
                 backgroundColor: const Color.fromARGB(13, 0, 0, 0),
                 foregroundColor: Colors.black54,
                 child: QueryArtworkWidget(
+                  artworkFit: BoxFit.fill,
                   id: id,
                   type: ArtworkType.AUDIO,
                   nullArtworkWidget: const Icon(Icons.music_note_outlined),

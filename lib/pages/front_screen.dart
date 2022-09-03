@@ -1,10 +1,11 @@
 import 'dart:developer';
 
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animations/animations.dart';
+import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -41,6 +42,7 @@ class _FrontScreenState extends State<FrontScreen>
   String songartist = '';
   bool isvisible = false;
   int id = 0;
+  ScrollController controllerr = ScrollController();
 
   static late AnimationController _controller;
   //  bool isclicked = false;
@@ -111,9 +113,7 @@ class _FrontScreenState extends State<FrontScreen>
                           child: SliverAppBar(
                             stretch: true,
                             iconTheme: const IconThemeData(
-                              size: 35,
-                              color: Colors.black
-                            ),
+                                size: 35, color: Colors.black),
                             pinned: true,
                             collapsedHeight:
                                 MediaQuery.of(context).size.height * 9.2 / 100,
@@ -180,29 +180,21 @@ class _FrontScreenState extends State<FrontScreen>
                                 height: 70,
                                 width: 94.5,
                                 child: Center(
-                                  child: AnimatedTextKit(
-                                    animatedTexts: [
-                                      RotateAnimatedText('Musify',
-                                          textStyle: GoogleFonts.k2d(
-                                            textStyle: const TextStyle(
-                                                shadows: [
-                                                  Shadow(
-                                                      color: Colors.black45,
-                                                      offset: Offset(2, 3),
-                                                      blurRadius: 8)
-                                                ],
-                                                color: Colors.black,
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                          duration: const Duration(
-                                              milliseconds: 1300),
-                                          alignment: Alignment.centerLeft,
-                                          rotateOut: false)
-                                    ],
-                                    isRepeatingAnimation: false,
+                                    child: Text(
+                                  'Musify',
+                                  style: GoogleFonts.k2d(
+                                    textStyle: const TextStyle(
+                                        shadows: [
+                                          Shadow(
+                                              color: Colors.black45,
+                                              offset: Offset(2, 3),
+                                              blurRadius: 8)
+                                        ],
+                                        color: Colors.black,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w700),
                                   ),
-                                ),
+                                )),
                               ),
                             ),
                           ),
@@ -254,8 +246,7 @@ class _FrontScreenState extends State<FrontScreen>
                               SizedBox(
                                 height: 165,
                                 child: ListView.builder(
-                                  physics: const BouncingScrollPhysics(
-                                  ),
+                                  physics: const BouncingScrollPhysics(),
                                   itemBuilder: (context, index) {
                                     return Padding(
                                       padding: const EdgeInsets.only(
@@ -269,7 +260,7 @@ class _FrontScreenState extends State<FrontScreen>
                                                 OpenContainer(
                                                   openElevation: 0,
                                                   closedElevation: 0,
-                                                  middleColor:  Colors.grey,
+                                                  middleColor: Colors.grey,
                                                   openShape:
                                                       const RoundedRectangleBorder(
                                                           borderRadius:
@@ -298,9 +289,18 @@ class _FrontScreenState extends State<FrontScreen>
                                                               opencontainer) {
                                                     return GestureDetector(
                                                       child: AddFavCard(
-                                                        widget2:const Padding(
-                                                          padding:  EdgeInsets.only(top: 4),
-                                                          child: Text('New playlist',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
+                                                        widget2: const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 4),
+                                                          child: Text(
+                                                            'New playlist',
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 14),
+                                                          ),
                                                         ),
                                                         height: 110,
                                                         width: 110,
@@ -313,8 +313,12 @@ class _FrontScreenState extends State<FrontScreen>
                                                             Icons
                                                                 .create_new_folder_rounded,
                                                             color:
-                                                                Color.fromARGB(255, 37, 37, 37),
-                                                            size: 50,
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    37,
+                                                                    37,
+                                                                    37),
+                                                            size: 42,
                                                           ),
                                                         ),
                                                       ),
@@ -329,10 +333,9 @@ class _FrontScreenState extends State<FrontScreen>
                                                   width: 10,
                                                 ),
                                                 OpenContainer(
-                                                  
                                                   openElevation: 0,
                                                   closedElevation: 0,
-                                                  middleColor:  Colors.grey,
+                                                  middleColor: Colors.grey,
                                                   openShape:
                                                       const RoundedRectangleBorder(
                                                           borderRadius:
@@ -363,33 +366,40 @@ class _FrontScreenState extends State<FrontScreen>
                                                       onTap: opencontainer,
                                                       child: AddFavCard(
                                                         widget2: const Padding(
-                                                          padding: EdgeInsets.only(top: 20),
-                                                          child: Padding(
-                                                            padding: EdgeInsets.only(top: 10),
-                                                            child: Text(
-                                                              'Favorites',
-                                                              maxLines: 1,
-                                                              overflow: TextOverflow
-                                                                  .ellipsis,
-                                                              style:
-                                                                  TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      fontSize: 18),
-                                                            ),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 20),
+                                                          child: Text(
+                                                            'Favorites',
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 18),
                                                           ),
                                                         ),
                                                         height: 155,
                                                         width: 155,
                                                         borderRadius: 8,
-                                                       
-                                                        widget: const Icon(
-                                                          Icons
-                                                              .favorite_rounded,
-                                                          color: Color.fromARGB(
-                                                              255, 120, 0, 0),
-                                                          size: 60,
+                                                        widget: const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 10),
+                                                          child: Icon(
+                                                            Icons
+                                                                .favorite_rounded,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    120,
+                                                                    0,
+                                                                    0),
+                                                            size: 60,
+                                                          ),
                                                         ),
                                                       ),
                                                     );
@@ -451,57 +461,63 @@ class _FrontScreenState extends State<FrontScreen>
                                         child: Text('no songs'),
                                       );
                                     }
-                                    return ListView.builder(
-                                      physics: const BouncingScrollPhysics(),
-                                      padding:
-                                          const EdgeInsets.only(bottom: 90),
-                                      itemBuilder: (context, index) {
-                                        final songg = item.data!;
+                                    return DraggableScrollbar.rrect(
+                                      backgroundColor: Color.fromARGB(255, 85, 85, 85),
+                                      heightScrollThumb: 55,
+                                      controller: controllerr,
+                                      child: ListView.builder(
+                                        controller: controllerr,
+                                        physics: const BouncingScrollPhysics(),
+                                        padding:
+                                            const EdgeInsets.only(bottom: 90),
+                                        itemBuilder: (context, index) {
+                                          final songg = item.data!;
 
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8, right: 8, bottom: 8),
-                                          child: ListCard(
-                                            ontap: () {
-                                              setState(() {
-                                                playsong(songg[index].uri);
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8, right: 8, bottom: 8),
+                                            child: ListCard(
+                                              ontap: () {
+                                                setState(() {
+                                                  playsong(songg[index].uri);
 
-                                                songModell = songg[index];
-                                                songlist = songg;
-                                                passedindex = index;
-                                                isvisible = true;
-                                                Variableclass.instance
-                                                    .isclickedd.value = true;
-                                                _controller.forward();
-                                                mycolors.shufflemycolors();
-                                                id = songg[index].id;
-                                                songname = songg[index]
-                                                    .displayNameWOExt;
-                                                songartist = songg[index]
-                                                            .artist
-                                                            .toString() ==
-                                                        "<unknown>"
-                                                    ? 'Unknown Artist'
-                                                    : songg[index]
-                                                        .artist
-                                                        .toString();
-                                              });
-                                            },
-                                            title:
-                                                songg[index].displayNameWOExt,
-                                            artist: songg[index]
-                                                        .artist
-                                                        .toString() ==
-                                                    "<unknown>"
-                                                ? 'Unknown Artist'
-                                                : songg[index]
-                                                    .artist
-                                                    .toString(),
-                                            id: songg[index].id,
-                                          ),
-                                        );
-                                      },
-                                      itemCount: item.data!.length,
+                                                  songModell = songg[index];
+                                                  songlist = songg;
+                                                  passedindex = index;
+                                                  isvisible = true;
+                                                  Variableclass.instance
+                                                      .isclickedd.value = true;
+                                                  _controller.forward();
+                                                  mycolors.shufflemycolors();
+                                                  id = songg[index].id;
+                                                  songname = songg[index]
+                                                      .displayNameWOExt;
+                                                  songartist = songg[index]
+                                                              .artist
+                                                              .toString() ==
+                                                          "<unknown>"
+                                                      ? 'Unknown Artist'
+                                                      : songg[index]
+                                                          .artist
+                                                          .toString();
+                                                });
+                                              },
+                                              title:
+                                                  songg[index].displayNameWOExt,
+                                              artist: songg[index]
+                                                          .artist
+                                                          .toString() ==
+                                                      "<unknown>"
+                                                  ? 'Unknown Artist'
+                                                  : songg[index]
+                                                      .artist
+                                                      .toString(),
+                                              id: songg[index].id,
+                                            ),
+                                          );
+                                        },
+                                        itemCount: item.data!.length,
+                                      ),
                                     );
                                   },
                                 ),
@@ -511,6 +527,7 @@ class _FrontScreenState extends State<FrontScreen>
                         ),
                       ],
                     ),
+//------------------------------------------MINI_nowPlaying-------------------------------------------------------------------------------------------------------
                     Visibility(
                       visible: isvisible,
                       child: Positioned(
@@ -522,7 +539,6 @@ class _FrontScreenState extends State<FrontScreen>
                           decoration: const BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-
                                 color: Color.fromARGB(100, 61, 61, 61),
                                 blurRadius: 10,
                                 spreadRadius: 9,
@@ -555,9 +571,9 @@ class _FrontScreenState extends State<FrontScreen>
                                           Colors.black
                                         ]).createShader(rect),
                                     child: QueryArtworkWidget(
-                                      artworkBorder: BorderRadius.only(
-                                        bottomLeft: Radius.circular(10)
-                                      ),
+                                      artworkFit: BoxFit.fill,
+                                      artworkBorder: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(10)),
                                       id: id,
                                       type: ArtworkType.AUDIO,
                                       nullArtworkWidget:
@@ -572,20 +588,30 @@ class _FrontScreenState extends State<FrontScreen>
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Text(
-                                      songname,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color.fromARGB(255, 10, 10, 10),
-                                      ),
-                                    ),
+                                    SizedBox(
+                                        height: 30,
+                                        width: 140,
+                                        child: Marquee(
+                                          velocity: 35,
+                                          fadingEdgeStartFraction: .6,
+                                          showFadingOnlyWhenScrolling: false,
+                                          text: songname,
+                                          blankSpace: 90,
+                                          pauseAfterRound:
+                                              const Duration(milliseconds: 900),
+                                          style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                Color.fromARGB(255, 10, 10, 10),
+                                          ),
+                                        )),
                                     Text(
                                       songartist,
                                       overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(fontSize: 15),
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500),
                                     )
                                   ],
                                 ),
@@ -616,15 +642,23 @@ class _FrontScreenState extends State<FrontScreen>
                                   Variableclass.instance.isclickedd.value =
                                       !Variableclass.instance.isclickedd.value;
                                 },
-                                child: SizedBox(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                        255, 133, 133, 133),
+                                    border: Border.all(
+                                        color: const Color.fromARGB(
+                                            255, 84, 84, 84)),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
                                   child: AnimatedIcon(
-                                      size: 55,
+                                      size: 44,
                                       icon: AnimatedIcons.play_pause,
                                       progress: _controller),
                                 ),
                               ),
                               const SizedBox(
-                                width: 7,
+                                width: 13,
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -653,16 +687,16 @@ class _FrontScreenState extends State<FrontScreen>
                                     height: 45,
                                     width: 40,
                                     decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 133, 133, 133),
-                                        border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 84, 84, 84)),
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
+                                      color: const Color.fromARGB(
+                                          255, 133, 133, 133),
+                                      border: Border.all(
+                                          color: const Color.fromARGB(
+                                              255, 84, 84, 84)),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
                                     child: Transform.rotate(
                                       angle: 1.54,
-                                      child:  Icon(
+                                      child: Icon(
                                           size: 25, Icons.arrow_back_ios_new),
                                     )),
                               )

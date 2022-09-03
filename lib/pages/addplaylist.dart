@@ -66,10 +66,8 @@ class AddPlaylist extends StatelessWidget {
                     )),
                   cursorColor: Colors.black,
                   decoration: InputDecoration(
-                    labelText: 'Playlist Name',
-                    labelStyle: TextStyle(
-                    color: Colors.black
-                  ),
+                    hintText: 'Playlist Name',
+                    
                   ),
                 )
                 
@@ -77,13 +75,7 @@ class AddPlaylist extends StatelessWidget {
                 
                 
                 
-                // Text('Favorites',
-                //     style: GoogleFonts.capriola(
-                //         textStyle: const TextStyle(
-                //       fontSize: 35,
-                //       color: Color.fromARGB(255, 85, 85, 85),
-                //     fontWeight: FontWeight.w500
-                //     ))),
+                
               ),
               titlePadding: const EdgeInsets.only(left: 16),
               expandedTitleScale: 1.8,

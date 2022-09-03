@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:project1_ui1/Database/model.dart';
+import 'package:project1_ui1/pages/splash_screen.dart';
 import 'package:project1_ui1/pages/front_screen.dart';
 import 'package:project1_ui1/pages/front_screen2.dart';
 import 'package:project1_ui1/pages/home_page.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  if (!Hive.isAdapterRegistered(FavoritesModelAdapter().typeId)) {
+    Hive.registerAdapter(FavoritesModelAdapter());
+  }
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark));
@@ -23,7 +31,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.black,
           primarySwatch: Colors.grey,
           androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
-      home: const FrontScreen(),
+      home: const SplashScreen(),
     );
   }
 }

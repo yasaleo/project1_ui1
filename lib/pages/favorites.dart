@@ -1,11 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:project1_ui1/listcard.dart';
 
 class Favoritescreen extends StatelessWidget {
   const Favoritescreen({Key? key}) : super(key: key);
@@ -18,20 +13,30 @@ class Favoritescreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
+            centerTitle: true,
             stretch: true,
-            elevation: 2,
+            elevation: 0,
             backgroundColor: Colors.grey,
             expandedHeight: 280,
             collapsedHeight: 60,
             pinned: true,
             leading: IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: const Padding(
-                padding: EdgeInsets.only(top: 13),
-                child: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: Colors.black,
-                  size: 34,
+              icon: Padding(
+                padding: const EdgeInsets.only(top: 18, right: 0),
+                child: Transform.rotate(
+                  angle: 4.70,
+                  child: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.black,
+                    size: 30,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black87,
+                        blurRadius: 9,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -53,18 +58,14 @@ class Favoritescreen extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              title: Padding(
-                padding: const EdgeInsets.only(left: 38),
-                child: Text('Favorites',
-                    style: GoogleFonts.capriola(
-                        textStyle: const TextStyle(
-                      fontSize: 35,
-                      color: Color.fromARGB(255, 85, 85, 85),
-                    fontWeight: FontWeight.w500
-                    ))),
-              ),
-              titlePadding: const EdgeInsets.only(left: 16),
-              expandedTitleScale: 1.8,
+              title: Text('Favorites',
+                  style: GoogleFonts.capriola(
+                      textStyle: const TextStyle(
+                          fontSize: 35,
+                          color: Color.fromARGB(255, 85, 85, 85),
+                          fontWeight: FontWeight.w500))),
+              titlePadding: const EdgeInsets.only(left: 115),
+              expandedTitleScale: 1.6,
             ),
           ),
           SliverToBoxAdapter(
