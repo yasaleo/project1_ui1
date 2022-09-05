@@ -5,17 +5,21 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:like_button/like_button.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+
 class ListCard extends StatelessWidget {
   final String title;
   final String artist;
   final int id;
   final Function ontap;
+  final Function addingfav;
+
   const ListCard(
       {Key? key,
       required this.artist,
       required this.title,
       required this.ontap,
-      required this.id})
+      required this.id,
+      required this.addingfav})
       : super(key: key);
 
   @override
@@ -47,7 +51,8 @@ class ListCard extends StatelessWidget {
                     onPressed: ((context) {
                       showModalBottomSheet(
                         enableDrag: true,
-                        backgroundColor: const Color.fromARGB(255, 158, 158, 158),
+                        backgroundColor:
+                            const Color.fromARGB(255, 158, 158, 158),
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(20))),
@@ -61,7 +66,7 @@ class ListCard extends StatelessWidget {
                                 itemBuilder: (context, index) {
                                   return index == 0
                                       ? const Padding(
-                                          padding:  EdgeInsets.symmetric(
+                                          padding: EdgeInsets.symmetric(
                                               vertical: 12, horizontal: 130),
                                           child: Text('Select a Playlist'),
                                         )
@@ -134,6 +139,10 @@ class ListCard extends StatelessWidget {
                           : Colors.black,
                       size: 29.5,
                     );
+                  },
+                  onTap: (isLiked) async {
+                    addingfav();
+                    return !isLiked;
                   },
                 ),
               ),

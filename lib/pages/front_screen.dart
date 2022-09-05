@@ -9,6 +9,8 @@ import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:project1_ui1/Database/database.dart';
+import 'package:project1_ui1/Database/model.dart';
 import 'package:project1_ui1/add_fav.dart';
 import 'package:project1_ui1/commonvariables.dart';
 import 'package:project1_ui1/listcard.dart';
@@ -230,7 +232,15 @@ class _FrontScreenState extends State<FrontScreen>
                                             ),
                                             primary: Colors.black12,
                                             elevation: 0),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          MusicDatabase()
+                                              .getfavorites()
+                                              .then((valueeee) {
+                                            print(
+                                                '-------------------------------------------------------------------------------------');
+                                            print(valueeee.toString());
+                                          });
+                                        },
                                         child: const Text(
                                           'more',
                                           style: TextStyle(
@@ -363,7 +373,11 @@ class _FrontScreenState extends State<FrontScreen>
                                                           VoidCallback
                                                               opencontainer) {
                                                     return GestureDetector(
-                                                      onTap: opencontainer,
+                                                      onTap: () {
+                                                        opencontainer();
+                                                        MusicDatabase()
+                                                            .refreshfav();
+                                                      },
                                                       child: AddFavCard(
                                                         widget2: const Padding(
                                                           padding:
@@ -444,7 +458,7 @@ class _FrontScreenState extends State<FrontScreen>
                                     1.8,
                                 child: FutureBuilder<List<SongModel>>(
                                   future: audioquery.querySongs(
-                                      sortType: null,
+                                      sortType: SongSortType.DATE_ADDED,
                                       orderType: OrderType.ASC_OR_SMALLER,
                                       uriType: UriType.EXTERNAL,
                                       ignoreCase: true),
@@ -462,7 +476,8 @@ class _FrontScreenState extends State<FrontScreen>
                                       );
                                     }
                                     return DraggableScrollbar.rrect(
-                                      backgroundColor: Color.fromARGB(255, 85, 85, 85),
+                                      backgroundColor:
+                                          Color.fromARGB(255, 85, 85, 85),
                                       heightScrollThumb: 55,
                                       controller: controllerr,
                                       child: ListView.builder(
@@ -483,6 +498,7 @@ class _FrontScreenState extends State<FrontScreen>
 
                                                   songModell = songg[index];
                                                   songlist = songg;
+
                                                   passedindex = index;
                                                   isvisible = true;
                                                   Variableclass.instance
@@ -501,6 +517,9 @@ class _FrontScreenState extends State<FrontScreen>
                                                           .artist
                                                           .toString();
                                                 });
+                                              },
+                                              addingfav: () {
+                                                addtofavorites(index);
                                               },
                                               title:
                                                   songg[index].displayNameWOExt,
@@ -676,9 +695,9 @@ class _FrontScreenState extends State<FrontScreen>
                                       type: PageTransitionType.size,
                                       alignment: Alignment.bottomCenter,
                                       duration:
-                                          const Duration(milliseconds: 320),
+                                          const Duration(milliseconds: 540),
                                       reverseDuration:
-                                          const Duration(milliseconds: 320),
+                                          const Duration(milliseconds: 434),
                                     ),
                                   );
                                 },
@@ -711,6 +730,12 @@ class _FrontScreenState extends State<FrontScreen>
             );
           }),
     );
+  }
+
+ Future addtofavorites(int songid)async{
+    final favmodel = FavoritesModel(
+        songids: songid, id: DateTime.now().millisecondsSinceEpoch.toString());
+    MusicDatabase().addfavorites(favmodel);
   }
 }
 

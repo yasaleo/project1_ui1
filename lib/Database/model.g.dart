@@ -17,7 +17,7 @@ class FavoritesModelAdapter extends TypeAdapter<FavoritesModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return FavoritesModel(
-      songids: (fields[1] as List).cast<int>(),
+      songids: fields[1] as int,
       id: fields[0] as String,
     );
   }

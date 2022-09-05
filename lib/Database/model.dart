@@ -6,10 +6,11 @@ class FavoritesModel {
   @HiveField(0)
   final String id;
   @HiveField(1)
-  final List<int> songids;
+  final int songids;
 
   FavoritesModel({
     required this.songids,
     required this.id,
   });
+
 }

@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project1_ui1/Database/database.dart';
+import 'package:project1_ui1/Database/model.dart';
 
-class Favoritescreen extends StatelessWidget {
+class Favoritescreen extends StatefulWidget {
   const Favoritescreen({Key? key}) : super(key: key);
 
+  @override
+  State<Favoritescreen> createState() => _FavoritescreenState();
+   
+  void initState() {
+    
+    MusicDatabase().refreshfav();
+  }
+}
+
+class _FavoritescreenState extends State<Favoritescreen> {
+ 
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,20 +82,27 @@ class Favoritescreen extends StatelessWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              primary: true,
-              shrinkWrap: true,
-              itemCount: 20,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(13.0),
-                  child: ListTile(
-                    title: Text('song$index'),
-                  ),
-                );
-              },
-            ),
+            child: ValueListenableBuilder(
+                valueListenable: MusicDatabase().notifierfav,
+                builder: (context, List<FavoritesModel> value, Widget? _) {
+                  return value.isEmpty
+                      ? Center(child: Text('nope  '))
+                      : ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          primary: true,
+                          shrinkWrap: true,
+                          itemCount:value.length,
+                          itemBuilder: (context, index) {
+                            final value1 = value[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(13.0),
+                              child: ListTile(
+                                title: Text('nillllll'),
+                              ),
+                            );
+                          },
+                        );
+                }),
           )
         ],
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'package:project1_ui1/pages/front_screen.dart';
+import 'package:rive/rive.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future gohome(context) async {
-    await Future.delayed(const Duration(milliseconds: 1500));
+    await Future.delayed(const Duration(milliseconds: 3800));
     Navigator.of(context).pushReplacement(
       PageTransition(
         curve: Curves.easeInOutCubic,
@@ -35,14 +35,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.grey,
-      body: Center(
-        child: Lottie.asset('assets/57276-astronaut-and-music.json'),
-      ),
+      body: Center(child: RiveAnimation.asset('assets/dory_demo(3).riv')
+
+          
+          ),
     );
   }
 }
-// MaterialPageRoute(
-//       builder: (context) => const FrontScreen(),
-//     )
