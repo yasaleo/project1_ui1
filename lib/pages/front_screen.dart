@@ -9,8 +9,8 @@ import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:project1_ui1/Database/database.dart';
-import 'package:project1_ui1/Database/model.dart';
+import 'package:project1_ui1/Database/favoritesdb.dart';
+
 import 'package:project1_ui1/add_fav.dart';
 import 'package:project1_ui1/commonvariables.dart';
 import 'package:project1_ui1/listcard.dart';
@@ -35,10 +35,12 @@ class _FrontScreenState extends State<FrontScreen>
     with TickerProviderStateMixin {
   final audioquery = OnAudioQuery();
   final AudioPlayer audioplayer = AudioPlayer();
-  SongModel? songModell;
 
-  List<SongModel> songlist = [];
+   List<SongModel> songlist = [];
+
   late int passedindex;
+  int indexxx = 0;
+  SongModel? songModell;
 
   String songname = '';
   String songartist = '';
@@ -47,7 +49,7 @@ class _FrontScreenState extends State<FrontScreen>
   ScrollController controllerr = ScrollController();
 
   static late AnimationController _controller;
-  //  bool isclicked = false;
+
   @override
   void initState() {
     _controller = AnimationController(
@@ -232,15 +234,7 @@ class _FrontScreenState extends State<FrontScreen>
                                             ),
                                             primary: Colors.black12,
                                             elevation: 0),
-                                        onPressed: () {
-                                          MusicDatabase()
-                                              .getfavorites()
-                                              .then((valueeee) {
-                                            print(
-                                                '-------------------------------------------------------------------------------------');
-                                            print(valueeee.toString());
-                                          });
-                                        },
+                                        onPressed: () {},
                                         child: const Text(
                                           'more',
                                           style: TextStyle(
@@ -375,8 +369,6 @@ class _FrontScreenState extends State<FrontScreen>
                                                     return GestureDetector(
                                                       onTap: () {
                                                         opencontainer();
-                                                        MusicDatabase()
-                                                            .refreshfav();
                                                       },
                                                       child: AddFavCard(
                                                         widget2: const Padding(
@@ -470,6 +462,10 @@ class _FrontScreenState extends State<FrontScreen>
                                         ),
                                       );
                                     }
+                                    Variableclass.songlist = item.data!;
+                                    if (!FavoritesDB.isintialised) {
+                                      FavoritesDB.intialise(item.data!);
+                                    }
                                     if (!item.hasData) {
                                       return const Center(
                                         child: Text('no songs'),
@@ -492,13 +488,16 @@ class _FrontScreenState extends State<FrontScreen>
                                             padding: const EdgeInsets.only(
                                                 left: 8, right: 8, bottom: 8),
                                             child: ListCard(
+                                              songModell: Variableclass.songlist[index],
+                                              islikedd: FavoritesDB.isfavorite(
+                                                  Variableclass.songlist[index]),
                                               ontap: () {
                                                 setState(() {
                                                   playsong(songg[index].uri);
 
                                                   songModell = songg[index];
                                                   songlist = songg;
-
+                                                  indexxx = index;
                                                   passedindex = index;
                                                   isvisible = true;
                                                   Variableclass.instance
@@ -519,7 +518,56 @@ class _FrontScreenState extends State<FrontScreen>
                                                 });
                                               },
                                               addingfav: () {
-                                                addtofavorites(index);
+                                                if (FavoritesDB.isfavorite(
+                                                    Variableclass.songlist[index])) {
+                                                  FavoritesDB.removefromfav(
+                                                     Variableclass.songlist[index].id);
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                          const SnackBar(
+                                                              backgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          99,
+                                                                          7,
+                                                                          0),
+                                                              content: Text(
+                                                                'Removed from Favorites',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white38,
+                                                                    fontSize:
+                                                                        14),
+                                                              )));
+                                                } else {
+                                                  FavoritesDB.addtofav(
+                                                      Variableclass.songlist[index]);
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                          const SnackBar(
+                                                              backgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          46,
+                                                                          46,
+                                                                          46),
+                                                              content: Text(
+                                                                'Added to Favorites',
+                                                                style: TextStyle(
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            171,
+                                                                            0,
+                                                                            0),
+                                                                    fontSize:
+                                                                        14),
+                                                              )));
+                                                }
+                                                FavoritesDB.favorites
+                                                    .notifyListeners();
                                               },
                                               title:
                                                   songg[index].displayNameWOExt,
@@ -730,12 +778,6 @@ class _FrontScreenState extends State<FrontScreen>
             );
           }),
     );
-  }
-
- Future addtofavorites(int songid)async{
-    final favmodel = FavoritesModel(
-        songids: songid, id: DateTime.now().millisecondsSinceEpoch.toString());
-    MusicDatabase().addfavorites(favmodel);
   }
 }
 

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:like_button/like_button.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-
+import 'package:project1_ui1/Database/favoritesdb.dart';
+import 'package:project1_ui1/commonvariables.dart';
 
 class ListCard extends StatelessWidget {
   final String title;
@@ -12,14 +13,18 @@ class ListCard extends StatelessWidget {
   final int id;
   final Function ontap;
   final Function addingfav;
+  final bool islikedd;
+  final SongModel songModell;
 
-  const ListCard(
+  ListCard(
       {Key? key,
       required this.artist,
       required this.title,
       required this.ontap,
       required this.id,
-      required this.addingfav})
+      required this.addingfav,
+      required this.islikedd,
+      required this.songModell})
       : super(key: key);
 
   @override
@@ -131,18 +136,20 @@ class ListCard extends StatelessWidget {
                     dotThirdColor: Color.fromARGB(255, 255, 95, 92),
                     dotLastColor: Color.fromARGB(255, 80, 5, 0),
                   ),
-                  likeBuilder: (isLiked) {
+                  likeBuilder: (isliked) {
                     return Icon(
                       Icons.favorite,
-                      color: isLiked
+                      color: FavoritesDB.isfavorite(songModell)
                           ? const Color.fromARGB(255, 129, 9, 0)
                           : Colors.black,
                       size: 29.5,
                     );
                   },
-                  onTap: (isLiked) async {
+                  onTap: (islikedd) async {
                     addingfav();
-                    return !isLiked;
+                    Variableclass.instance.isclickedd.notifyListeners();
+
+                    return !islikedd;
                   },
                 ),
               ),

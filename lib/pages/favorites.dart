@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:project1_ui1/Database/database.dart';
-import 'package:project1_ui1/Database/model.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+import 'package:project1_ui1/Database/favoritesdb.dart';
+import 'package:project1_ui1/commonvariables.dart';
+import 'package:project1_ui1/listcard.dart';
 
 class Favoritescreen extends StatefulWidget {
   const Favoritescreen({Key? key}) : super(key: key);
 
   @override
   State<Favoritescreen> createState() => _FavoritescreenState();
-   
-  void initState() {
-    
-    MusicDatabase().refreshfav();
-  }
+
+  void initState() {}
 }
 
 class _FavoritescreenState extends State<Favoritescreen> {
- 
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,22 +80,64 @@ class _FavoritescreenState extends State<Favoritescreen> {
           ),
           SliverToBoxAdapter(
             child: ValueListenableBuilder(
-                valueListenable: MusicDatabase().notifierfav,
-                builder: (context, List<FavoritesModel> value, Widget? _) {
+                valueListenable: FavoritesDB.favorites,
+                builder: (context, List<SongModel> value, Widget? _) {
                   return value.isEmpty
                       ? Center(child: Text('nope  '))
                       : ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           primary: true,
                           shrinkWrap: true,
-                          itemCount:value.length,
+                          itemCount: value.length,
                           itemBuilder: (context, index) {
                             final value1 = value[index];
                             return Padding(
-                              padding: const EdgeInsets.all(13.0),
-                              child: ListTile(
-                                title: Text('nillllll'),
-                              ),
+                              padding: const EdgeInsets.only(
+                                                left: 8, right: 8, bottom: 8),
+                              child: ListCard(
+                                songModell: Variableclass.songlist[index],
+                                  artist: value1.artist.toString() == "<unknown>"
+                                      ? 'Unknown Artist'
+                                      : value1.artist.toString(),
+                                  
+                                  
+                                  title: value1.displayNameWOExt,
+                                  ontap: () {},
+                                  id: value1.id,
+                                  addingfav: () {
+                                    if (FavoritesDB.isfavorite(
+                                        Variableclass.songlist[index])) {
+                                      FavoritesDB.removefromfav(
+                                          Variableclass.songlist[index].id);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                              backgroundColor:
+                                                  Color.fromARGB(255, 99, 7, 0),
+                                              content: Text(
+                                                'Removed from Favorites',
+                                                style: TextStyle(
+                                                    color: Colors.white38,
+                                                    fontSize: 14),
+                                              )));
+                                    } else {
+                                      FavoritesDB.addtofav(
+                                          Variableclass.songlist[index]);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                              backgroundColor:
+                                                  Color.fromARGB(255, 46, 46, 46),
+                                              content: Text(
+                                                'Added to Favorites',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 171, 0, 0),
+                                                    fontSize: 14),
+                                              )));
+                                    }
+                                    FavoritesDB.favorites.notifyListeners();
+                                  },
+                                  islikedd: FavoritesDB.isfavorite(
+                                      Variableclass.songlist[index])),
                             );
                           },
                         );

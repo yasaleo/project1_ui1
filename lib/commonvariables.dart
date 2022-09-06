@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class Variableclass {
 
@@ -8,6 +9,7 @@ class Variableclass {
 
 
   ValueNotifier< bool> isclickedd = ValueNotifier(false);
+  static List<SongModel> songlist = [];
   
 
 }
