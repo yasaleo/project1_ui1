@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:animations/animations.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:marquee/marquee.dart';
@@ -36,7 +37,7 @@ class _FrontScreenState extends State<FrontScreen>
   final audioquery = OnAudioQuery();
   final AudioPlayer audioplayer = AudioPlayer();
 
-   List<SongModel> songlist = [];
+  List<SongModel> songlist = [];
 
   late int passedindex;
   int indexxx = 0;
@@ -451,7 +452,7 @@ class _FrontScreenState extends State<FrontScreen>
                                 child: FutureBuilder<List<SongModel>>(
                                   future: audioquery.querySongs(
                                       sortType: SongSortType.DATE_ADDED,
-                                      orderType: OrderType.ASC_OR_SMALLER,
+                                      orderType: OrderType.DESC_OR_GREATER,
                                       uriType: UriType.EXTERNAL,
                                       ignoreCase: true),
                                   builder: (context, item) {
@@ -474,11 +475,10 @@ class _FrontScreenState extends State<FrontScreen>
                                     return DraggableScrollbar.rrect(
                                       backgroundColor:
                                           Color.fromARGB(255, 85, 85, 85),
-                                      heightScrollThumb: 55,
+                                      heightScrollThumb: 35,
                                       controller: controllerr,
                                       child: ListView.builder(
                                         controller: controllerr,
-                                        physics: const BouncingScrollPhysics(),
                                         padding:
                                             const EdgeInsets.only(bottom: 90),
                                         itemBuilder: (context, index) {
@@ -488,9 +488,11 @@ class _FrontScreenState extends State<FrontScreen>
                                             padding: const EdgeInsets.only(
                                                 left: 8, right: 8, bottom: 8),
                                             child: ListCard(
-                                              songModell: Variableclass.songlist[index],
+                                              songModell:
+                                                  Variableclass.songlist[index],
                                               islikedd: FavoritesDB.isfavorite(
-                                                  Variableclass.songlist[index]),
+                                                  Variableclass
+                                                      .songlist[index]),
                                               ontap: () {
                                                 setState(() {
                                                   playsong(songg[index].uri);
@@ -519,52 +521,82 @@ class _FrontScreenState extends State<FrontScreen>
                                               },
                                               addingfav: () {
                                                 if (FavoritesDB.isfavorite(
-                                                    Variableclass.songlist[index])) {
+                                                    Variableclass
+                                                        .songlist[index])) {
                                                   FavoritesDB.removefromfav(
-                                                     Variableclass.songlist[index].id);
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                          const SnackBar(
-                                                              backgroundColor:
-                                                                  Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          99,
-                                                                          7,
-                                                                          0),
-                                                              content: Text(
-                                                                'Removed from Favorites',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white38,
-                                                                    fontSize:
-                                                                        14),
-                                                              )));
+                                                      Variableclass
+                                                          .songlist[index].id);
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                      const SnackBar(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.only(
+                                                                  topLeft:
+                                                                      Radius
+                                                                          .circular(
+                                                                              10),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          20))),
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  250),
+                                                          backgroundColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  99,
+                                                                  7,
+                                                                  0),
+                                                          content: Text(
+                                                            'Removed from Favorites',
+                                                            style: TextStyle(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        179,
+                                                                        255,
+                                                                        255,
+                                                                        255),
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                          )));
                                                 } else {
                                                   FavoritesDB.addtofav(
-                                                      Variableclass.songlist[index]);
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                          const SnackBar(
-                                                              backgroundColor:
-                                                                  Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          46,
-                                                                          46,
-                                                                          46),
-                                                              content: Text(
-                                                                'Added to Favorites',
-                                                                style: TextStyle(
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            171,
-                                                                            0,
-                                                                            0),
-                                                                    fontSize:
-                                                                        14),
-                                                              )));
+                                                      Variableclass
+                                                          .songlist[index]);
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                      const SnackBar(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.only(
+                                                                  topLeft:
+                                                                      Radius.circular(
+                                                                          10),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          20))),
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  250),
+                                                          backgroundColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  131,
+                                                                  131,
+                                                                  131),
+                                                          content: Text(
+                                                            'Added to Favorites',
+                                                            style: TextStyle(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        86,
+                                                                        0,
+                                                                        0),
+                                                                fontSize: 19,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                          )));
                                                 }
                                                 FavoritesDB.favorites
                                                     .notifyListeners();

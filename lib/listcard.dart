@@ -15,6 +15,7 @@ class ListCard extends StatelessWidget {
   final Function addingfav;
   final bool islikedd;
   final SongModel songModell;
+  
 
   ListCard(
       {Key? key,
@@ -120,10 +121,10 @@ class ListCard extends StatelessWidget {
                 style: const TextStyle(fontSize: 20),
               ),
               trailing: SizedBox(
-                height: 25,
-                width: 35,
+                height: 48,
+                width: 38,
                 child: LikeButton(
-                  animationDuration: const Duration(milliseconds: 1450),
+                  animationDuration: const Duration(milliseconds: 1950),
                   bubblesSize: 70,
                   circleSize: 50,
                   circleColor: const CircleColor(
@@ -142,7 +143,7 @@ class ListCard extends StatelessWidget {
                       color: FavoritesDB.isfavorite(songModell)
                           ? const Color.fromARGB(255, 129, 9, 0)
                           : Colors.black,
-                      size: 29.5,
+                      size: 32,
                     );
                   },
                   onTap: (islikedd) async {

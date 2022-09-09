@@ -5,9 +5,11 @@ import 'package:just_audio/just_audio.dart';
 import 'package:like_button/like_button.dart';
 import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:project1_ui1/animated_neu.dart';
 import 'package:project1_ui1/neumorphism.dart';
+
+import '../Database/favoritesdb.dart';
+import '../commonvariables.dart';
 
 class HomeScreen extends StatefulWidget {
   final SongModel songModel;
@@ -113,6 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: AspectRatio(
                         aspectRatio: 1.5 / 1,
                         child: QueryArtworkWidget(
+                          format: ArtworkFormat.JPEG,
                           artworkFit: BoxFit.fill,
                           artworkBorder: BorderRadius.circular(10),
                           id: widget.songlist[widget.passedindex].id,
@@ -146,16 +149,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   text: widget.songlist[widget.passedindex]
                                       .displayNameWOExt,
                                   style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600
-                                  ),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
                                   blankSpace: 90,
                                   velocity: 35,
                                   pauseAfterRound:
                                       const Duration(milliseconds: 900),
                                 ),
-
-                                
                               ),
                               const Divider(
                                 height: 10,
@@ -163,9 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(
                                 height: 30,
                                 width: 190,
-                                child:
-
-                                Text(
+                                child: Text(
                                   widget.songlist[widget.passedindex].artist
                                               .toString() ==
                                           "<unknown>"
@@ -201,11 +199,57 @@ class _HomeScreenState extends State<HomeScreen> {
                             likeBuilder: (isLiked) {
                               return Icon(
                                 Icons.favorite,
-                                color: isLiked
+                                color: FavoritesDB.isfavorite(widget.songModel)
                                     ? const Color.fromARGB(255, 129, 9, 0)
                                     : Colors.black,
                                 size: 33,
                               );
+                            },
+                            onTap: (isLiked) async {
+                              if (FavoritesDB.isfavorite(
+                                  Variableclass.songlist[widget.passedindex])) {
+                                FavoritesDB.removefromfav(Variableclass
+                                    .songlist[widget.passedindex].id);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10),
+                                                topRight: Radius.circular(20))),
+                                        duration: Duration(milliseconds: 250),
+                                        backgroundColor:
+                                            Color.fromARGB(255, 99, 7, 0),
+                                        content: Text(
+                                          'Removed from Favorites',
+                                          style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  179, 255, 255, 255),
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w700),
+                                        )));
+                              } else {
+                                FavoritesDB.addtofav(
+                                    Variableclass.songlist[widget.passedindex]);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10),
+                                                topRight: Radius.circular(20))),
+                                        duration: Duration(milliseconds: 250),
+                                        backgroundColor:
+                                            Color.fromARGB(255, 131, 131, 131),
+                                        content: Text(
+                                          'Added to Favorites',
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromARGB(255, 86, 0, 0),
+                                              fontSize: 19,
+                                              fontWeight: FontWeight.w700),
+                                        )));
+                              }
+                              FavoritesDB.favorites.notifyListeners();
+                              return !isLiked;
                             },
                           )
                         ],

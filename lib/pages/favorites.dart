@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:like_button/like_button.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:project1_ui1/Database/favoritesdb.dart';
 import 'package:project1_ui1/commonvariables.dart';
@@ -93,51 +96,80 @@ class _FavoritescreenState extends State<Favoritescreen> {
                             final value1 = value[index];
                             return Padding(
                               padding: const EdgeInsets.only(
-                                                left: 8, right: 8, bottom: 8),
-                              child: ListCard(
-                                songModell: Variableclass.songlist[index],
-                                  artist: value1.artist.toString() == "<unknown>"
-                                      ? 'Unknown Artist'
-                                      : value1.artist.toString(),
-                                  
-                                  
-                                  title: value1.displayNameWOExt,
-                                  ontap: () {},
-                                  id: value1.id,
-                                  addingfav: () {
-                                    if (FavoritesDB.isfavorite(
-                                        Variableclass.songlist[index])) {
-                                      FavoritesDB.removefromfav(
-                                          Variableclass.songlist[index].id);
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                              backgroundColor:
-                                                  Color.fromARGB(255, 99, 7, 0),
-                                              content: Text(
-                                                'Removed from Favorites',
-                                                style: TextStyle(
-                                                    color: Colors.white38,
-                                                    fontSize: 14),
-                                              )));
-                                    } else {
-                                      FavoritesDB.addtofav(
-                                          Variableclass.songlist[index]);
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                              backgroundColor:
-                                                  Color.fromARGB(255, 46, 46, 46),
-                                              content: Text(
-                                                'Added to Favorites',
-                                                style: TextStyle(
-                                                    color: Color.fromARGB(
-                                                        255, 171, 0, 0),
-                                                    fontSize: 14),
-                                              )));
-                                    }
-                                    FavoritesDB.favorites.notifyListeners();
-                                  },
-                                  islikedd: FavoritesDB.isfavorite(
-                                      Variableclass.songlist[index])),
+                                  left: 8, right: 8, bottom: 8),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: BackdropFilter(
+                                  filter:
+                                      ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Color.fromARGB(26, 0, 0, 0),
+                                          blurRadius: 8,
+                                          spreadRadius: 1,
+                                          offset: Offset(0, 0),
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: ListTile(
+                                      horizontalTitleGap: 8,
+                                      onTap: () {},
+                                      leading: CircleAvatar(
+                                        radius: 25,
+                                        backgroundColor:
+                                            const Color.fromARGB(13, 0, 0, 0),
+                                        foregroundColor: Colors.black54,
+                                        child: QueryArtworkWidget(
+                                          artworkFit: BoxFit.fill,
+                                          id: value1.id,
+                                          type: ArtworkType.AUDIO,
+                                          nullArtworkWidget: const Icon(
+                                              Icons.music_note_outlined),
+                                        ),
+                                      ),
+                                      title: Text(
+                                        value1.displayNameWOExt,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontSize: 19,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      subtitle: Text(
+                                        value1.artist.toString() == "<unknown>"
+                                            ? 'Unknown Artist'
+                                            : value1.artist.toString(),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(fontSize: 20),
+                                      ),
+                                      trailing: SizedBox(
+                                        height: 55,
+                                        width: 35,
+                                        child: IconButton(
+                                          onPressed: () {
+                                            FavoritesDB.removefromfav(
+                                                value1.id);
+                                            FavoritesDB.favorites
+                                                .notifyListeners();
+                                            Variableclass.instance.isclickedd
+                                                .notifyListeners();
+                                          },
+                                          icon: Icon(
+                                            Icons.favorite_rounded,
+                                            color: const Color.fromARGB(
+                                                255, 129, 9, 0),
+                                                size: 32,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             );
                           },
                         );
