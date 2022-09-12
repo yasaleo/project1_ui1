@@ -763,7 +763,7 @@ class _FrontScreenState extends State<FrontScreen>
                                 onTap: () {
                                   Navigator.of(context).push(
                                     PageTransition(
-                                      curve: Curves.easeInSine,
+                                      curve: Curves.easeOutCirc,
                                       child: HomeScreen(
                                         songModel: songModell!,
                                         songlist: songlist,
@@ -775,9 +775,9 @@ class _FrontScreenState extends State<FrontScreen>
                                       type: PageTransitionType.size,
                                       alignment: Alignment.bottomCenter,
                                       duration:
-                                          const Duration(milliseconds: 540),
+                                          const Duration(milliseconds: 1550),
                                       reverseDuration:
-                                          const Duration(milliseconds: 434),
+                                          const Duration(milliseconds: 534),
                                     ),
                                   );
                                 },
