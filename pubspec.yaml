@@ -39,10 +39,11 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   hive_generator: ^1.1.3
+  image_picker: ^0.8.5+3
   just_audio: ^0.9.28
   like_button: ^2.0.4
-  
   marquee: ^2.2.3
+  miniplayer: ^1.0.1
   on_audio_query: ^2.6.1
   page_transition: ^2.0.9
   percent_indicator: ^4.2.2

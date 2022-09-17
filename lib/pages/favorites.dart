@@ -2,11 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:like_button/like_button.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:project1_ui1/Database/favoritesdb.dart';
 import 'package:project1_ui1/commonvariables.dart';
-import 'package:project1_ui1/listcard.dart';
 
 class Favoritescreen extends StatefulWidget {
   const Favoritescreen({Key? key}) : super(key: key);
@@ -35,21 +33,18 @@ class _FavoritescreenState extends State<Favoritescreen> {
             pinned: true,
             leading: IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: Padding(
-                padding: const EdgeInsets.only(top: 18, right: 0),
-                child: Transform.rotate(
-                  angle: 4.70,
-                  child: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.black,
-                    size: 30,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black87,
-                        blurRadius: 9,
-                      )
-                    ],
-                  ),
+              icon: const Padding(
+                padding: EdgeInsets.only(top: 8, right: 0),
+                child: Icon(
+                  Icons.expand_more_outlined,
+                  color: Colors.black,
+                  size: 50,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black87,
+                      blurRadius: 9,
+                    )
+                  ],
                 ),
               ),
             ),
@@ -86,7 +81,7 @@ class _FavoritescreenState extends State<Favoritescreen> {
                 valueListenable: FavoritesDB.favorites,
                 builder: (context, List<SongModel> value, Widget? _) {
                   return value.isEmpty
-                      ? Center(child: Text('nope  '))
+                      ? const Center(child: Text('nope  '))
                       : ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           primary: true,
@@ -158,11 +153,11 @@ class _FavoritescreenState extends State<Favoritescreen> {
                                             Variableclass.instance.isclickedd
                                                 .notifyListeners();
                                           },
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.favorite_rounded,
-                                            color: const Color.fromARGB(
-                                                255, 129, 9, 0),
-                                                size: 32,
+                                            color:
+                                                Color.fromARGB(255, 129, 9, 0),
+                                            size: 32,
                                           ),
                                         ),
                                       ),
