@@ -10,10 +10,10 @@ class PlaylistDB {
   static final PlaylistDB _instance = PlaylistDB.privateconstructor();
   static PlaylistDB get instance => _instance;
   ValueNotifier<List<FolderModel>> playlistnotifier = ValueNotifier([]);
-  // ValueNotifier<bool> refreshnotifier = ValueNotifier(true);
 
   Future<void> addfolder(FolderModel model) async {
     final pdb = Hive.box<FolderModel>(playlistdbname);
+
     await pdb.add(model);
     playlistnotifier.value.add(model);
   }
@@ -23,7 +23,7 @@ class PlaylistDB {
     playlistnotifier.value.clear();
     playlistnotifier.value.addAll(pdb.values);
     playlistnotifier.notifyListeners();
-   
+
   }
 
   Future<void> deletefolder(int index) async {

@@ -4,8 +4,10 @@ import 'package:animations/animations.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:just_audio/just_audio.dart';
+
+import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:project1_ui1/Database/favoritesdb.dart';
 import 'package:project1_ui1/Database/playlist_db.dart';
@@ -14,10 +16,11 @@ import 'package:project1_ui1/add_fav.dart';
 import 'package:project1_ui1/commonvariables.dart';
 import 'package:project1_ui1/dbmodel/foldermodel.dart';
 import 'package:project1_ui1/listcard.dart';
-import 'package:project1_ui1/main.dart';
+
 import 'package:project1_ui1/navigation_drawer_widget.dart';
 import 'package:project1_ui1/pages/addplaylist.dart';
 import 'package:project1_ui1/pages/favorites.dart';
+import 'package:project1_ui1/pages/home_page.dart';
 import 'package:project1_ui1/pages/playlist_screen.dart';
 import 'package:project1_ui1/playlist_card.dart';
 import 'package:project1_ui1/my_colors.dart';
@@ -33,10 +36,7 @@ class FrontScreen extends StatefulWidget {
 
 class FrontScreenState extends State<FrontScreen>
     with TickerProviderStateMixin {
-  GlobalKey<CustomMiniplayerState> myappstatekey =
-      GlobalKey<CustomMiniplayerState>();
   final audioquery = OnAudioQuery();
-  final AudioPlayer audioplayer = AudioPlayer();
 
   List<SongModel> songlist = [];
 
@@ -49,16 +49,15 @@ class FrontScreenState extends State<FrontScreen>
   bool isvisible = false;
   int id = 0;
   ScrollController scontrollerr = ScrollController();
-  
 
-  //  late AnimationController controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
-    // controller = AnimationController(
-    //   vsync: this,
-    //   duration: const Duration(milliseconds: 1000),
-    // );
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
 
     PlaylistDB.instance.getallfolder();
 
@@ -76,35 +75,24 @@ class FrontScreenState extends State<FrontScreen>
 
   @override
   void dispose() {
-    // controller.dispose();
-    audioplayer.dispose();
+    _controller.dispose();
+   
     super.dispose();
   }
 
-  playsong(String? uri) {
-    try {
-      audioplayer.setAudioSource(AudioSource.uri(Uri.parse(uri!)));
-      audioplayer.play();
-      audioplayer.setLoopMode(LoopMode.all);
-    } on Exception {
-      log('Error parsing song');
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: myappstatekey,
       drawer: const NavigationDrawerWidget(),
       body: ValueListenableBuilder(
           valueListenable: Variableclass.instance.isclickedd,
           builder: (BuildContext context, bool newisclicked, Widget? child) {
             if (newisclicked) {
-              myappstatekey.currentState?.anicontroller.forward();
-              // controller.forward();
+              _controller.forward();
             } else {
-              // controller.reverse();
-              myappstatekey.currentState?.anicontroller.reverse();
+              _controller.reverse();
             }
             return AnimatedContainer(
               duration: const Duration(milliseconds: 550),
@@ -266,6 +254,8 @@ class FrontScreenState extends State<FrontScreen>
                                       return ListView.builder(
                                         physics: const BouncingScrollPhysics(),
                                         itemBuilder: (context, index) {
+                                          print(playlistlist.length);
+
                                           return Padding(
                                             padding: const EdgeInsets.only(
                                                 top: 10, right: 4.8, left: 4.8),
@@ -385,8 +375,7 @@ class FrontScreenState extends State<FrontScreen>
                                                                 const Padding(
                                                               padding: EdgeInsets
                                                                   .only(
-                                                                      top:
-                                                                          20),
+                                                                      top: 20),
                                                               child: Text(
                                                                 'Favorites',
                                                                 maxLines: 1,
@@ -408,8 +397,7 @@ class FrontScreenState extends State<FrontScreen>
                                                                 const Padding(
                                                               padding: EdgeInsets
                                                                   .only(
-                                                                      top:
-                                                                          10),
+                                                                      top: 10),
                                                               child: Icon(
                                                                 Icons
                                                                     .favorite_rounded,
@@ -431,55 +419,55 @@ class FrontScreenState extends State<FrontScreen>
                                                       )
                                                     ],
                                                   )
-                                                :OpenContainer(
-                                                        openElevation: 0,
-                                                        closedElevation: 0,
-                                                        middleColor:
-                                                            Colors.grey,
-                                                        openShape: const RoundedRectangleBorder(
+                                                : OpenContainer(
+                                                    openElevation: 0,
+                                                    closedElevation: 0,
+                                                    middleColor: Colors.grey,
+                                                    openShape:
+                                                        const RoundedRectangleBorder(
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .all(Radius
                                                                         .circular(
                                                                             26))),
-                                                        closedShape: const RoundedRectangleBorder(
+                                                    closedShape:
+                                                        const RoundedRectangleBorder(
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .all(Radius
                                                                         .circular(
                                                                             20))),
-                                                        transitionDuration:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    550),
-                                                        closedColor:
-                                                            Colors.transparent,
-                                                        transitionType:
-                                                            ContainerTransitionType
-                                                                .fadeThrough,
-                                                        closedBuilder: (BuildContext
-                                                                context,
+                                                    transitionDuration:
+                                                        const Duration(
+                                                            milliseconds: 550),
+                                                    closedColor:
+                                                        Colors.transparent,
+                                                    transitionType:
+                                                        ContainerTransitionType
+                                                            .fadeThrough,
+                                                    closedBuilder:
+                                                        (BuildContext context,
                                                             VoidCallback
                                                                 opencontainer) {
-                                                          return PlaylistCard(
-                                                            index: index-1,
-                                                    playlistname:
-                                                        playlistlist[index - 1]
-                                                            .name,
-                                                  );
-                                                        },
-                                                        openBuilder:
-                                                            (context, action) {
-                                                          return  PlaylistScreen(
-                                                            folderindex: index-1,
-                                                            playlistname: playlistlist[index - 1]
-                                                            .name,
-                                                          );
-                                                        },
-                                                      )
-                                                
-                                                
-                                                 ,
+                                                      return PlaylistCard(
+                                                        index: index - 1,
+                                                        playlistname:
+                                                            playlistlist[
+                                                                    index - 1]
+                                                                .name,
+                                                      );
+                                                    },
+                                                    openBuilder:
+                                                        (context, action) {
+                                                      return PlaylistScreen(
+                                                        folderindex: index - 1,
+                                                        playlistname:
+                                                            playlistlist[
+                                                                    index - 1]
+                                                                .name,
+                                                      );
+                                                    },
+                                                  ),
                                           );
                                         },
                                         itemCount: playlistlist.length + 1,
@@ -555,34 +543,27 @@ class FrontScreenState extends State<FrontScreen>
                                                   Variableclass
                                                       .songlist[index]),
                                               ontap: () {
-                                                myappstatekey
-                                                    .currentState?.anicontroller
-                                                    .forward();
                                                 Variableclass.instance.isvisible
                                                     .notifyListeners();
                                                 setState(() {
-                                                  playsong(songg[index].uri);
 
-                                                  Variableclass.instance
-                                                      .isvisible.value = true;
+                                                  Variableclass.audioPlayer
+                                                      .setAudioSource(
+                                                          Variableclass
+                                                              .playsongs(
+                                                                  item.data!),
+                                                          initialIndex: index);
+                                                  Variableclass.audioPlayer
+                                                      .play();
+
                                                   songModell = songg[index];
-                                                  Variableclass.songModel =
-                                                      songg[index];
                                                   songlist = songg;
-                                                  Variableclass.allsonglist =
-                                                      songg;
-                                                  Variableclass.audioPlayer =
-                                                      audioplayer;
                                                   indexxx = index;
                                                   passedindex = index;
-                                                  Variableclass.passedindexx =
-                                                      index;
                                                   isvisible = true;
-
                                                   Variableclass.instance
                                                       .isclickedd.value = true;
-
-                                                  // controller.forward();
+                                                  _controller.forward();
                                                   mycolors.shufflemycolors();
                                                   id = songg[index].id;
                                                   songname = songg[index]
@@ -705,183 +686,185 @@ class FrontScreenState extends State<FrontScreen>
                       ],
                     ),
 //------------------------------------------MINI_nowPlaying-------------------------------------------------------------------------------------------------------
-                    // Visibility(
-                    //   visible: isvisible,
-                    //   child: Positioned(
-                    //     left: MediaQuery.of(context).size.width * 1.5 / 100,
-                    //     right: MediaQuery.of(context).size.width * 1.5 / 100,
-                    //     top: MediaQuery.of(context).size.height * 8.95 / 10,
-                    //     bottom: MediaQuery.of(context).size.height * .6 / 100,
-                    //     child: Container(
-                    //       decoration: const BoxDecoration(
-                    //         boxShadow: [
-                    //           BoxShadow(
-                    //             color: Color.fromARGB(100, 61, 61, 61),
-                    //             blurRadius: 10,
-                    //             spreadRadius: 9,
-                    //           )
-                    //         ],
-                    //         borderRadius: BorderRadius.only(
-                    //             topLeft: Radius.circular(25),
-                    //             topRight: Radius.circular(7),
-                    //             bottomRight: Radius.circular(7),
-                    //             bottomLeft: Radius.circular(10)),
-                    //         color: Color.fromARGB(250, 149, 149, 149),
-                    //       ),
-                    //       child: Row(
-                    //         children: [
-                    //           ClipRRect(
-                    //             borderRadius: const BorderRadius.only(
-                    //               topLeft: Radius.circular(23),
-                    //               bottomLeft: Radius.circular(7),
-                    //             ),
-                    //             child: AspectRatio(
-                    //               aspectRatio: 1.6 / 1,
-                    //               child: ShaderMask(
-                    //                 blendMode: BlendMode.dstOut,
-                    //                 shaderCallback: (rect) =>
-                    //                     const LinearGradient(
-                    //                         begin: Alignment.centerLeft,
-                    //                         end: Alignment.centerRight,
-                    //                         colors: [
-                    //                       Colors.transparent,
-                    //                       Colors.black
-                    //                     ]).createShader(rect),
-                    //                 child: QueryArtworkWidget(
-                    //                   artworkFit: BoxFit.fill,
-                    //                   artworkBorder: const BorderRadius.only(
-                    //                       bottomLeft: Radius.circular(10)),
-                    //                   id: id,
-                    //                   type: ArtworkType.AUDIO,
-                    //                   nullArtworkWidget:
-                    //                       const Icon(Icons.music_note_outlined),
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           ),
-                    //           SizedBox(
-                    //             width: 115,
-                    //             child: Column(
-                    //               mainAxisAlignment:
-                    //                   MainAxisAlignment.spaceEvenly,
-                    //               children: [
-                    //                 SizedBox(
-                    //                     height: 30,
-                    //                     width: 140,
-                    //                     child: Marquee(
-                    //                       velocity: 35,
-                    //                       fadingEdgeStartFraction: .6,
-                    //                       showFadingOnlyWhenScrolling: false,
-                    //                       text: songname,
-                    //                       blankSpace: 90,
-                    //                       pauseAfterRound:
-                    //                           const Duration(milliseconds: 900),
-                    //                       style: const TextStyle(
-                    //                         fontSize: 17,
-                    //                         fontWeight: FontWeight.bold,
-                    //                         color:
-                    //                             Color.fromARGB(255, 10, 10, 10),
-                    //                       ),
-                    //                     )),
-                    //                 Text(
-                    //                   songartist,
-                    //                   overflow: TextOverflow.ellipsis,
-                    //                   style: const TextStyle(
-                    //                       fontSize: 18,
-                    //                       fontWeight: FontWeight.w500),
-                    //                 )
-                    //               ],
-                    //             ),
-                    //           ),
-                    //           const SizedBox(
-                    //             width: 20,
-                    //           ),
-                    //           GestureDetector(
-                    //             onTap: () {
-                    //               setState(
-                    //                 () {
-                    //                   mycolors.shufflemycolors();
+                    Visibility(
+                      visible: isvisible,
+                      child: Positioned(
+                        left: MediaQuery.of(context).size.width * 1.5 / 100,
+                        right: MediaQuery.of(context).size.width * 1.5 / 100,
+                        top: MediaQuery.of(context).size.height * 8.95 / 10,
+                        bottom: MediaQuery.of(context).size.height * .6 / 100,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(100, 61, 61, 61),
+                                blurRadius: 10,
+                                spreadRadius: 9,
+                              )
+                            ],
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(25),
+                                topRight: Radius.circular(7),
+                                bottomRight: Radius.circular(7),
+                                bottomLeft: Radius.circular(10)),
+                            color: Color.fromARGB(250, 149, 149, 149),
+                          ),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(23),
+                                  bottomLeft: Radius.circular(7),
+                                ),
+                                child: AspectRatio(
+                                  aspectRatio: 1.6 / 1,
+                                  child: ShaderMask(
+                                    blendMode: BlendMode.dstOut,
+                                    shaderCallback: (rect) =>
+                                        const LinearGradient(
+                                            begin: Alignment.centerLeft,
+                                            end: Alignment.centerRight,
+                                            colors: [
+                                          Colors.transparent,
+                                          Colors.black
+                                        ]).createShader(rect),
+                                    child: QueryArtworkWidget(
+                                      artworkFit: BoxFit.fill,
+                                      artworkBorder: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(10)),
+                                      id: id,
+                                      type: ArtworkType.AUDIO,
+                                      nullArtworkWidget:
+                                          const Icon(Icons.music_note_outlined),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 115,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SizedBox(
+                                        height: 30,
+                                        width: 140,
+                                        child: Marquee(
+                                          velocity: 35,
+                                          fadingEdgeStartFraction: .6,
+                                          showFadingOnlyWhenScrolling: false,
+                                          text: songname,
+                                          blankSpace: 90,
+                                          pauseAfterRound:
+                                              const Duration(milliseconds: 900),
+                                          style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                Color.fromARGB(255, 10, 10, 10),
+                                          ),
+                                        )),
+                                    Text(
+                                      songartist,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(
+                                    () {
+                                      mycolors.shufflemycolors();
 
-                    //                   if (Variableclass
-                    //                       .instance.isclickedd.value) {
-                    //                     _controller.reverse();
-                    //                   } else {
-                    //                     _controller.forward();
-                    //                   }
-                    //                 },
-                    //               );
+                                      if (Variableclass
+                                          .instance.isclickedd.value) {
+                                        _controller.reverse();
+                                      } else {
+                                        _controller.forward();
+                                      }
+                                    },
+                                  );
 
-                    //               if (Variableclass.instance.isclickedd.value) {
-                    //                 audioplayer.pause();
-                    //               } else {
-                    //                 audioplayer.play();
-                    //               }
-                    //               Variableclass.instance.isclickedd.value =
-                    //                   !Variableclass.instance.isclickedd.value;
-                    //             },
-                    //             child: Container(
-                    //               decoration: BoxDecoration(
-                    //                 color: const Color.fromARGB(
-                    //                     255, 133, 133, 133),
-                    //                 border: Border.all(
-                    //                     color: const Color.fromARGB(
-                    //                         255, 84, 84, 84)),
-                    //                 borderRadius: BorderRadius.circular(12),
-                    //               ),
-                    //               child: AnimatedIcon(
-                    //                   size: 44,
-                    //                   icon: AnimatedIcons.play_pause,
-                    //                   progress: _controller),
-                    //             ),
-                    //           ),
-                    //           const SizedBox(
-                    //             width: 13,
-                    //           ),
-                    //           GestureDetector(
-                    //             onTap: () {
-                    //               Navigator.of(context).push(
-                    //                 PageTransition(
-                    //                   curve: Curves.easeOutCirc,
-                    //                   child: HomeScreen(
-                    //                     songModel: songModell!,
-                    //                     songlist: songlist,
-                    //                     passedindex: passedindex,
-                    //                     audioPlayer: audioplayer,
-                    //                     isclicked: Variableclass
-                    //                         .instance.isclickedd.value,
-                    //                   ),
-                    //                   type: PageTransitionType.size,
-                    //                   alignment: Alignment.bottomCenter,
-                    //                   duration:
-                    //                       const Duration(milliseconds: 1550),
-                    //                   reverseDuration:
-                    //                       const Duration(milliseconds: 534),
-                    //                 ),
-                    //               );
-                    //             },
-                    //             child: Container(
-                    //                 alignment: Alignment.center,
-                    //                 height: 45,
-                    //                 width: 40,
-                    //                 decoration: BoxDecoration(
-                    //                   color: const Color.fromARGB(
-                    //                       255, 133, 133, 133),
-                    //                   border: Border.all(
-                    //                       color: const Color.fromARGB(
-                    //                           255, 84, 84, 84)),
-                    //                   borderRadius: BorderRadius.circular(12),
-                    //                 ),
-                    //                 child: Transform.rotate(
-                    //                   angle: 1.54,
-                    //                   child: Icon(
-                    //                       size: 25, Icons.arrow_back_ios_new),
-                    //                 )),
-                    //           )
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // )
+                                  if (Variableclass.instance.isclickedd.value) {
+                                    
+                                    Variableclass.audioPlayer.pause();
+                                  } else {
+                                    
+                                    Variableclass.audioPlayer.play();
+                                  }
+                                  Variableclass.instance.isclickedd.value =
+                                      !Variableclass.instance.isclickedd.value;
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                        255, 133, 133, 133),
+                                    border: Border.all(
+                                        color: const Color.fromARGB(
+                                            255, 84, 84, 84)),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: AnimatedIcon(
+                                      size: 44,
+                                      icon: AnimatedIcons.play_pause,
+                                      progress: _controller),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 13,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    PageTransition(
+                                      curve: Curves.easeOutCirc,
+                                      child: HomeScreen(
+                                        songModel: songModell!,
+                                        songlist: songlist,
+                                        passedindex: passedindex,
+                                        
+                                        isclicked: Variableclass
+                                            .instance.isclickedd.value,
+                                      ),
+                                      type: PageTransitionType.size,
+                                      alignment: Alignment.bottomCenter,
+                                      duration:
+                                          const Duration(milliseconds: 1050),
+                                      reverseDuration:
+                                          const Duration(milliseconds: 534),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    height: 45,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 133, 133, 133),
+                                      border: Border.all(
+                                          color: const Color.fromARGB(
+                                              255, 84, 84, 84)),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Transform.rotate(
+                                      angle: 1.54,
+                                      child: Icon(
+                                          size: 25, Icons.arrow_back_ios_new),
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

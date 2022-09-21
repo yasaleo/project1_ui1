@@ -1,7 +1,5 @@
-import 'dart:developer';
-
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:like_button/like_button.dart';
 import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -10,21 +8,21 @@ import 'package:project1_ui1/neumorphism.dart';
 
 import '../Database/favoritesdb.dart';
 import '../commonvariables.dart';
+import 'package:rxdart/rxdart.dart';
 
 class HomeScreen extends StatefulWidget {
   final SongModel songModel;
-  final AudioPlayer audioPlayer;
+
   final List<SongModel> songlist;
-  // final bool isclicked;
+  final bool isclicked;
 
   int passedindex;
 
   HomeScreen(
       {Key? key,
       required this.songModel,
-      required this.audioPlayer,
       required this.songlist,
-      // required this.isclicked,
+      required this.isclicked,
       required this.passedindex})
       : super(key: key);
 
@@ -33,342 +31,330 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final ValueNotifier<Duration> _duration = ValueNotifier(const Duration());
-  final ValueNotifier<Duration> _position = ValueNotifier(const Duration());
-
-  playsong(String? uri) {
-    try {
-      widget.audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(uri!)));
-      widget.audioPlayer.play();
-    } on Exception {
-      log('Error parsing song');
-    }
-  }
-
-  songduration() {
-    widget.audioPlayer.durationStream.listen((event) {
-      _duration.value = event!;
-    });
-
-    widget.audioPlayer.positionStream.listen((e) {
-      _position.value = e;
-    });
-  }
-
-  void seektoduration(int seconds) {
-    Duration duration = Duration(seconds: seconds);
-    widget.audioPlayer.seek(duration);
-  }
+  final Duration duration = const Duration();
+  final Duration position = const Duration();
+  late int currentIndex;
 
   @override
   void initState() {
-    Variableclass.instance.isvisible.value = false;
-    songduration();
+    Variableclass.audioPlayer.currentIndexStream.listen((index) {
+      if (index != null && mounted) {
+        setState(() {
+          currentIndex = index;
+        });
+      }
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return
-        Variableclass.instance.isvisible.value = true;
-      },
-      child: Scaffold(
-        backgroundColor: Colors.grey,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: NeumorphicWidget(
-                        child: Transform.rotate(
-                          angle: 4.7,
-                          child: Icon(size: 38, Icons.arrow_back_ios_new),
-                        ),
+    return Scaffold(
+      backgroundColor: Colors.grey,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: NeumorphicWidget(
+                      child: Transform.rotate(
+                        angle: 4.7,
+                        child: const Icon(size: 38, Icons.arrow_back_ios_new),
                       ),
                     ),
-                    const Text(
-                      'Now Playing',
-                      style: TextStyle(
-                          fontSize: 25,
-                          letterSpacing: 4.5,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    const NeumorphicWidget(
+                  ),
+                  const Text(
+                    'Now Playing',
+                    style: TextStyle(
+                        fontSize: 25,
+                        letterSpacing: 4.5,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: const NeumorphicWidget(
                       child: Icon(
                         Icons.menu,
                         size: 38,
                       ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 40),
+              NormalNeumorphism(
+                height: 340,
+                width: 400,
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: AspectRatio(
+                        aspectRatio: 1.5 / 1,
+                        child: QueryArtworkWidget(
+                          format: ArtworkFormat.JPEG,
+                          artworkFit: BoxFit.fill,
+                          artworkBorder: BorderRadius.circular(10),
+                          id: widget.songlist[currentIndex].id,
+                          type: ArtworkType.AUDIO,
+                          nullArtworkWidget: const Icon(
+                            Icons.music_note_outlined,
+                            size: 50,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      height: 26,
+                      thickness: 1.7,
+                      color: Colors.black12,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 30,
+                                width: 200,
+                                child: Marquee(
+                                  showFadingOnlyWhenScrolling: false,
+                                  fadingEdgeStartFraction: .2,
+                                  fadingEdgeEndFraction: .17,
+                                  text: widget
+                                      .songlist[currentIndex].displayNameWOExt,
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
+                                  blankSpace: 90,
+                                  velocity: 35,
+                                  pauseAfterRound:
+                                      const Duration(milliseconds: 900),
+                                ),
+                              ),
+                              const Divider(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                height: 30,
+                                width: 190,
+                                child: Text(
+                                  widget.songlist[currentIndex].artist
+                                              .toString() ==
+                                          "<unknown>"
+                                      ? 'Unknown Artist'
+                                      : widget.songlist[currentIndex].artist
+                                          .toString(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          LikeButton(
+                            animationDuration:
+                                const Duration(milliseconds: 1450),
+                            bubblesSize: 70,
+                            circleSize: 50,
+                            circleColor: const CircleColor(
+                              start: Color.fromARGB(255, 10, 10, 10),
+                              end: Color.fromARGB(255, 255, 0, 0),
+                            ),
+                            bubblesColor: const BubblesColor(
+                              dotPrimaryColor: Color.fromARGB(255, 255, 22, 1),
+                              dotSecondaryColor: Color.fromARGB(255, 125, 0, 0),
+                              dotThirdColor: Color.fromARGB(255, 255, 95, 92),
+                              dotLastColor: Color.fromARGB(255, 80, 5, 0),
+                            ),
+                            likeBuilder: (isLiked) {
+                              return FavoritesDB.isfavorite(
+                                      widget.songlist[currentIndex])
+                                  ? Icon(
+                                      Icons.favorite,
+                                      color:
+                                          const Color.fromARGB(255, 129, 9, 0),
+                                      size: 32,
+                                    )
+                                  : Icon(
+                                      Icons.favorite_border_outlined,
+                                      color: Color.fromARGB(225, 0, 0, 0),
+                                      size: 32,
+                                    );
+                            },
+                            onTap: (isLiked) async {
+                              if (FavoritesDB.isfavorite(
+                                  widget.songlist[currentIndex])) {
+                                FavoritesDB.removefromfav(
+                                    widget.songlist[currentIndex].id);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10),
+                                                topRight: Radius.circular(20))),
+                                        duration: Duration(milliseconds: 250),
+                                        backgroundColor:
+                                            Color.fromARGB(255, 99, 7, 0),
+                                        content: Text(
+                                          'Removed from Favorites',
+                                          style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  179, 255, 255, 255),
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w700),
+                                        )));
+                              } else {
+                                FavoritesDB.addtofav(
+                                    widget.songlist[currentIndex]);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10),
+                                                topRight: Radius.circular(20))),
+                                        duration: Duration(milliseconds: 250),
+                                        backgroundColor:
+                                            Color.fromARGB(255, 131, 131, 131),
+                                        content: Text(
+                                          'Added to Favorites',
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromARGB(255, 86, 0, 0),
+                                              fontSize: 19,
+                                              fontWeight: FontWeight.w700),
+                                        )));
+                              }
+                              FavoritesDB.favorites.notifyListeners();
+                              Variableclass.instance.isclickedd
+                                  .notifyListeners();
+                              return !isLiked;
+                            },
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
-                const SizedBox(height: 40),
-                NormalNeumorphism(
-                  height: 340,
-                  width: 400,
-                  child: Column(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: AspectRatio(
-                          aspectRatio: 1.5 / 1,
-                          child: QueryArtworkWidget(
-                            format: ArtworkFormat.JPEG,
-                            artworkFit: BoxFit.fill,
-                            artworkBorder: BorderRadius.circular(10),
-                            id: widget.songlist[widget.passedindex].id,
-                            type: ArtworkType.AUDIO,
-                            nullArtworkWidget: const Icon(
-                              Icons.music_note_outlined,
-                              size: 50,
-                            ),
-                          ),
+              ),
+              const SizedBox(
+                height: 46,
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              StreamBuilder<DurationState>(
+                stream: _durationStateStream,
+                builder: (context, snapshot) {
+                  final durationState = snapshot.data;
+                  final progress = durationState?.position ?? Duration.zero;
+                  final total = durationState?.total ?? Duration.zero;
+                  return ProgressBar(
+                    barHeight: 10,
+                    thumbColor: Colors.black,
+                    baseBarColor: const Color.fromARGB(255, 103, 103, 103),
+                    barCapShape: BarCapShape.round,
+                    progressBarColor: const Color.fromARGB(255, 0, 0, 0),
+                    timeLabelTextStyle: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
+                    progress: progress,
+                    total: total,
+                    onSeek: (duration) {
+                      Variableclass.audioPlayer.seek(duration);
+                    },
+                  );
+                },
+              ),
+              const SizedBox(
+                height: 60,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 23),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () async {
+                        if (Variableclass.audioPlayer.hasPrevious) {
+                          await Variableclass.audioPlayer.seekToPrevious();
+                          await Variableclass.audioPlayer.play();
+                          Variableclass.passedindexx = currentIndex;
+
+
+                          Variableclass.instance.isclickedd.notifyListeners();
+                        } else {
+                          await Variableclass.audioPlayer.play();
+                        }
+                      },
+                      child: const NeumorphicWidget(
+                        child: Icon(
+                          Icons.skip_previous_rounded,
+                          size: 55,
                         ),
                       ),
-                      const Divider(
-                        height: 26,
-                        thickness: 1.7,
-                        color: Colors.black12,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height: 30,
-                                  width: 200,
-                                  child: Marquee(
-                                    showFadingOnlyWhenScrolling: false,
-                                    fadingEdgeStartFraction: .2,
-                                    fadingEdgeEndFraction: .17,
-                                    text: widget.songlist[widget.passedindex]
-                                        .displayNameWOExt,
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600),
-                                    blankSpace: 90,
-                                    velocity: 35,
-                                    pauseAfterRound:
-                                        const Duration(milliseconds: 900),
-                                  ),
-                                ),
-                                const Divider(
-                                  height: 10,
-                                ),
-                                SizedBox(
-                                  height: 30,
-                                  width: 190,
-                                  child: Text(
-                                    widget.songlist[widget.passedindex].artist
-                                                .toString() ==
-                                            "<unknown>"
-                                        ? 'Unknown Artist'
-                                        : widget
-                                            .songlist[widget.passedindex].artist
-                                            .toString(),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            LikeButton(
-                              animationDuration:
-                                  const Duration(milliseconds: 1450),
-                              bubblesSize: 70,
-                              circleSize: 50,
-                              circleColor: const CircleColor(
-                                start: Color.fromARGB(255, 10, 10, 10),
-                                end: Color.fromARGB(255, 255, 0, 0),
-                              ),
-                              bubblesColor: const BubblesColor(
-                                dotPrimaryColor:
-                                    Color.fromARGB(255, 255, 22, 1),
-                                dotSecondaryColor:
-                                    Color.fromARGB(255, 125, 0, 0),
-                                dotThirdColor: Color.fromARGB(255, 255, 95, 92),
-                                dotLastColor: Color.fromARGB(255, 80, 5, 0),
-                              ),
-                              likeBuilder: (isLiked) {
-                                return Icon(
-                                  Icons.favorite,
-                                  color:
-                                      FavoritesDB.isfavorite(widget.songModel)
-                                          ? const Color.fromARGB(255, 129, 9, 0)
-                                          : Colors.black,
-                                  size: 33,
-                                );
-                              },
-                              onTap: (isLiked) async {
-                                if (FavoritesDB.isfavorite(Variableclass
-                                    .songlist[widget.passedindex])) {
-                                  FavoritesDB.removefromfav(Variableclass
-                                      .songlist[widget.passedindex].id);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(10),
-                                                  topRight:
-                                                      Radius.circular(20))),
-                                          duration: Duration(milliseconds: 250),
-                                          backgroundColor:
-                                              Color.fromARGB(255, 99, 7, 0),
-                                          content: Text(
-                                            'Removed from Favorites',
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    179, 255, 255, 255),
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w700),
-                                          )));
-                                } else {
-                                  FavoritesDB.addtofav(Variableclass
-                                      .songlist[widget.passedindex]);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(10),
-                                                  topRight:
-                                                      Radius.circular(20))),
-                                          duration: Duration(milliseconds: 250),
-                                          backgroundColor: Color.fromARGB(
-                                              255, 131, 131, 131),
-                                          content: Text(
-                                            'Added to Favorites',
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 86, 0, 0),
-                                                fontSize: 19,
-                                                fontWeight: FontWeight.w700),
-                                          )));
-                                }
-                                FavoritesDB.favorites.notifyListeners();
-                                return !isLiked;
-                              },
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 46,
-                ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: ValueListenableBuilder(
-                        valueListenable: _position,
-                        builder: (BuildContext context, Duration newduration,
-                            Widget? _) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                newduration.toString().split(".")[0],
-                                style: const TextStyle(fontSize: 17),
-                              ),
-                              Text(
-                                _duration.value.toString().split(".")[0],
-                                style: const TextStyle(fontSize: 17),
-                              )
-                            ],
-                          );
-                        })),
-                const SizedBox(
-                  height: 16,
-                ),
-                ValueListenableBuilder(
-                    valueListenable: _position,
-                    builder: (BuildContext context, Duration newd, Widget? _) {
-                      return Slider(
-                        activeColor: Colors.black,
-                        inactiveColor: const Color.fromARGB(242, 92, 92, 92),
-                        min: const Duration(microseconds: 0)
-                            .inSeconds
-                            .toDouble(),
-                        max: _duration.value.inSeconds.toDouble(),
-                        value: _position.value.inSeconds.toDouble(),
-                        onChanged: (value) {
-                          seektoduration(value.toInt());
-                          value = value;
-                        },
-                      );
-                    }),
-                const SizedBox(
-                  height: 60,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 23),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (widget.passedindex < 0) {
-                              widget.passedindex = 0;
-                              playsong(widget.songlist[widget.passedindex].uri);
-                            } else {
-                              widget.passedindex--;
-                              playsong(widget.songlist[widget.passedindex].uri);
-                            }
-                          });
-                        },
-                        child: const NeumorphicWidget(
-                          child: Icon(
-                            Icons.skip_previous_rounded,
-                            size: 55,
-                          ),
+                    ),
+                    AnimatedNeumorphism(),
+                    GestureDetector(
+                      onTap: () async {
+                        if (Variableclass.audioPlayer.hasNext) {
+                          await Variableclass.audioPlayer.seekToNext();
+                          await Variableclass.audioPlayer.play();
+                          Variableclass.passedindexx = currentIndex;
+
+                          Variableclass.instance.isclickedd.notifyListeners();
+                        } else {
+                          await Variableclass.audioPlayer.play();
+                        }
+                      },
+                      child: const NeumorphicWidget(
+                        child: Icon(
+                          Icons.skip_next_rounded,
+                          size: 55,
                         ),
                       ),
-                      AnimatedNeumorphism(
-                        audioPlayer: widget.audioPlayer,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (widget.passedindex > widget.songlist.length) {
-                              widget.passedindex = widget.songlist.length;
-                              playsong(widget.songlist[widget.passedindex].uri);
-                            } else {
-                              widget.passedindex++;
-                              playsong(widget.songlist[widget.passedindex].uri);
-                            }
-                          });
-                        },
-                        child: const NeumorphicWidget(
-                          child: Icon(
-                            Icons.skip_next_rounded,
-                            size: 55,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),
     );
   }
+
+  void changetoseconds(int seconds) {
+    Duration duration = Duration(seconds: seconds);
+    Variableclass.audioPlayer.seek(duration);
+  }
+
+  Stream<DurationState> get _durationStateStream =>
+      Rx.combineLatest2<Duration, Duration?, DurationState>(
+          Variableclass.audioPlayer.positionStream,
+          Variableclass.audioPlayer.durationStream,
+          (position, duration) => DurationState(
+              position: position, total: duration ?? Duration.zero));
+}
+
+class DurationState {
+  DurationState({this.position = Duration.zero, this.total = Duration.zero});
+  Duration position, total;
 }

@@ -15,7 +15,6 @@ class ListCard extends StatelessWidget {
   final Function addingfav;
   final bool islikedd;
   final SongModel songModell;
-  
 
   ListCard(
       {Key? key,
@@ -124,7 +123,7 @@ class ListCard extends StatelessWidget {
                 height: 48,
                 width: 38,
                 child: LikeButton(
-                  animationDuration: const Duration(milliseconds: 1950),
+                  animationDuration: const Duration(milliseconds: 1450),
                   bubblesSize: 70,
                   circleSize: 50,
                   circleColor: const CircleColor(
@@ -137,17 +136,21 @@ class ListCard extends StatelessWidget {
                     dotThirdColor: Color.fromARGB(255, 255, 95, 92),
                     dotLastColor: Color.fromARGB(255, 80, 5, 0),
                   ),
-                  likeBuilder: (isliked) {
-                    return Icon(
-                      Icons.favorite,
-                      color: FavoritesDB.isfavorite(songModell)
-                          ? const Color.fromARGB(255, 129, 9, 0)
-                          : Colors.black,
-                      size: 32,
-                    );
+                  likeBuilder: (islikedd) {
+                    return FavoritesDB.isfavorite(songModell)
+                        ? Icon(
+                            Icons.favorite,
+                            color: const Color.fromARGB(255, 129, 9, 0),
+                            size: 32,
+                          )
+                        : Icon(
+                            Icons.favorite_border_outlined,
+                            color: Color.fromARGB(225, 0, 0, 0),
+                            size: 32,
+                          );
                   },
                   onTap: (islikedd) async {
-                    addingfav();
+                   await addingfav();
                     Variableclass.instance.isclickedd.notifyListeners();
 
                     return !islikedd;

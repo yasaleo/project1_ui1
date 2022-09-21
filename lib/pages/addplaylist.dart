@@ -26,7 +26,6 @@ class _AddPlaylistState extends State<AddPlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    PlaylistDB.instance.playlistnotifier.notifyListeners;
     return Scaffold(
       backgroundColor: Colors.grey,
       body: CustomScrollView(
@@ -43,13 +42,13 @@ class _AddPlaylistState extends State<AddPlaylist> {
                         shape: const RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10))),
-                        backgroundColor: const Color.fromARGB(13, 0, 0, 0),
+                        backgroundColor:
+                            const Color.fromARGB(166, 176, 176, 176),
                         fixedSize: const Size(95, 20)),
                     onPressed: () {
-                      
                       if (_formKey.currentState!.validate()) {
                         addsong();
-                      PlaylistDB.instance.playlistnotifier.notifyListeners();
+                        PlaylistDB.instance.getallfolder();
                         Navigator.pop(context);
                       }
                     },
@@ -58,7 +57,6 @@ class _AddPlaylistState extends State<AddPlaylist> {
                       style: TextStyle(fontSize: 20, color: Colors.black),
                     )),
               ),
-            
             ],
             stretch: true,
             elevation: 2,
@@ -71,7 +69,7 @@ class _AddPlaylistState extends State<AddPlaylist> {
               icon: const Icon(
                 Icons.expand_more_outlined,
                 color: Colors.black,
-                size: 54,
+                size: 46,
               ),
             ),
             flexibleSpace: FlexibleSpaceBar(
@@ -241,12 +239,12 @@ class _AddPlaylistState extends State<AddPlaylist> {
     );
   }
 
-    addsong() {
+  addsong()  {
     final model = FolderModel(name: nameController.text, songids: ids);
 
-     PlaylistDB.instance.addfolder(model);
+    PlaylistDB.instance.addfolder(model);
     nameController.clear();
-    // ids.clear();
+    ids.clear();
   }
 
   Future pickimage() async {
