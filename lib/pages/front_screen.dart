@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:animations/animations.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +44,7 @@ class FrontScreenState extends State<FrontScreen>
 
   String songname = '';
   String songartist = '';
-  bool isvisible = false;
+  
   int id = 0;
   ScrollController scontrollerr = ScrollController();
 
@@ -76,11 +74,9 @@ class FrontScreenState extends State<FrontScreen>
   @override
   void dispose() {
     _controller.dispose();
-   
+
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -450,21 +446,20 @@ class FrontScreenState extends State<FrontScreen>
                                                             VoidCallback
                                                                 opencontainer) {
                                                       return PlaylistCard(
+                                                        foldermodel:playlistlist[
+                                                                    index - 1] ,
                                                         index: index - 1,
-                                                        playlistname:
-                                                            playlistlist[
-                                                                    index - 1]
-                                                                .name,
+                                                        
                                                       );
                                                     },
                                                     openBuilder:
                                                         (context, action) {
                                                       return PlaylistScreen(
                                                         folderindex: index - 1,
-                                                        playlistname:
+                                                        moldermodel:
                                                             playlistlist[
                                                                     index - 1]
-                                                                .name,
+                                                                ,
                                                       );
                                                     },
                                                   ),
@@ -532,6 +527,11 @@ class FrontScreenState extends State<FrontScreen>
                                             const EdgeInsets.only(bottom: 90),
                                         itemBuilder: (context, index) {
                                           final songg = item.data!;
+                                          Variableclass.miniplsonglist =
+                                              item.data!;
+
+                                          print(Variableclass
+                                              .miniplsonglist.length);
 
                                           return Padding(
                                             padding: const EdgeInsets.only(
@@ -546,21 +546,24 @@ class FrontScreenState extends State<FrontScreen>
                                                 Variableclass.instance.isvisible
                                                     .notifyListeners();
                                                 setState(() {
-
                                                   Variableclass.audioPlayer
                                                       .setAudioSource(
                                                           Variableclass
                                                               .playsongs(
                                                                   item.data!),
                                                           initialIndex: index);
+                                                  Variableclass.instance
+                                                      .miniindex.value = index;
                                                   Variableclass.audioPlayer
                                                       .play();
+                                                  Variableclass.miniplsonglist =
+                                                      item.data!;
 
                                                   songModell = songg[index];
                                                   songlist = songg;
                                                   indexxx = index;
                                                   passedindex = index;
-                                                  isvisible = true;
+                                                  Variableclass.minivisible= true;
                                                   Variableclass.instance
                                                       .isclickedd.value = true;
                                                   _controller.forward();
@@ -686,185 +689,207 @@ class FrontScreenState extends State<FrontScreen>
                       ],
                     ),
 //------------------------------------------MINI_nowPlaying-------------------------------------------------------------------------------------------------------
-                    Visibility(
-                      visible: isvisible,
-                      child: Positioned(
-                        left: MediaQuery.of(context).size.width * 1.5 / 100,
-                        right: MediaQuery.of(context).size.width * 1.5 / 100,
-                        top: MediaQuery.of(context).size.height * 8.95 / 10,
-                        bottom: MediaQuery.of(context).size.height * .6 / 100,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color.fromARGB(100, 61, 61, 61),
-                                blurRadius: 10,
-                                spreadRadius: 9,
-                              )
-                            ],
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(25),
-                                topRight: Radius.circular(7),
-                                bottomRight: Radius.circular(7),
-                                bottomLeft: Radius.circular(10)),
-                            color: Color.fromARGB(250, 149, 149, 149),
-                          ),
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(23),
-                                  bottomLeft: Radius.circular(7),
-                                ),
-                                child: AspectRatio(
-                                  aspectRatio: 1.6 / 1,
-                                  child: ShaderMask(
-                                    blendMode: BlendMode.dstOut,
-                                    shaderCallback: (rect) =>
-                                        const LinearGradient(
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.centerRight,
-                                            colors: [
-                                          Colors.transparent,
-                                          Colors.black
-                                        ]).createShader(rect),
-                                    child: QueryArtworkWidget(
-                                      artworkFit: BoxFit.fill,
-                                      artworkBorder: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(10)),
-                                      id: id,
-                                      type: ArtworkType.AUDIO,
-                                      nullArtworkWidget:
-                                          const Icon(Icons.music_note_outlined),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 115,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    SizedBox(
-                                        height: 30,
-                                        width: 140,
-                                        child: Marquee(
-                                          velocity: 35,
-                                          fadingEdgeStartFraction: .6,
-                                          showFadingOnlyWhenScrolling: false,
-                                          text: songname,
-                                          blankSpace: 90,
-                                          pauseAfterRound:
-                                              const Duration(milliseconds: 900),
-                                          style: const TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                Color.fromARGB(255, 10, 10, 10),
-                                          ),
-                                        )),
-                                    Text(
-                                      songartist,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500),
+                    ValueListenableBuilder(
+                        valueListenable: Variableclass.instance.miniindex,
+                        builder: (context, int value, Widget? _) {
+                          return Visibility(
+                            visible: Variableclass.minivisible,
+                            child: Positioned(
+                              left:
+                                  MediaQuery.of(context).size.width * 1.5 / 100,
+                              right:
+                                  MediaQuery.of(context).size.width * 1.5 / 100,
+                              top: MediaQuery.of(context).size.height *
+                                  8.95 /
+                                  10,
+                              bottom:
+                                  MediaQuery.of(context).size.height * .6 / 100,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color.fromARGB(100, 61, 61, 61),
+                                      blurRadius: 10,
+                                      spreadRadius: 9,
                                     )
+                                  ],
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(25),
+                                      topRight: Radius.circular(7),
+                                      bottomRight: Radius.circular(7),
+                                      bottomLeft: Radius.circular(10)),
+                                  color: Color.fromARGB(250, 149, 149, 149),
+                                ),
+                                child: Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(23),
+                                        bottomLeft: Radius.circular(7),
+                                      ),
+                                      child: AspectRatio(
+                                        aspectRatio: 1.6 / 1,
+                                        child: ShaderMask(
+                                          blendMode: BlendMode.dstOut,
+                                          shaderCallback: (rect) =>
+                                              const LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                  colors: [
+                                                Colors.transparent,
+                                                Colors.black
+                                              ]).createShader(rect),
+                                          child: QueryArtworkWidget(
+                                            artworkFit: BoxFit.fill,
+                                            artworkBorder:
+                                                const BorderRadius.only(
+                                                    bottomLeft:
+                                                        Radius.circular(10)),
+                                            id: Variableclass
+                                                    .miniplsonglist.isEmpty
+                                                ? 0
+                                                : Variableclass
+                                                    .miniplsonglist[value].id,
+                                            type: ArtworkType.AUDIO,
+                                            nullArtworkWidget: const Icon(
+                                                Icons.music_note_outlined),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 115,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          SizedBox(
+                                              height: 30,
+                                              width: 140,
+                                              child: Marquee(
+                                                velocity: 35,
+                                                fadingEdgeStartFraction: .6,
+                                                showFadingOnlyWhenScrolling:
+                                                    false,
+                                                text: Variableclass
+                                                        .miniplsonglist.isEmpty
+                                                    ? "nil"
+                                                    : Variableclass
+                                                        .miniplsonglist[value]
+                                                        .displayNameWOExt,
+                                                blankSpace: 90,
+                                                pauseAfterRound: const Duration(
+                                                    milliseconds: 900),
+                                                style: const TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color.fromARGB(
+                                                      255, 10, 10, 10),
+                                                ),
+                                              )),
+                                          Text(
+                                            Variableclass.miniplsonglist.isEmpty
+                                                ? "nil"
+                                                : Variableclass
+                                                    .miniplsonglist[value]
+                                                    .artist!,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(
+                                          () {
+                                            mycolors.shufflemycolors();
+
+                                            if (Variableclass
+                                                .instance.isclickedd.value) {
+                                              _controller.reverse();
+                                            } else {
+                                              _controller.forward();
+                                            }
+                                          },
+                                        );
+
+                                        if (Variableclass
+                                            .instance.isclickedd.value) {
+                                          Variableclass.audioPlayer.pause();
+                                        } else {
+                                          Variableclass.audioPlayer.play();
+                                        }
+                                        Variableclass
+                                                .instance.isclickedd.value =
+                                            !Variableclass
+                                                .instance.isclickedd.value;
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 133, 133, 133),
+                                          border: Border.all(
+                                              color: const Color.fromARGB(
+                                                  255, 84, 84, 84)),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: AnimatedIcon(
+                                            size: 44,
+                                            icon: AnimatedIcons.play_pause,
+                                            progress: _controller),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 13,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          PageTransition(
+                                            curve: Curves.easeOutCirc,
+                                            child: HomeScreen(
+                                              songlist:
+                                                  Variableclass.allsonglist,
+                                            ),
+                                            type: PageTransitionType.size,
+                                            alignment: Alignment.bottomCenter,
+                                            duration: const Duration(
+                                                milliseconds: 1050),
+                                            reverseDuration: const Duration(
+                                                milliseconds: 534),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                          alignment: Alignment.center,
+                                          height: 45,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                255, 133, 133, 133),
+                                            border: Border.all(
+                                                color: const Color.fromARGB(
+                                                    255, 84, 84, 84)),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          child: const Icon(
+                                              size: 33,
+                                              Icons.expand_less_outlined)),
+                                    ),
                                   ],
                                 ),
                               ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(
-                                    () {
-                                      mycolors.shufflemycolors();
-
-                                      if (Variableclass
-                                          .instance.isclickedd.value) {
-                                        _controller.reverse();
-                                      } else {
-                                        _controller.forward();
-                                      }
-                                    },
-                                  );
-
-                                  if (Variableclass.instance.isclickedd.value) {
-                                    
-                                    Variableclass.audioPlayer.pause();
-                                  } else {
-                                    
-                                    Variableclass.audioPlayer.play();
-                                  }
-                                  Variableclass.instance.isclickedd.value =
-                                      !Variableclass.instance.isclickedd.value;
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: const Color.fromARGB(
-                                        255, 133, 133, 133),
-                                    border: Border.all(
-                                        color: const Color.fromARGB(
-                                            255, 84, 84, 84)),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: AnimatedIcon(
-                                      size: 44,
-                                      icon: AnimatedIcons.play_pause,
-                                      progress: _controller),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 13,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    PageTransition(
-                                      curve: Curves.easeOutCirc,
-                                      child: HomeScreen(
-                                        songModel: songModell!,
-                                        songlist: songlist,
-                                        passedindex: passedindex,
-                                        
-                                        isclicked: Variableclass
-                                            .instance.isclickedd.value,
-                                      ),
-                                      type: PageTransitionType.size,
-                                      alignment: Alignment.bottomCenter,
-                                      duration:
-                                          const Duration(milliseconds: 1050),
-                                      reverseDuration:
-                                          const Duration(milliseconds: 534),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    height: 45,
-                                    width: 40,
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 133, 133, 133),
-                                      border: Border.all(
-                                          color: const Color.fromARGB(
-                                              255, 84, 84, 84)),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Transform.rotate(
-                                      angle: 1.54,
-                                      child: Icon(
-                                          size: 25, Icons.arrow_back_ios_new),
-                                    )),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
+                            ),
+                          );
+                        })
                   ],
                 ),
               ),

@@ -7,8 +7,11 @@ class FolderModel {
   String name;
   @HiveField(1)
   List<int> songids;
+  @HiveField(2)
+  String image;
 
   FolderModel({
+    required this.image,
     required this.name,
     required this.songids,
   });

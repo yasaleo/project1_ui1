@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,6 +25,7 @@ class _AddPlaylistState extends State<AddPlaylist> {
   final OnAudioQuery audioQuery = OnAudioQuery();
   final List<int> ids = [];
   File? image;
+  String stringimage = '';
 
   @override
   Widget build(BuildContext context) {
@@ -239,18 +242,23 @@ class _AddPlaylistState extends State<AddPlaylist> {
     );
   }
 
-  addsong()  {
-    final model = FolderModel(name: nameController.text, songids: ids);
+  addsong() {
+    final model = FolderModel(
+      name: nameController.text,
+      songids: ids,
+      image: stringimage,
+    );
 
     PlaylistDB.instance.addfolder(model);
     nameController.clear();
-    ids.clear();
   }
 
   Future pickimage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image == null) return;
     final tempimage = File(image.path);
+    Uint8List imagebytes = await tempimage.readAsBytes();
+    stringimage = base64Encode(imagebytes);
     setState(() {
       this.image = tempimage;
     });

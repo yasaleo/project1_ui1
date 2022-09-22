@@ -12,20 +12,14 @@ import '../commonvariables.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HomeScreen extends StatefulWidget {
-  final SongModel songModel;
-
   final List<SongModel> songlist;
-  final bool isclicked;
+  
 
-  int passedindex;
-
-  HomeScreen(
-      {Key? key,
-      required this.songModel,
-      required this.songlist,
-      required this.isclicked,
-      required this.passedindex})
-      : super(key: key);
+const  HomeScreen({
+    Key? key,
+    required this.songlist,
+ 
+  }) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -33,29 +27,25 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  
   final Duration duration = const Duration();
   final Duration position = const Duration();
   late int currentIndex;
- 
 
   @override
   void initState() {
     Variableclass.audioPlayer.currentIndexStream.listen((index) {
       if (index != null && mounted) {
         setState(() {
+          Variableclass.instance.miniindex.value = index;
           currentIndex = index;
         });
       }
     });
     super.initState();
-   
   }
-
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Colors.grey,
       body: SafeArea(
@@ -300,7 +290,6 @@ class _HomeScreenState extends State<HomeScreen>
                     iconSize: 30,
                   ),
                   ShuffleButton(),
-                 
                 ],
               ),
               const SizedBox(

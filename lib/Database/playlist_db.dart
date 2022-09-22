@@ -23,7 +23,6 @@ class PlaylistDB {
     playlistnotifier.value.clear();
     playlistnotifier.value.addAll(pdb.values);
     playlistnotifier.notifyListeners();
-
   }
 
   Future<void> deletefolder(int index) async {

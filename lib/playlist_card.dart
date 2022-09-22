@@ -1,12 +1,15 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:project1_ui1/Database/playlist_db.dart';
+import 'package:project1_ui1/dbmodel/foldermodel.dart';
 
 class PlaylistCard extends StatelessWidget {
-  String playlistname;
+  FolderModel foldermodel;
+  
   int index;
-  PlaylistCard({Key? key, required this.playlistname, required this.index})
+  PlaylistCard({Key? key,  required this.index,required this.foldermodel})
       : super(key: key);
 
   @override
@@ -36,8 +39,10 @@ class PlaylistCard extends StatelessWidget {
                     topLeft: Radius.circular(17),
                     topRight: Radius.circular(17),
                   ),
-                  child: Image.asset(
-                    'assets/artistic-album-cover-design-template-d12ef0296af80b58363dc0deef077ecc_screen.jpg',
+                  child: foldermodel.image==''
+                  ?Text('nope')
+                   :Image.memory(
+                    base64Decode(foldermodel.image),
                     fit: BoxFit.fitWidth,
                   ),
                 ),
@@ -45,7 +50,7 @@ class PlaylistCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 7, right: 10, left: 14),
                 child: Text(
-                  playlistname,
+                  foldermodel.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(

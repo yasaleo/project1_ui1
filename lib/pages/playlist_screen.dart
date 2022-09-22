@@ -1,17 +1,23 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:project1_ui1/Database/playlist_db.dart';
 import 'package:project1_ui1/dbmodel/foldermodel.dart';
+import 'package:project1_ui1/pages/home_page.dart';
+
+import '../commonvariables.dart';
 
 class PlaylistScreen extends StatefulWidget {
   PlaylistScreen(
-      {super.key, required this.folderindex, required this.playlistname});
+      {super.key, required this.folderindex, required this.moldermodel});
   final int folderindex;
-  String playlistname;
+
+  FolderModel moldermodel;
 
   @override
   State<PlaylistScreen> createState() => _PlaylistScreenState();
@@ -22,13 +28,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   final OnAudioQuery audioQuery = OnAudioQuery();
   @override
   Widget build(BuildContext context) {
+    // print(PlaylistDB.instance.playlistnotifier.value[0].songids[0]);
     return Scaffold(
       backgroundColor: Colors.grey,
       body: CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
         SliverAppBar(
-          actions: [
-            
-          ],
+          actions: [],
           centerTitle: true,
           stretch: true,
           elevation: 0,
@@ -66,12 +71,14 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       end: Alignment.bottomCenter,
                       colors: [Colors.transparent, Colors.black])
                   .createShader(rect),
-              child: Image.asset(
-                'assets/imageee2.jpg',
-                fit: BoxFit.cover,
-              ),
+              child: widget.moldermodel.image == ''
+                  ? Text('nope')
+                  : Image.memory(
+                      base64Decode(widget.moldermodel.image),
+                      fit: BoxFit.cover,
+                    ),
             ),
-            title: Text(widget.playlistname,
+            title: Text(widget.moldermodel.name,
                 style: GoogleFonts.capriola(
                     textStyle: const TextStyle(
                         fontSize: 35,
@@ -107,7 +114,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             return ValueListenableBuilder(
                 valueListenable: PlaylistDB.instance.playlistnotifier,
                 builder: (context, List<FolderModel> value, Widget? _) {
-                  // print(value[widget.folderindex].songids[1]);
                   final songlistids = value[widget.folderindex].songids;
                   playlistsong =
                       playlistsongs(ids: songlistids, songs: item.data!);
@@ -141,7 +147,36 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                     ),
                                     child: ListTile(
                                       horizontalTitleGap: 8,
-                                      onTap: () {},
+                                      onTap: () {
+                                        List<SongModel> newlist = playlistsong;
+                                        Variableclass.miniplsonglist =
+                                            playlistsong;
+                                        Variableclass.audioPlayer.stop();
+                                        Variableclass.audioPlayer
+                                            .setAudioSource(
+                                                Variableclass.playsongs(
+                                                    newlist),
+                                                initialIndex: index);
+                                        Variableclass.audioPlayer.play();
+                                        Variableclass
+                                            .instance.isclickedd.value = true;
+                                        Variableclass.minivisible = true;
+
+                                        Variableclass.instance.isclickedd
+                                            .notifyListeners();
+
+                                        Navigator.of(context)
+                                            .push(PageTransition(
+                                          curve: Curves.easeOutCirc,
+                                          child: HomeScreen(songlist: newlist),
+                                          type: PageTransitionType.size,
+                                          alignment: Alignment.bottomCenter,
+                                          duration:
+                                              const Duration(milliseconds: 750),
+                                          reverseDuration:
+                                              const Duration(milliseconds: 534),
+                                        ));
+                                      },
                                       leading: CircleAvatar(
                                         radius: 25,
                                         backgroundColor:
@@ -178,7 +213,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                         height: 55,
                                         width: 35,
                                         child: IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            
+                                          },
                                           icon: const Icon(
                                             Icons
                                                 .remove_circle_outline_outlined,
@@ -206,12 +243,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       {required List<int> ids, required List<SongModel> songs}) {
     List<SongModel> pls = [];
     for (var i = 0; i < songs.length; i++) {
-      // print(songs[i].id);
-      // print(
-      //     '====================================================================================================================================##################');
-      // print(ids.length);
+     
       for (var j = 0; j < ids.length; j++) {
-        // print(ids[j]);
+       
         if (songs[i].id == ids[j]) {
           print('found');
           pls.add(songs[i]);

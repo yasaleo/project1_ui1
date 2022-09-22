@@ -17,6 +17,7 @@ class FolderModelAdapter extends TypeAdapter<FolderModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return FolderModel(
+      image: fields[2] as String,
       name: fields[0] as String,
       songids: (fields[1] as List).cast<int>(),
     );
@@ -25,11 +26,13 @@ class FolderModelAdapter extends TypeAdapter<FolderModel> {
   @override
   void write(BinaryWriter writer, FolderModel obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.songids);
+      ..write(obj.songids)
+      ..writeByte(2)
+      ..write(obj.image);
   }
 
   @override

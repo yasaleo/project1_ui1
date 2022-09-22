@@ -14,6 +14,11 @@ class Variableclass {
 
   static List<SongModel> songscopy = [];
 
+   static List<SongModel> miniplsonglist = [];
+   ValueNotifier<int> miniindex = ValueNotifier(0);
+   static bool minivisible = false;
+
+
   static late final int passedindexx;
 
   ValueNotifier<bool> isvisible = ValueNotifier(false);

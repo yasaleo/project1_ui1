@@ -1,10 +1,13 @@
 import 'dart:ui';
 
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:project1_ui1/Database/favoritesdb.dart';
 import 'package:project1_ui1/commonvariables.dart';
+import 'package:project1_ui1/pages/home_page.dart';
 
 class Favoritescreen extends StatefulWidget {
   const Favoritescreen({Key? key}) : super(key: key);
@@ -12,7 +15,7 @@ class Favoritescreen extends StatefulWidget {
   @override
   State<Favoritescreen> createState() => _FavoritescreenState();
 
-  void initState() {}
+  
 }
 
 class _FavoritescreenState extends State<Favoritescreen> {
@@ -98,71 +101,99 @@ class _FavoritescreenState extends State<Favoritescreen> {
                                   filter:
                                       ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Color.fromARGB(26, 0, 0, 0),
-                                          blurRadius: 8,
-                                          spreadRadius: 1,
-                                          offset: Offset(0, 0),
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: ListTile(
-                                      horizontalTitleGap: 8,
-                                      onTap: () {},
-                                      leading: CircleAvatar(
-                                        radius: 25,
-                                        backgroundColor:
-                                            const Color.fromARGB(13, 0, 0, 0),
-                                        foregroundColor: Colors.black54,
-                                        child: QueryArtworkWidget(
-                                          artworkFit: BoxFit.fill,
-                                          id: value1.id,
-                                          type: ArtworkType.AUDIO,
-                                          nullArtworkWidget: const Icon(
-                                              Icons.music_note_outlined),
-                                        ),
+                                      decoration: BoxDecoration(
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Color.fromARGB(26, 0, 0, 0),
+                                            blurRadius: 8,
+                                            spreadRadius: 1,
+                                            offset: Offset(0, 0),
+                                          ),
+                                        ],
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
-                                      title: Text(
-                                        value1.displayNameWOExt,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                            fontSize: 19,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      subtitle: Text(
-                                        value1.artist.toString() == "<unknown>"
-                                            ? 'Unknown Artist'
-                                            : value1.artist.toString(),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(fontSize: 20),
-                                      ),
-                                      trailing: SizedBox(
-                                        height: 55,
-                                        width: 35,
-                                        child: IconButton(
-                                          onPressed: () {
-                                            FavoritesDB.removefromfav(
-                                                value1.id);
-                                            FavoritesDB.favorites
-                                                .notifyListeners();
-                                            Variableclass.instance.isclickedd
-                                                .notifyListeners();
-                                          },
-                                          icon: const Icon(
-                                            Icons.favorite_rounded,
-                                            color:
-                                                Color.fromARGB(255, 129, 9, 0),
-                                            size: 32,
+                                      child: ListTile(
+                                        horizontalTitleGap: 8,
+                                        onTap: () {
+                                          List<SongModel> newlist = value;
+                                          Variableclass.miniplsonglist = value;
+                                          Variableclass.audioPlayer.stop();
+                                          Variableclass.audioPlayer
+                                              .setAudioSource(
+                                                  Variableclass.playsongs(
+                                                      newlist),
+                                                  initialIndex: index);
+                                          Variableclass.audioPlayer.play();
+                                          Variableclass
+                                              .instance.isclickedd.value = true;
+                                          Variableclass.minivisible = true;
+                                          Variableclass.instance.isclickedd
+                                              .notifyListeners();
+
+                                          Navigator.of(context)
+                                              .push(PageTransition(
+                                            curve: Curves.easeOutCirc,
+                                            child:
+                                                HomeScreen(songlist: newlist),
+                                            type: PageTransitionType.size,
+                                            alignment: Alignment.bottomCenter,
+                                            duration: const Duration(
+                                                milliseconds: 950),
+                                            reverseDuration: const Duration(
+                                                milliseconds: 534),
+                                          ));
+                                        },
+                                        leading: CircleAvatar(
+                                          radius: 25,
+                                          backgroundColor:
+                                              const Color.fromARGB(13, 0, 0, 0),
+                                          foregroundColor: Colors.black54,
+                                          child: QueryArtworkWidget(
+                                            artworkFit: BoxFit.fill,
+                                            id: value1.id,
+                                            type: ArtworkType.AUDIO,
+                                            nullArtworkWidget: const Icon(
+                                                Icons.music_note_outlined),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
+                                        title: Text(
+                                          value1.displayNameWOExt,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 19,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        subtitle: Text(
+                                          value1.artist.toString() ==
+                                                  "<unknown>"
+                                              ? 'Unknown Artist'
+                                              : value1.artist.toString(),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(fontSize: 20),
+                                        ),
+                                        trailing: SizedBox(
+                                          height: 55,
+                                          width: 35,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              FavoritesDB.removefromfav(
+                                                  value1.id);
+                                              FavoritesDB.favorites
+                                                  .notifyListeners();
+                                              Variableclass.instance.isclickedd
+                                                  .notifyListeners();
+                                            },
+                                            icon: const Icon(
+                                              Icons.favorite_rounded,
+                                              color: Color.fromARGB(
+                                                  255, 129, 9, 0),
+                                              size: 32,
+                                            ),
+                                          ),
+                                        ),
+                                      )),
                                 ),
                               ),
                             );
