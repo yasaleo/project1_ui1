@@ -5,6 +5,7 @@ import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:project1_ui1/animated_neu.dart';
 import 'package:project1_ui1/neumorphism.dart';
+import 'package:project1_ui1/pages/shuffle_button.dart';
 
 import '../Database/favoritesdb.dart';
 import '../commonvariables.dart';
@@ -30,10 +31,13 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  
   final Duration duration = const Duration();
   final Duration position = const Duration();
   late int currentIndex;
+ 
 
   @override
   void initState() {
@@ -45,10 +49,13 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
     super.initState();
+   
   }
+
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Colors.grey,
       body: SafeArea(
@@ -98,15 +105,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(10),
                       child: AspectRatio(
                         aspectRatio: 1.5 / 1,
-                        child: QueryArtworkWidget(
-                          format: ArtworkFormat.JPEG,
-                          artworkFit: BoxFit.fill,
-                          artworkBorder: BorderRadius.circular(10),
-                          id: widget.songlist[currentIndex].id,
-                          type: ArtworkType.AUDIO,
-                          nullArtworkWidget: const Icon(
-                            Icons.music_note_outlined,
-                            size: 50,
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 1000),
+                          child: QueryArtworkWidget(
+                            artworkWidth: 340,
+                            artworkHeight: 249,
+                            key: UniqueKey(),
+                            format: ArtworkFormat.JPEG,
+                            artworkFit: BoxFit.fill,
+                            artworkBorder: BorderRadius.circular(10),
+                            id: widget.songlist[currentIndex].id,
+                            type: ArtworkType.AUDIO,
+                            nullArtworkWidget: const Icon(
+                              Icons.music_note_outlined,
+                              size: 50,
+                            ),
                           ),
                         ),
                       ),
@@ -182,13 +195,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             likeBuilder: (isLiked) {
                               return FavoritesDB.isfavorite(
                                       widget.songlist[currentIndex])
-                                  ? Icon(
+                                  ? const Icon(
                                       Icons.favorite,
-                                      color:
-                                          const Color.fromARGB(255, 129, 9, 0),
+                                      color: Color.fromARGB(255, 129, 9, 0),
                                       size: 32,
                                     )
-                                  : Icon(
+                                  : const Icon(
                                       Icons.favorite_border_outlined,
                                       color: Color.fromARGB(225, 0, 0, 0),
                                       size: 32,
@@ -250,10 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(
-                height: 46,
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                height: 26,
               ),
               const SizedBox(
                 height: 16,
@@ -282,8 +291,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.repeat_on_rounded),
+                    iconSize: 30,
+                  ),
+                  ShuffleButton(),
+                 
+                ],
+              ),
               const SizedBox(
-                height: 60,
+                height: 30,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 23),
@@ -298,7 +319,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           await Variableclass.audioPlayer.play();
                           Variableclass.passedindexx = currentIndex;
 
-
                           Variableclass.instance.isclickedd.notifyListeners();
                         } else {
                           await Variableclass.audioPlayer.play();
@@ -311,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    AnimatedNeumorphism(),
+                    const AnimatedNeumorphism(),
                     GestureDetector(
                       onTap: () async {
                         if (Variableclass.audioPlayer.hasNext) {
