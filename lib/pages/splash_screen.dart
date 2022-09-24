@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future gohome(context) async {
-    await Future.delayed(const Duration(milliseconds: 3800));
+    await Future.delayed(const Duration(milliseconds: 5800));
     Navigator.of(context).pushReplacement(
       PageTransition(
         curve: Curves.easeInOutCubic,
@@ -37,10 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: Colors.grey,
-      body: Center(child: RiveAnimation.asset('assets/dory_demo(3).riv')
-
-          
-          ),
+      body: RiveAnimation.asset('assets/layers_demo(5).riv',fit: BoxFit.cover,),
     );
   }
 }

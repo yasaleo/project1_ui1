@@ -4,36 +4,273 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:project1_ui1/Database/playlist_db.dart';
 import 'package:project1_ui1/dbmodel/foldermodel.dart';
+import 'package:project1_ui1/pages/custom_animated.dart';
 import 'package:project1_ui1/pages/home_page.dart';
 
 import '../commonvariables.dart';
 
 class PlaylistScreen extends StatefulWidget {
-  PlaylistScreen(
+  const PlaylistScreen(
       {super.key, required this.folderindex, required this.moldermodel});
   final int folderindex;
 
-  FolderModel moldermodel;
+  final FolderModel moldermodel;
 
   @override
   State<PlaylistScreen> createState() => _PlaylistScreenState();
 }
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
+  late List<SongModel> songmodellist = [];
+  @override
+  void initState() {
+    songmodellist = Variableclass.fullsongmodellist;
+    super.initState();
+  }
+
   late List<SongModel> playlistsong;
   final OnAudioQuery audioQuery = OnAudioQuery();
+  final snackbar = const SnackBar(
+    
+      backgroundColor: Color.fromARGB(255, 99, 7, 0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(13),
+          topRight: Radius.circular(13)
+        ),
+      ),
+      duration: Duration(milliseconds: 450),
+      content: Text(
+        'Removed from Playlist',
+        style: TextStyle(
+            color: Color.fromARGB(179, 255, 255, 255),
+            fontSize: 19,
+            fontWeight: FontWeight.w700),
+      ));
   @override
   Widget build(BuildContext context) {
-    // print(PlaylistDB.instance.playlistnotifier.value[0].songids[0]);
     return Scaffold(
       backgroundColor: Colors.grey,
       body: CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
         SliverAppBar(
-          actions: [],
+          actions: <Widget>[
+            IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) {
+                      return GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Container(
+                          color: const Color.fromRGBO(0, 0, 0, 0.001),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: DraggableScrollableSheet(
+                              initialChildSize: 0.4,
+                              minChildSize: 0.2,
+                              maxChildSize: 0.75,
+                              builder: (_, controller) {
+                                return Container(
+                                  decoration: const BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(25.0),
+                                      topRight: Radius.circular(25.0),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Icon(
+                                        Icons.remove,
+                                        color: Colors.grey[600],
+                                      ),
+                                      Expanded(
+                                        child: ValueListenableBuilder(
+                                            valueListenable: PlaylistDB
+                                                .instance.playlistnotifier,
+                                            builder:
+                                                (context, value, Widget? _) {
+                                              return ListView.builder(
+                                                controller: controller,
+                                                itemCount: songmodellist.length,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 8,
+                                                            right: 8,
+                                                            bottom: 8),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      child: BackdropFilter(
+                                                        filter:
+                                                            ImageFilter.blur(
+                                                                sigmaX: 4,
+                                                                sigmaY: 4),
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            boxShadow: const [
+                                                              BoxShadow(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        26,
+                                                                        0,
+                                                                        0,
+                                                                        0),
+                                                                blurRadius: 8,
+                                                                spreadRadius: 1,
+                                                                offset: Offset(
+                                                                    0, 0),
+                                                              ),
+                                                            ],
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          child: ListTile(
+                                                            horizontalTitleGap:
+                                                                8,
+                                                            onTap: () {},
+                                                            leading:
+                                                                CircleAvatar(
+                                                              radius: 25,
+                                                              backgroundColor:
+                                                                  const Color
+                                                                          .fromARGB(
+                                                                      13,
+                                                                      0,
+                                                                      0,
+                                                                      0),
+                                                              foregroundColor:
+                                                                  Colors
+                                                                      .black54,
+                                                              child:
+                                                                  QueryArtworkWidget(
+                                                                artworkFit:
+                                                                    BoxFit.fill,
+                                                                id: songmodellist[
+                                                                        index]
+                                                                    .id,
+                                                                type:
+                                                                    ArtworkType
+                                                                        .AUDIO,
+                                                                nullArtworkWidget:
+                                                                    const Icon(Icons
+                                                                        .music_note_outlined),
+                                                              ),
+                                                            ),
+                                                            title: Text(
+                                                              songmodellist[
+                                                                      index]
+                                                                  .displayNameWOExt,
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: const TextStyle(
+                                                                  fontSize: 19,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                            subtitle: Text(
+                                                              songmodellist[index]
+                                                                          .artist
+                                                                          .toString() ==
+                                                                      "<unknown>"
+                                                                  ? 'Unknown Artist'
+                                                                  : songmodellist[
+                                                                          index]
+                                                                      .artist
+                                                                      .toString(),
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          20),
+                                                            ),
+                                                            trailing: SizedBox(
+                                                              height: 55,
+                                                              width: 35,
+                                                              child: IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    if (widget
+                                                                        .moldermodel
+                                                                        .isValuein(
+                                                                            songmodellist[index].id)) {
+                                                                      widget
+                                                                          .moldermodel
+                                                                          .deletedata(
+                                                                              songmodellist[index].id);
+
+                                                                      ScaffoldMessenger.of(
+                                                                              context)
+                                                                          .showSnackBar(
+                                                                              snackbar);
+                                                                      PlaylistDB
+                                                                          .instance
+                                                                          .playlistnotifier
+                                                                          .notifyListeners();
+                                                                    } else {
+                                                                      playlistCheck(
+                                                                          songmodellist[
+                                                                              index]);
+                                                                      PlaylistDB
+                                                                          .instance
+                                                                          .playlistnotifier
+                                                                          .notifyListeners();
+                                                                      Variableclass
+                                                                          .instance
+                                                                          .isclickedd
+                                                                          .notifyListeners();
+                                                                      PlaylistDB
+                                                                          .instance
+                                                                          .getallfolder();
+                                                                    }
+                                                                  },
+                                                                  icon: AddRemoveButton(
+                                                                      isclickedd: widget
+                                                                          .moldermodel
+                                                                          .isValuein(
+                                                                              songmodellist[index].id))),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            }),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                icon: const Icon(Icons.my_library_music_outlined))
+          ],
           centerTitle: true,
           stretch: true,
           elevation: 0,
@@ -72,7 +309,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       colors: [Colors.transparent, Colors.black])
                   .createShader(rect),
               child: widget.moldermodel.image == ''
-                  ? Text('nope')
+                  ? LottieBuilder.asset(
+                    'assets/57276-astronaut-and-music.json',
+                    repeat: false,
+                    
+                    )
                   : Image.memory(
                       base64Decode(widget.moldermodel.image),
                       fit: BoxFit.cover,
@@ -82,7 +323,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 style: GoogleFonts.capriola(
                     textStyle: const TextStyle(
                         fontSize: 35,
-                        color: Color.fromARGB(255, 85, 85, 85),
+                        color: Color.fromARGB(255, 48, 48, 48),
                         fontWeight: FontWeight.w500))),
             titlePadding: const EdgeInsets.only(left: 115),
             expandedTitleScale: 1.6,
@@ -118,7 +359,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   playlistsong =
                       playlistsongs(ids: songlistids, songs: item.data!);
                   return songlistids.isEmpty
-                      ? const Center(child: Text('nope  '))
+                      ?  Center(child: LottieBuilder.asset('assets/67379-no-data.json'))
                       : ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           primary: true,
@@ -214,7 +455,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                         width: 35,
                                         child: IconButton(
                                           onPressed: () {
-                                            
+                                            widget.moldermodel.deletedata(
+                                                playlistsong[index].id);
+
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackbar);
+                                            PlaylistDB.instance.playlistnotifier
+                                                .notifyListeners();
                                           },
                                           icon: const Icon(
                                             Icons
@@ -243,15 +490,35 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       {required List<int> ids, required List<SongModel> songs}) {
     List<SongModel> pls = [];
     for (var i = 0; i < songs.length; i++) {
-     
       for (var j = 0; j < ids.length; j++) {
-       
         if (songs[i].id == ids[j]) {
-          print('found');
           pls.add(songs[i]);
         }
       }
     }
     return pls;
+  }
+
+  void playlistCheck(SongModel data) {
+    if (!widget.moldermodel.isValuein(data.id)) {
+      widget.moldermodel.add(data.id);
+      const snackbar = SnackBar(
+          
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(13),
+          topRight: Radius.circular(13)
+              )),
+          duration: Duration(milliseconds: 450),
+          backgroundColor: Color.fromARGB(255, 131, 131, 131),
+          content: Text(
+            'song Added to Playlist',
+            style: TextStyle(
+                color: Color.fromARGB(255, 86, 0, 0),
+                fontSize: 19,
+                fontWeight: FontWeight.w700),
+          ));
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    }
   }
 }

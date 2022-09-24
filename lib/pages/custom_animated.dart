@@ -17,7 +17,6 @@ class _ShuffleButtonState extends State<ShuffleButton>
 
   double scale = 0;
 
-
   @override
   void initState() {
     super.initState();
@@ -30,7 +29,6 @@ class _ShuffleButtonState extends State<ShuffleButton>
       ..addListener(() {
         isshuffled.notifyListeners();
       });
-
   }
 
   void _ontapup(TapUpDetails details) {
@@ -81,5 +79,36 @@ class _ShuffleButtonState extends State<ShuffleButton>
             ),
           );
         });
+  }
+}
+
+class AddRemoveButton extends StatelessWidget {
+   AddRemoveButton({super.key,required this.isclickedd});
+  bool isclickedd;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 600),
+      child:isclickedd
+          ? Icon(
+              Icons.remove_circle_outline_outlined,
+              color: Color.fromARGB(255, 176, 12, 0),
+              key: UniqueKey(),
+              size: 32,
+            )
+          : Icon(
+              Icons.playlist_add_circle_outlined,
+              key: UniqueKey(),
+              color: Color.fromARGB(255, 0, 0, 0),
+              size: 32,
+            ),
+      transitionBuilder: (child, Animation<double> animation) {
+        return ScaleTransition(
+          scale: animation,
+          child: child,
+        );
+      },
+    );
   }
 }

@@ -1,8 +1,9 @@
 import 'package:hive_flutter/hive_flutter.dart';
+
 part 'foldermodel.g.dart';
 
 @HiveType(typeId: 1)
-class FolderModel {
+class FolderModel extends HiveObject {
   @HiveField(0)
   String name;
   @HiveField(1)
@@ -18,10 +19,13 @@ class FolderModel {
 
   add(int id) async {
     songids.add(id);
+    save();
   }
 
   deletedata(int id) {
     songids.remove(id);
+    save();
+
   }
 
   bool isValuein(int id) {

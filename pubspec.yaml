@@ -28,6 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animations: ^2.0.3
+  audio_video_progress_bar: ^0.10.0
   build_runner: ^2.2.0
   cupertino_icons: ^1.0.2
   draggable_scrollbar: ^0.1.0
@@ -41,11 +42,10 @@ dependencies:
   hive_generator: ^1.1.3
   image_picker: ^0.8.5+3
   just_audio: ^0.9.28
-  
   like_button: ^2.0.4
+  lottie: ^1.4.3
   marquee: ^2.2.3
   miniplayer: ^1.0.1
-  audio_video_progress_bar: ^0.10.0
   on_audio_query: ^2.6.1
   page_transition: ^2.0.9
   permission_handler: ^10.0.0

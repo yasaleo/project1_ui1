@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:project1_ui1/Database/favoritesdb.dart';
@@ -84,7 +85,11 @@ class _FavoritescreenState extends State<Favoritescreen> {
                 valueListenable: FavoritesDB.favorites,
                 builder: (context, List<SongModel> value, Widget? _) {
                   return value.isEmpty
-                      ? const Center(child: Text('nope  '))
+                      ?  Center(child: LottieBuilder.asset(
+                    'assets/67379-no-data.json',
+                   
+                    
+                    ))
                       : ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           primary: true,

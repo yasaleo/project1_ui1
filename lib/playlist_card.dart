@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project1_ui1/Database/playlist_db.dart';
 import 'package:project1_ui1/dbmodel/foldermodel.dart';
 
@@ -40,7 +41,10 @@ class PlaylistCard extends StatelessWidget {
                     topRight: Radius.circular(17),
                   ),
                   child: foldermodel.image==''
-                  ?Text('nope')
+                  ?Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: SvgPicture.asset('assets/music-album.svg'),
+                  )
                    :Image.memory(
                     base64Decode(foldermodel.image),
                     fit: BoxFit.fitWidth,

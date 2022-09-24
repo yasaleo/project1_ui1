@@ -5,7 +5,7 @@ import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:project1_ui1/animated_neu.dart';
 import 'package:project1_ui1/neumorphism.dart';
-import 'package:project1_ui1/pages/shuffle_button.dart';
+import 'package:project1_ui1/pages/custom_animated.dart';
 
 import '../Database/favoritesdb.dart';
 import '../commonvariables.dart';
@@ -75,10 +75,12 @@ class _HomeScreenState extends State<HomeScreen>
                         fontWeight: FontWeight.w500),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+
+                    },
                     child: const NeumorphicWidget(
                       child: Icon(
-                        Icons.menu,
+                        Icons.playlist_add_sharp,
                         size: 38,
                       ),
                     ),

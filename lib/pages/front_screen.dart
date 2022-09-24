@@ -20,6 +20,7 @@ import 'package:project1_ui1/pages/addplaylist.dart';
 import 'package:project1_ui1/pages/favorites.dart';
 import 'package:project1_ui1/pages/home_page.dart';
 import 'package:project1_ui1/pages/playlist_screen.dart';
+import 'package:project1_ui1/pages/searchpage.dart';
 import 'package:project1_ui1/playlist_card.dart';
 import 'package:project1_ui1/my_colors.dart';
 
@@ -44,7 +45,7 @@ class FrontScreenState extends State<FrontScreen>
 
   String songname = '';
   String songartist = '';
-  
+
   int id = 0;
   ScrollController scontrollerr = ScrollController();
 
@@ -226,7 +227,19 @@ class FrontScreenState extends State<FrontScreen>
                                             ),
                                             backgroundColor: Colors.black12,
                                             elevation: 0),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                            PageTransition(
+                                              child: SearchPage(),
+                                              type: PageTransitionType
+                                                  .rightToLeft,
+                                              duration: const Duration(
+                                                  milliseconds: 250),
+                                              reverseDuration: const Duration(
+                                                  milliseconds: 234),
+                                            ),
+                                          );
+                                        },
                                         child: const Text(
                                           'more',
                                           style: TextStyle(
@@ -446,10 +459,10 @@ class FrontScreenState extends State<FrontScreen>
                                                             VoidCallback
                                                                 opencontainer) {
                                                       return PlaylistCard(
-                                                        foldermodel:playlistlist[
-                                                                    index - 1] ,
+                                                        foldermodel:
+                                                            playlistlist[
+                                                                index - 1],
                                                         index: index - 1,
-                                                        
                                                       );
                                                     },
                                                     openBuilder:
@@ -458,8 +471,7 @@ class FrontScreenState extends State<FrontScreen>
                                                         folderindex: index - 1,
                                                         moldermodel:
                                                             playlistlist[
-                                                                    index - 1]
-                                                                ,
+                                                                index - 1],
                                                       );
                                                     },
                                                   ),
@@ -526,6 +538,8 @@ class FrontScreenState extends State<FrontScreen>
                                         padding:
                                             const EdgeInsets.only(bottom: 90),
                                         itemBuilder: (context, index) {
+                                          Variableclass.fullsongmodellist =
+                                              item.data!;
                                           final songg = item.data!;
                                           Variableclass.miniplsonglist =
                                               item.data!;
@@ -563,7 +577,8 @@ class FrontScreenState extends State<FrontScreen>
                                                   songlist = songg;
                                                   indexxx = index;
                                                   passedindex = index;
-                                                  Variableclass.minivisible= true;
+                                                  Variableclass.minivisible =
+                                                      true;
                                                   Variableclass.instance
                                                       .isclickedd.value = true;
                                                   _controller.forward();
@@ -595,13 +610,13 @@ class FrontScreenState extends State<FrontScreen>
                                                                   topLeft:
                                                                       Radius
                                                                           .circular(
-                                                                              10),
+                                                                              13),
                                                                   topRight: Radius
                                                                       .circular(
-                                                                          20))),
+                                                                          13))),
                                                           duration: Duration(
                                                               milliseconds:
-                                                                  250),
+                                                                  450),
                                                           backgroundColor:
                                                               Color.fromARGB(
                                                                   255,
@@ -632,13 +647,13 @@ class FrontScreenState extends State<FrontScreen>
                                                               borderRadius: BorderRadius.only(
                                                                   topLeft:
                                                                       Radius.circular(
-                                                                          10),
+                                                                          13),
                                                                   topRight: Radius
                                                                       .circular(
-                                                                          20))),
+                                                                          13))),
                                                           duration: Duration(
                                                               milliseconds:
-                                                                  250),
+                                                                  450),
                                                           backgroundColor:
                                                               Color.fromARGB(
                                                                   255,
