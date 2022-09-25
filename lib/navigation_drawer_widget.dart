@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:project1_ui1/Database/playlist_db.dart';
+import 'package:project1_ui1/pages/searchpage.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
@@ -13,11 +17,10 @@ class NavigationDrawerWidget extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(20), bottomRight: Radius.circular(10))),
       child: ListView(
-        
         padding: const EdgeInsets.only(top: 10),
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 70, left: 19,right: 25),
+            padding: const EdgeInsets.only(top: 70, left: 19, right: 25),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -31,35 +34,125 @@ class NavigationDrawerWidget extends StatelessWidget {
                   ),
                 ),
                 const Divider(
-            color: Colors.black,
-            thickness: 5,
-          ),
+                  color: Colors.black,
+                  thickness: 5,
+                ),
               ],
             ),
           ),
-          
           const SizedBox(
             height: 16,
           ),
-          const ListTile(
-            leading: Icon(
+          ListTile(
+            onTap: () {
+              showGeneralDialog(
+                barrierColor: const Color.fromARGB(80, 0, 0, 0),
+                context: context,
+                transitionBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  var curve = Curves.elasticOut.transform(animation.value);
+                  return Transform.scale(
+                    scale: curve,
+                    child: child,
+                  );
+                },
+                transitionDuration: Duration(milliseconds: 900),
+                pageBuilder: (context, a1, a2) {
+                  return Dialog(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: Color.fromARGB(255, 145, 145, 145),
+                      ),
+                      height: 320,
+                      child: Column(
+                        children: [
+                          LottieBuilder.asset(
+                            'assets/104320-warning-red.json',
+                            height: 200,
+                          ),
+                          const Text(
+                            'Do you want to reset ?',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 25),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  height: 40,
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: const Color.fromARGB(
+                                          255, 69, 69, 69)),
+                                  child: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text(
+                                        'Cancel',
+                                        style: TextStyle(color: Colors.white60),
+                                      )),
+                                ),
+                                Container(
+                                  height: 40,
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: const Color.fromARGB(
+                                          255, 151, 28, 19)),
+                                  child: TextButton(
+                                      onPressed: () {
+                                        PlaylistDB.instance.reset(context);
+                                      },
+                                      child: const Text(
+                                        'Reset',
+                                        style: TextStyle(color: Colors.white70),
+                                      )),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+            leading: const Icon(
               Icons.history,
               size: 30,
               color: Colors.black,
             ),
-            title: Text(
-              'History',
+            title: const Text(
+              'Reset',
               style: TextStyle(fontSize: 28),
             ),
           ),
-          const ListTile(
-            leading: Icon(
-              Icons.settings,
+          ListTile(
+            onTap: () {
+              Navigator.of(context).push(PageTransition(
+                  child: const SearchPage(),
+                  type: PageTransitionType.leftToRight));
+            },
+            leading: const Icon(
+              Icons.search_outlined,
               size: 30,
               color: Colors.black,
             ),
-            title: Text(
-              'Settings',
+            title: const Text(
+              'Search',
               style: TextStyle(fontSize: 28),
             ),
           ),

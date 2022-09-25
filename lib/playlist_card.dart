@@ -1,16 +1,18 @@
 import 'dart:convert';
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:project1_ui1/Database/playlist_db.dart';
 import 'package:project1_ui1/dbmodel/foldermodel.dart';
 
 class PlaylistCard extends StatelessWidget {
   FolderModel foldermodel;
-  
+
   int index;
-  PlaylistCard({Key? key,  required this.index,required this.foldermodel})
+  PlaylistCard({Key? key, required this.index, required this.foldermodel})
       : super(key: key);
 
   @override
@@ -40,15 +42,18 @@ class PlaylistCard extends StatelessWidget {
                     topLeft: Radius.circular(17),
                     topRight: Radius.circular(17),
                   ),
-                  child: foldermodel.image==''
-                  ?Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: SvgPicture.asset('assets/music-album.svg'),
-                  )
-                   :Image.memory(
-                    base64Decode(foldermodel.image),
-                    fit: BoxFit.fitWidth,
-                  ),
+                  child: foldermodel.image == ''
+                      ? Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: LottieBuilder.asset(
+                            'assets/46352-folder-icon-animation.json',
+                            repeat: false,
+                          ),
+                        )
+                      : Image.memory(
+                          base64Decode(foldermodel.image),
+                          fit: BoxFit.fitWidth,
+                        ),
                 ),
               ),
               Padding(
@@ -68,8 +73,100 @@ class PlaylistCard extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(13, 0, 0, 0),
                       fixedSize: const Size(85, 15)),
                   onPressed: () {
-                    PlaylistDB.instance.deletefolder(index);
-                    PlaylistDB.instance.playlistnotifier.notifyListeners();
+                    showGeneralDialog(
+                      barrierColor: const Color.fromARGB(80, 0, 0, 0),
+                      context: context,
+                      transitionBuilder: (context, animation, secondaryAnimation, child) {
+                        var curve = Curves.elasticOut.transform(animation.value);
+                        return Transform.scale(
+          scale: curve,
+          child: child,
+        );
+                      },
+                      transitionDuration: Duration(milliseconds: 900),
+                      pageBuilder: (context,a1,a2) {
+                        return Dialog(
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: const Color.fromARGB(255, 152, 112, 112),
+                            ),
+                            height: 320,
+                            child: Column(
+                              children: [
+                                LottieBuilder.asset(
+                                  'assets/1vc5MThiKE.json',
+                                  height: 200,
+                                ),
+                                const Text(
+                                  'Do you want to delete ?',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 25),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        height: 40,
+                                        padding: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: const Color.fromARGB(
+                                                255, 69, 69, 69)),
+                                        child: TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                  color: Colors.white60),
+                                            )),
+                                      ),
+                                      Container(
+                                        height: 40,
+                                        padding: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: const Color.fromARGB(
+                                                255, 151, 28, 19)),
+                                        child: TextButton(
+                                            onPressed: () {
+                                              PlaylistDB.instance
+                                                  .deletefolder(index);
+                                              PlaylistDB
+                                                  .instance.playlistnotifier
+                                                  .notifyListeners();
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text(
+                                              'Delete',
+                                              style: TextStyle(
+                                                  color: Colors.white70),
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

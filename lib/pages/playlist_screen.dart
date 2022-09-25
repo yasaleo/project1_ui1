@@ -36,13 +36,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   late List<SongModel> playlistsong;
   final OnAudioQuery audioQuery = OnAudioQuery();
   final snackbar = const SnackBar(
-    
       backgroundColor: Color.fromARGB(255, 99, 7, 0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(13),
-          topRight: Radius.circular(13)
-        ),
+            topLeft: Radius.circular(13), topRight: Radius.circular(13)),
       ),
       duration: Duration(milliseconds: 450),
       content: Text(
@@ -310,9 +307,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   .createShader(rect),
               child: widget.moldermodel.image == ''
                   ? LottieBuilder.asset(
-                    'assets/57276-astronaut-and-music.json',
-                    repeat: false,
-                    
+                      'assets/57276-astronaut-and-music.json',
+                      repeat: false,
                     )
                   : Image.memory(
                       base64Decode(widget.moldermodel.image),
@@ -359,7 +355,21 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   playlistsong =
                       playlistsongs(ids: songlistids, songs: item.data!);
                   return songlistids.isEmpty
-                      ?  Center(child: LottieBuilder.asset('assets/67379-no-data.json'))
+                      ? Center(
+                          child: ShaderMask(
+                             blendMode: BlendMode.hue,
+              shaderCallback: (rect) => const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.grey, Color.fromARGB(174, 158, 158, 158)])
+                  .createShader(rect),
+                            child: LottieBuilder.asset(
+                              'assets/67379-no-data.json',
+                              reverse: false,
+                             
+                            ),
+                          ),
+                        )
                       : ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           primary: true,
@@ -503,12 +513,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     if (!widget.moldermodel.isValuein(data.id)) {
       widget.moldermodel.add(data.id);
       const snackbar = SnackBar(
-          
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(13),
-          topRight: Radius.circular(13)
-              )),
+                  topLeft: Radius.circular(13), topRight: Radius.circular(13))),
           duration: Duration(milliseconds: 450),
           backgroundColor: Color.fromARGB(255, 131, 131, 131),
           content: Text(

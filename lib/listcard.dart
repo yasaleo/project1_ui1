@@ -3,9 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:like_button/like_button.dart';
+import 'package:lottie/lottie.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:project1_ui1/Database/favoritesdb.dart';
+import 'package:project1_ui1/Database/playlist_db.dart';
 import 'package:project1_ui1/commonvariables.dart';
+import 'package:project1_ui1/pages/custom_animated.dart';
+
+import 'dbmodel/foldermodel.dart';
 
 class ListCard extends StatelessWidget {
   final String title;
@@ -54,38 +59,182 @@ class ListCard extends StatelessWidget {
                 children: [
                   SlidableAction(
                     onPressed: ((context) {
-                      showModalBottomSheet(
-                        enableDrag: true,
-                        backgroundColor:
-                            const Color.fromARGB(255, 158, 158, 158),
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20))),
-                        context: context,
-                        builder: (context) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 20),
-                            child: ListView.separated(
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return index == 0
-                                      ? const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 12, horizontal: 130),
-                                          child: Text('Select a Playlist'),
-                                        )
-                                      : ListTile(
-                                          title: Text('Playlist $index'),
-                                        );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return const Divider();
-                                },
-                                itemCount: 10),
-                          );
-                        },
-                      );
+                       showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) {
+                            return GestureDetector(
+                              onTap: () => Navigator.of(context).pop(),
+                              child: Container(
+                                color: const Color.fromRGBO(0, 0, 0, 0.001),
+                                child: GestureDetector(
+                                  onTap: () {},
+                                  child: DraggableScrollableSheet(
+                                    initialChildSize: 0.4,
+                                    minChildSize: 0.2,
+                                    maxChildSize: 0.75,
+                                    builder: (_, controller) {
+                                      return Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.grey,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(25.0),
+                                            topRight: Radius.circular(25.0),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Icon(
+                                              Icons.remove,
+                                              color: Colors.grey[600],
+                                            ),
+                                            Expanded(
+                                              child: ValueListenableBuilder(
+                                                  valueListenable: PlaylistDB
+                                                      .instance
+                                                      .playlistnotifier,
+                                                  builder: (context,
+                                                      List<FolderModel> value,
+                                                      Widget? _) {
+                                                    return value.isEmpty
+                                                        ? Center(
+                                                            child: Column(
+                                                              children: [
+                                                                LottieBuilder.asset('assets/WaYDLCo9Ux.json'
+                                                                ,width: 170,height: 170,),
+                                                                Text(
+                                                                  'No Playlist found !',
+                                                                  style: TextStyle(
+                                                                      fontSize: 40,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        : ListView.builder(
+                                                            controller:
+                                                                controller,
+                                                            itemCount:
+                                                                value.length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left: 8,
+                                                                        right:
+                                                                            8,
+                                                                        bottom:
+                                                                            8),
+                                                                child:
+                                                                    ClipRRect(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                  child:
+                                                                      BackdropFilter(
+                                                                    filter: ImageFilter.blur(
+                                                                        sigmaX:
+                                                                            4,
+                                                                        sigmaY:
+                                                                            4),
+                                                                    child:
+                                                                        Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        boxShadow: const [
+                                                                          BoxShadow(
+                                                                            color: Color.fromARGB(
+                                                                                26,
+                                                                                0,
+                                                                                0,
+                                                                                0),
+                                                                            blurRadius:
+                                                                                8,
+                                                                            spreadRadius:
+                                                                                1,
+                                                                            offset:
+                                                                                Offset(0, 0),
+                                                                          ),
+                                                                        ],
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10),
+                                                                      ),
+                                                                      child:
+                                                                          ListTile(
+                                                                        horizontalTitleGap:
+                                                                            8,
+                                                                        onTap:
+                                                                            () {
+                                                                          if (value[index].isValuein(songModell.id)) {
+                                                                            value[index].deletedata(songModell.id);
+                                                                            PlaylistDB.instance.playlistnotifier.notifyListeners();
+                                                                          } else {
+                                                                            value[index].add(songModell.id);
+                                                                            PlaylistDB.instance.playlistnotifier.notifyListeners();
+                                                                          }
+                                                                        },
+                                                                        leading:
+                                                                            CircleAvatar(
+                                                                          radius:
+                                                                              25,
+                                                                          backgroundColor: const Color.fromARGB(
+                                                                              13,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          foregroundColor:
+                                                                              Colors.black54,
+                                                                          child:
+                                                                              Text("$index"),
+                                                                        ),
+                                                                        title:
+                                                                            Text(
+                                                                          value[index]
+                                                                              .name,
+                                                                          maxLines:
+                                                                              1,
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 19,
+                                                                              fontWeight: FontWeight.w500),
+                                                                        ),
+                                                                        trailing: SizedBox(
+                                                                            height:
+                                                                                55,
+                                                                            width:
+                                                                                35,
+                                                                            child:
+                                                                                AddRemoveButton(isclickedd: value[index].isValuein(songModell.id))
+
+                                                                        
+                                                                            ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          );
+                                                  }),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
                     }),
                     icon: Icons.playlist_add,
                     backgroundColor: const Color.fromARGB(145, 158, 158, 158),

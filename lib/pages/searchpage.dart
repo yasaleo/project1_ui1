@@ -28,13 +28,19 @@ class _SearchPageState extends State<SearchPage> {
   void runfilter(String keyword) {
     List<SongModel> result = [];
     if (keyword.isEmpty) {
-      result = searchinglist;
+      setState(() {
+      result = Variableclass.fullsongmodellist;
+        
+      });
     } else {
+      setState(() {
       result = searchinglist
           .where((element) => element.displayNameWOExt
               .toLowerCase()
               .contains(keyword.toLowerCase()))
-          .toList();
+          .toList();   
+      });
+     
     }
     setState(() {
       searchinglist = result;
@@ -54,9 +60,9 @@ class _SearchPageState extends State<SearchPage> {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 filled: true,
-                fillColor: Color.fromARGB(255, 127, 127, 127),
+                fillColor: const Color.fromARGB(255, 127, 127, 127),
                 hintText: 'Type to search...',
-                suffixIcon: Icon(
+                suffixIcon: const Icon(
                   Icons.search_outlined,
                   color: Colors.black,
                 ),
@@ -64,7 +70,7 @@ class _SearchPageState extends State<SearchPage> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_back,
                     color: Colors.black,
                   ),
@@ -72,7 +78,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
               onChanged: (value) {
                 runfilter(value);
-                print(searchinglist.length);
+             
               },
             ),
           ),
@@ -122,12 +128,10 @@ class _SearchPageState extends State<SearchPage> {
                                     Variableclass.songlist[index].id);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                        
                                         shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(13),
-          topRight: Radius.circular(13)
-              )),
+                                                topLeft: Radius.circular(13),
+                                                topRight: Radius.circular(13))),
                                         duration: Duration(milliseconds: 450),
                                         backgroundColor:
                                             Color.fromARGB(255, 99, 7, 0),
@@ -144,12 +148,10 @@ class _SearchPageState extends State<SearchPage> {
                                     Variableclass.songlist[index]);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                        
                                         shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(13),
-          topRight: Radius.circular(13)
-              )),
+                                                topLeft: Radius.circular(13),
+                                                topRight: Radius.circular(13))),
                                         duration: Duration(milliseconds: 450),
                                         backgroundColor:
                                             Color.fromARGB(255, 131, 131, 131),
@@ -177,6 +179,11 @@ class _SearchPageState extends State<SearchPage> {
                                 ),
                                 initialIndex: index);
                             Variableclass.audioPlayer.play();
+                            Variableclass.instance.isclickedd.value = true;
+                            Variableclass.minivisible = true;
+
+                            Variableclass.instance.isclickedd.notifyListeners();
+
                             Navigator.of(context).push(
                               PageTransition(
                                 curve: Curves.easeOutCirc,

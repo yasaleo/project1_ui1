@@ -237,6 +237,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_audio_waveforms:
+    dependency: "direct main"
+    description:
+      name: flutter_audio_waveforms
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1+6"
   flutter_lints:
     dependency: "direct dev"
     description:

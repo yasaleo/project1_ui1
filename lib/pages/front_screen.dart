@@ -96,8 +96,7 @@ class FrontScreenState extends State<FrontScreen>
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               color: Variableclass.instance.isclickedd.value
-                  ? Color.fromARGB(
-                      255, mycolors.color1, mycolors.color2, mycolors.color3)
+                  ? mycolors.fcolor
                   : Colors.grey,
               child: CustomPaint(
                 painter: LinePainter(),
@@ -208,50 +207,18 @@ class FrontScreenState extends State<FrontScreen>
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
+                                  children: const [
+                                    Text(
                                       " Your playlist",
                                       style: TextStyle(
                                           fontSize: 23,
                                           color: Colors.black54,
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    SizedBox(
-                                      height: 30,
-                                      width: 65,
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                            ),
-                                            backgroundColor: Colors.black12,
-                                            elevation: 0),
-                                        onPressed: () {
-                                          Navigator.of(context).push(
-                                            PageTransition(
-                                              child: SearchPage(),
-                                              type: PageTransitionType
-                                                  .rightToLeft,
-                                              duration: const Duration(
-                                                  milliseconds: 250),
-                                              reverseDuration: const Duration(
-                                                  milliseconds: 234),
-                                            ),
-                                          );
-                                        },
-                                        child: const Text(
-                                          'more',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14),
-                                        ),
-                                      ),
-                                    )
                                   ],
                                 ),
                               ),
-//---------------------------PLAYLISTS---------------------------------------------------------------------------------------------------
+                              //---------------------------PLAYLISTS---------------------------------------------------------------------------------------------------
                               SizedBox(
                                 height: 165,
                                 child: ValueListenableBuilder(
@@ -482,7 +449,7 @@ class FrontScreenState extends State<FrontScreen>
                                       );
                                     }),
                               ),
-//--------------------------AUDIO_FILES_LIST--------------------------------------------------------------------------------------------------------
+                              //--------------------------AUDIO_FILES_LIST--------------------------------------------------------------------------------------------------------
                               Padding(
                                   padding: const EdgeInsets.only(
                                       top: 20, bottom: 10),
@@ -703,7 +670,7 @@ class FrontScreenState extends State<FrontScreen>
                         ),
                       ],
                     ),
-//------------------------------------------MINI_nowPlaying-------------------------------------------------------------------------------------------------------
+                    //------------------------------------------MINI_nowPlaying-------------------------------------------------------------------------------------------------------
                     ValueListenableBuilder(
                         valueListenable: Variableclass.instance.miniindex,
                         builder: (context, int value, Widget? _) {
