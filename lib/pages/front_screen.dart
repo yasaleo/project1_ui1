@@ -890,15 +890,38 @@ class LinePainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..color = Colors.grey;
 
-    canvas.drawLine(Offset(size.width * 0, size.height * 0),
-        Offset(size.width * 7 / 20, size.height * 7 / 20), paint);
+    final paint2 = Paint()
+      ..strokeWidth = 20
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..color = Colors.grey;
+
+    canvas.drawLine(Offset(size.width * .7 / 2, size.height * 0),
+        Offset(size.width * .7 / 2, size.height * 12 / 20), paint);
+
+    canvas.drawLine(Offset(size.width * 0, size.height * 7.2 / 10),
+        Offset(size.width * 3.4 / 10, size.height * 7.2 / 10), paint);
+
+    final arc1 = Path();
+    arc1.moveTo(size.width * 4.6 / 10, size.height * 8.5 / 10);
+    arc1.arcToPoint(Offset(size.width * 7 / 10, size.height * 6.5 / 10),
+        radius: Radius.circular(150), clockwise: false);
+    canvas.drawPath(arc1, paint2);
+//-----------------------------------------------------------------------------------------
+
+    final arc2 = Path();
+    arc2.moveTo(size.width * 4.6 / 10, size.height * 9.4 / 10);
+    arc2.arcToPoint(Offset(size.width * 8.8 / 10, size.height * 6.5 / 10),
+        radius: Radius.circular(190), clockwise: false);
+    canvas.drawPath(arc2, paint2);
 
     final a = Offset(size.width * -1, size.height * 4 / 5);
-    final b = Offset(size.width * 4 / 10, size.height * 1);
+    final b = Offset(size.width * 3.5 / 10, size.height * 1);
 
     final rect = Rect.fromPoints(a, b);
 
-    canvas.drawRect(rect, paint);
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(rect, const Radius.circular(30)), paint2);
 
     const radius = Radius.circular(20);
 
@@ -907,7 +930,23 @@ class LinePainter extends CustomPainter {
 
     final rrect = Rect.fromPoints(c, d);
 
-    canvas.drawRRect(RRect.fromRectAndRadius(rrect, radius), paint);
+    canvas.drawRRect(RRect.fromRectAndRadius(rrect, radius), paint2);
+
+    final cc = Offset(size.width * 1.3 / 2, size.height * 3.8 / 10);
+    final dd = Offset(size.width * 1.5, size.height * 2.5 / 5);
+    final rrect2 = Rect.fromPoints(cc, dd);
+    canvas.drawRRect(RRect.fromRectAndRadius(rrect2, radius), paint2);
+
+    final e = Offset(size.width * 1 / 2, size.height * -1);
+    final f = Offset(size.width * 1.5, size.height * 2 / 10);
+
+    final rrect1 = Rect.fromPoints(e, f);
+
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(rrect1, const Radius.circular(110)), paint2);
+
+    final centre = Offset(size.width * 8 / 10, size.height * .8 / 10);
+    canvas.drawCircle(centre, size.width * 1 / 10, paint);
   }
 
   @override

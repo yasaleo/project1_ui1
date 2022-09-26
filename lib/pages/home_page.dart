@@ -79,7 +79,6 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                     GestureDetector(
                       onTap: () {
-                       
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
@@ -128,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                                   width: 170,
                                                                   height: 170,
                                                                 ),
-                                                                Text(
+                                                                const Text(
                                                                   'No Playlist found !',
                                                                   style: TextStyle(
                                                                       fontSize:
@@ -316,13 +315,13 @@ class _HomeScreenState extends State<HomeScreen>
                                   width: 200,
                                   child: AnimatedSwitcher(
                                     switchInCurve: Curves.easeOutQuad,
-                                    duration: Duration(milliseconds: 600),
+                                    duration: const Duration(milliseconds: 600),
                                     transitionBuilder:
                                         (child, Animation<double> animation) {
                                       return SlideTransition(
                                         position: Tween<Offset>(
-                                                begin: Offset(-09.0, 0),
-                                                end: Offset(0.0, 0.0))
+                                                begin: const Offset(-09.0, 0),
+                                                end: const Offset(0.0, 0.0))
                                             .animate(animation),
                                         child: child,
                                       );
@@ -352,13 +351,13 @@ class _HomeScreenState extends State<HomeScreen>
                                   width: 190,
                                   child: AnimatedSwitcher(
                                     switchInCurve: Curves.easeOutQuad,
-                                    duration: Duration(milliseconds: 800),
+                                    duration: const Duration(milliseconds: 800),
                                     transitionBuilder:
                                         (child, Animation<double> animation) {
                                       return SlideTransition(
                                         position: Tween<Offset>(
-                                                begin: Offset(-04.0, 0),
-                                                end: Offset(0.0, 0.0))
+                                                begin: const Offset(-04.0, 0),
+                                                end: const Offset(0.0, 0.0))
                                             .animate(animation),
                                         child: child,
                                       );
@@ -500,12 +499,15 @@ class _HomeScreenState extends State<HomeScreen>
                     );
                   },
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    LoopButton(),
-                    ShuffleButton(),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: const <Widget>[
+                      LoopButton(),
+                      ShuffleButton(),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 30,
@@ -516,7 +518,6 @@ class _HomeScreenState extends State<HomeScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        behavior: HitTestBehavior.translucent,
                         onTap: () async {
                           if (Variableclass.audioPlayer.hasPrevious) {
                             await Variableclass.audioPlayer.seekToPrevious();

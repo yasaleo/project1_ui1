@@ -9,6 +9,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:project1_ui1/Database/playlist_db.dart';
 import 'package:project1_ui1/commonvariables.dart';
 import 'package:project1_ui1/dbmodel/foldermodel.dart';
+import 'package:project1_ui1/pages/custom_animated.dart';
 
 class AddPlaylist extends StatefulWidget {
   const AddPlaylist({Key? key}) : super(key: key);
@@ -221,12 +222,17 @@ class _AddPlaylistState extends State<AddPlaylist> {
                                     }
                                   });
                                 },
-                                icon: Icon(
-                                  ids.contains(item.data![index].id)
-                                      ? Icons.remove_circle_outline_outlined
-                                      : Icons.playlist_add_circle_outlined,
-                                  size: 33,
-                                  color: Colors.black87,
+                                icon: AddRemoveButton(isclickedd: ids.contains(item.data![index].id)
+                                
+                                
+                                
+                                //  Icon(
+                                //   ids.contains(item.data![index].id)
+                                //       ? Icons.remove_circle_outline_outlined
+                                //       : Icons.playlist_add_circle_outlined,
+                                //   size: 33,
+                                //   color: Colors.black87,
+                                
                                 ),
                               ),
                             ),

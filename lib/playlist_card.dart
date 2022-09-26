@@ -3,16 +3,15 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:lottie/lottie.dart';
 import 'package:project1_ui1/Database/playlist_db.dart';
 import 'package:project1_ui1/dbmodel/foldermodel.dart';
 
 class PlaylistCard extends StatelessWidget {
-  FolderModel foldermodel;
-
-  int index;
-  PlaylistCard({Key? key, required this.index, required this.foldermodel})
+  final FolderModel foldermodel;
+  final int index;
+  const PlaylistCard({Key? key, required this.index, required this.foldermodel})
       : super(key: key);
 
   @override
@@ -76,15 +75,18 @@ class PlaylistCard extends StatelessWidget {
                     showGeneralDialog(
                       barrierColor: const Color.fromARGB(80, 0, 0, 0),
                       context: context,
-                      transitionBuilder: (context, animation, secondaryAnimation, child) {
-                        var curve = Curves.elasticOut.transform(animation.value);
+                      transitionBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        var curve =
+                            Curves.elasticOut.transform(animation.value);
                         return Transform.scale(
-          scale: curve,
-          child: child,
-        );
+                          scale: curve,
+                          
+                          child: child,
+                        );
                       },
-                      transitionDuration: Duration(milliseconds: 900),
-                      pageBuilder: (context,a1,a2) {
+                      transitionDuration: const Duration(milliseconds: 1300),
+                      pageBuilder: (context, a1, a2) {
                         return Dialog(
                           elevation: 0,
                           shape: RoundedRectangleBorder(
@@ -93,7 +95,7 @@ class PlaylistCard extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14),
-                              color: const Color.fromARGB(255, 152, 112, 112),
+                              color: const Color.fromARGB(255, 182, 155, 155),
                             ),
                             height: 320,
                             child: Column(

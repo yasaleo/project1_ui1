@@ -52,11 +52,11 @@ class NavigationDrawerWidget extends StatelessWidget {
                     (context, animation, secondaryAnimation, child) {
                   var curve = Curves.elasticOut.transform(animation.value);
                   return Transform.scale(
-                    scale: curve,
+                    scaleY: curve,
                     child: child,
                   );
                 },
-                transitionDuration: Duration(milliseconds: 900),
+                transitionDuration: const Duration(milliseconds: 900),
                 pageBuilder: (context, a1, a2) {
                   return Dialog(
                     elevation: 0,
@@ -66,7 +66,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
-                        color: Color.fromARGB(255, 145, 145, 145),
+                        color: const Color.fromARGB(255, 186, 186, 186),
                       ),
                       height: 320,
                       child: Column(

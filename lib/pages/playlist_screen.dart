@@ -135,7 +135,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                                                     .circular(
                                                                         10),
                                                           ),
-                                                          child: ListTile(
+                                                          child:
+                                                          
+                                                          
+                                                          
+                                                           ListTile(
                                                             horizontalTitleGap:
                                                                 8,
                                                             onTap: () {},

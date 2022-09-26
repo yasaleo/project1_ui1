@@ -9,7 +9,7 @@ class Variableclass {
   static Variableclass get instance => _instance;
 
   static AudioPlayer audioPlayer = AudioPlayer();
-
+ static  ValueNotifier<bool> isshuffled = ValueNotifier(false);
   static List<SongModel> songscopy = [];
 
   // for full song lists-------------------------------------------------------------------------
