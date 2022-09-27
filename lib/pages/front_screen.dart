@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+
 import 'package:animations/animations.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,6 @@ import 'package:project1_ui1/pages/addplaylist.dart';
 import 'package:project1_ui1/pages/favorites.dart';
 import 'package:project1_ui1/pages/home_page.dart';
 import 'package:project1_ui1/pages/playlist_screen.dart';
-import 'package:project1_ui1/pages/searchpage.dart';
 import 'package:project1_ui1/playlist_card.dart';
 import 'package:project1_ui1/my_colors.dart';
 
@@ -230,8 +231,6 @@ class FrontScreenState extends State<FrontScreen>
                                       return ListView.builder(
                                         physics: const BouncingScrollPhysics(),
                                         itemBuilder: (context, index) {
-                                          print(playlistlist.length);
-
                                           return Padding(
                                             padding: const EdgeInsets.only(
                                                 top: 10, right: 4.8, left: 4.8),
@@ -271,9 +270,8 @@ class FrontScreenState extends State<FrontScreen>
                                                                 context,
                                                             VoidCallback
                                                                 opencontainer) {
-                                                          return AddFavCard(
-                                                            widget2:
-                                                                const Padding(
+                                                          return const AddFavCard(
+                                                            widget2: Padding(
                                                               padding: EdgeInsets
                                                                   .only(top: 4),
                                                               child: Text(
@@ -289,8 +287,7 @@ class FrontScreenState extends State<FrontScreen>
                                                             height: 110,
                                                             width: 110,
                                                             borderRadius: 100,
-                                                            widget:
-                                                                const Padding(
+                                                            widget: Padding(
                                                               padding: EdgeInsets
                                                                   .only(
                                                                       top: 3.8),
@@ -346,9 +343,8 @@ class FrontScreenState extends State<FrontScreen>
                                                                 context,
                                                             VoidCallback
                                                                 opencontainer) {
-                                                          return AddFavCard(
-                                                            widget2:
-                                                                const Padding(
+                                                          return const AddFavCard(
+                                                            widget2: Padding(
                                                               padding: EdgeInsets
                                                                   .only(
                                                                       top: 20),
@@ -369,8 +365,7 @@ class FrontScreenState extends State<FrontScreen>
                                                             height: 155,
                                                             width: 155,
                                                             borderRadius: 8,
-                                                            widget:
-                                                                const Padding(
+                                                            widget: Padding(
                                                               padding: EdgeInsets
                                                                   .only(
                                                                       top: 10),
@@ -511,8 +506,6 @@ class FrontScreenState extends State<FrontScreen>
                                           Variableclass.miniplsonglist =
                                               item.data!;
 
-                                          print(Variableclass
-                                              .miniplsonglist.length);
 
                                           return Padding(
                                             padding: const EdgeInsets.only(
@@ -905,14 +898,14 @@ class LinePainter extends CustomPainter {
     final arc1 = Path();
     arc1.moveTo(size.width * 4.6 / 10, size.height * 8.5 / 10);
     arc1.arcToPoint(Offset(size.width * 7 / 10, size.height * 6.5 / 10),
-        radius: Radius.circular(150), clockwise: false);
+        radius: const Radius.circular(150), clockwise: false);
     canvas.drawPath(arc1, paint2);
 //-----------------------------------------------------------------------------------------
 
     final arc2 = Path();
     arc2.moveTo(size.width * 4.6 / 10, size.height * 9.4 / 10);
     arc2.arcToPoint(Offset(size.width * 8.8 / 10, size.height * 6.5 / 10),
-        radius: Radius.circular(190), clockwise: false);
+        radius: const Radius.circular(190), clockwise: false);
     canvas.drawPath(arc2, paint2);
 
     final a = Offset(size.width * -1, size.height * 4 / 5);

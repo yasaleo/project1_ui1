@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class NeumorphicWidget extends StatefulWidget {
   const NeumorphicWidget({Key? key, required this.child}) : super(key: key);
-  final child;
+  final Widget child;
   
 
   @override
@@ -21,7 +21,6 @@ class _NeumorphicWidgetState extends State<NeumorphicWidget> {
         duration: const Duration(milliseconds: 110),
         curve: Curves.easeInOutSine,
         padding: const EdgeInsets.all(8),
-        child: widget.child,
         decoration: BoxDecoration(
             color: Colors.grey,
             borderRadius: BorderRadius.circular(20),
@@ -39,23 +38,23 @@ class _NeumorphicWidgetState extends State<NeumorphicWidget> {
                     ),
                   ]
                 : null),
+        child: widget.child,
       ),
     );
   }
 }
 
 class NormalNeumorphism extends StatelessWidget {
-   NormalNeumorphism({Key? key, required this.child,required this.height,required this.width}) : super(key: key);
-  final child;
-  double height;
-  double width;
+ const  NormalNeumorphism({Key? key, required this.child,required this.height,required this.width}) : super(key: key);
+  final Widget child;
+  final double height;
+  final double width;
   @override
   Widget build(BuildContext context) {
     return Container(
       height:height ,
       width: width,
       padding: const EdgeInsets.all(8),
-      child: child,
       decoration: BoxDecoration(
         color: Colors.grey,
         borderRadius: BorderRadius.circular(20),
@@ -72,6 +71,7 @@ class NormalNeumorphism extends StatelessWidget {
           ),
         ],
       ),
+      child: child,
     );
   }
 }

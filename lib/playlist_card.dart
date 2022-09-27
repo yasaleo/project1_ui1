@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+
 import 'dart:convert';
 
 import 'dart:ui';
@@ -81,7 +83,6 @@ class PlaylistCard extends StatelessWidget {
                             Curves.elasticOut.transform(animation.value);
                         return Transform.scale(
                           scale: curve,
-                          
                           child: child,
                         );
                       },
@@ -147,6 +148,8 @@ class PlaylistCard extends StatelessWidget {
                                                 255, 151, 28, 19)),
                                         child: TextButton(
                                             onPressed: () {
+                                              Future.delayed(const Duration(
+                                                  milliseconds: 600));
                                               PlaylistDB.instance
                                                   .deletefolder(index);
                                               PlaylistDB

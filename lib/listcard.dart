@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -21,7 +23,7 @@ class ListCard extends StatelessWidget {
   final bool islikedd;
   final SongModel songModell;
 
-  ListCard(
+  const ListCard(
       {Key? key,
       required this.artist,
       required this.title,
@@ -59,182 +61,194 @@ class ListCard extends StatelessWidget {
                 children: [
                   SlidableAction(
                     onPressed: ((context) {
-                       showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (context) {
-                            return GestureDetector(
-                              onTap: () => Navigator.of(context).pop(),
-                              child: Container(
-                                color: const Color.fromRGBO(0, 0, 0, 0.001),
-                                child: GestureDetector(
-                                  onTap: () {},
-                                  child: DraggableScrollableSheet(
-                                    initialChildSize: 0.4,
-                                    minChildSize: 0.2,
-                                    maxChildSize: 0.75,
-                                    builder: (_, controller) {
-                                      return Container(
-                                        decoration: const BoxDecoration(
-                                          color: Colors.grey,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(25.0),
-                                            topRight: Radius.circular(25.0),
-                                          ),
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) {
+                          return GestureDetector(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: Container(
+                              color: const Color.fromRGBO(0, 0, 0, 0.001),
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: DraggableScrollableSheet(
+                                  initialChildSize: 0.4,
+                                  minChildSize: 0.2,
+                                  maxChildSize: 0.75,
+                                  builder: (_, controller) {
+                                    return Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(25.0),
+                                          topRight: Radius.circular(25.0),
                                         ),
-                                        child: Column(
-                                          children: [
-                                            Icon(
-                                              Icons.remove,
-                                              color: Colors.grey[600],
-                                            ),
-                                            Expanded(
-                                              child: ValueListenableBuilder(
-                                                  valueListenable: PlaylistDB
-                                                      .instance
-                                                      .playlistnotifier,
-                                                  builder: (context,
-                                                      List<FolderModel> value,
-                                                      Widget? _) {
-                                                    return value.isEmpty
-                                                        ? Center(
-                                                            child: Column(
-                                                              children: [
-                                                                LottieBuilder.asset('assets/WaYDLCo9Ux.json'
-                                                                ,width: 170,height: 170,),
-                                                                Text(
-                                                                  'No Playlist found !',
-                                                                  style: TextStyle(
-                                                                      fontSize: 40,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          )
-                                                        : ListView.builder(
-                                                            controller:
-                                                                controller,
-                                                            itemCount:
-                                                                value.length,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              return Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left: 8,
-                                                                        right:
-                                                                            8,
-                                                                        bottom:
-                                                                            8),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Icon(
+                                            Icons.remove,
+                                            color: Colors.grey[600],
+                                          ),
+                                          Expanded(
+                                            child: ValueListenableBuilder(
+                                                valueListenable: PlaylistDB
+                                                    .instance.playlistnotifier,
+                                                builder: (context,
+                                                    List<FolderModel> value,
+                                                    Widget? _) {
+                                                  return value.isEmpty
+                                                      ? Center(
+                                                          child: Column(
+                                                            children: [
+                                                              LottieBuilder
+                                                                  .asset(
+                                                                'assets/WaYDLCo9Ux.json',
+                                                                width: 170,
+                                                                height: 170,
+                                                              ),
+                                                              const Text(
+                                                                'No Playlist found !',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        40,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : ListView.builder(
+                                                          controller:
+                                                              controller,
+                                                          itemCount:
+                                                              value.length,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            return Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 8,
+                                                                      right: 8,
+                                                                      bottom:
+                                                                          8),
+                                                              child: ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5),
                                                                 child:
-                                                                    ClipRRect(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              5),
+                                                                    BackdropFilter(
+                                                                  filter: ImageFilter
+                                                                      .blur(
+                                                                          sigmaX:
+                                                                              4,
+                                                                          sigmaY:
+                                                                              4),
                                                                   child:
-                                                                      BackdropFilter(
-                                                                    filter: ImageFilter.blur(
-                                                                        sigmaX:
-                                                                            4,
-                                                                        sigmaY:
-                                                                            4),
-                                                                    child:
-                                                                        Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        boxShadow: const [
-                                                                          BoxShadow(
-                                                                            color: Color.fromARGB(
-                                                                                26,
-                                                                                0,
-                                                                                0,
-                                                                                0),
-                                                                            blurRadius:
-                                                                                8,
-                                                                            spreadRadius:
-                                                                                1,
-                                                                            offset:
-                                                                                Offset(0, 0),
-                                                                          ),
-                                                                        ],
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(10),
-                                                                      ),
-                                                                      child:
-                                                                          ListTile(
-                                                                        horizontalTitleGap:
-                                                                            8,
-                                                                        onTap:
-                                                                            () {
-                                                                          if (value[index].isValuein(songModell.id)) {
-                                                                            value[index].deletedata(songModell.id);
-                                                                            PlaylistDB.instance.playlistnotifier.notifyListeners();
-                                                                          } else {
-                                                                            value[index].add(songModell.id);
-                                                                            PlaylistDB.instance.playlistnotifier.notifyListeners();
-                                                                          }
-                                                                        },
-                                                                        leading:
-                                                                            CircleAvatar(
-                                                                          radius:
-                                                                              25,
-                                                                          backgroundColor: const Color.fromARGB(
-                                                                              13,
+                                                                      Container(
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      boxShadow: const [
+                                                                        BoxShadow(
+                                                                          color: Color.fromARGB(
+                                                                              26,
                                                                               0,
                                                                               0,
                                                                               0),
-                                                                          foregroundColor:
-                                                                              Colors.black54,
-                                                                          child:
-                                                                              Text("$index"),
-                                                                        ),
-                                                                        title:
-                                                                            Text(
-                                                                          value[index]
-                                                                              .name,
-                                                                          maxLines:
+                                                                          blurRadius:
+                                                                              8,
+                                                                          spreadRadius:
                                                                               1,
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
-                                                                          style: const TextStyle(
-                                                                              fontSize: 19,
-                                                                              fontWeight: FontWeight.w500),
+                                                                          offset: Offset(
+                                                                              0,
+                                                                              0),
                                                                         ),
-                                                                        trailing: SizedBox(
-                                                                            height:
-                                                                                55,
-                                                                            width:
-                                                                                35,
-                                                                            child:
-                                                                                AddRemoveButton(isclickedd: value[index].isValuein(songModell.id))
-
-                                                                        
-                                                                            ),
+                                                                      ],
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              10),
+                                                                    ),
+                                                                    child:
+                                                                        ListTile(
+                                                                      horizontalTitleGap:
+                                                                          8,
+                                                                      onTap:
+                                                                          () {
+                                                                        if (value[index]
+                                                                            .isValuein(songModell.id)) {
+                                                                          value[index]
+                                                                              .deletedata(songModell.id);
+                                                                          PlaylistDB
+                                                                              .instance
+                                                                              .playlistnotifier
+                                                                              .notifyListeners();
+                                                                        } else {
+                                                                          value[index]
+                                                                              .add(songModell.id);
+                                                                          PlaylistDB
+                                                                              .instance
+                                                                              .playlistnotifier
+                                                                              .notifyListeners();
+                                                                        }
+                                                                      },
+                                                                      leading:
+                                                                          CircleAvatar(
+                                                                        radius:
+                                                                            25,
+                                                                        backgroundColor: const Color.fromARGB(
+                                                                            13,
+                                                                            0,
+                                                                            0,
+                                                                            0),
+                                                                        foregroundColor:
+                                                                            Colors.black54,
+                                                                        child: Text(
+                                                                            "$index"),
                                                                       ),
+                                                                      title:
+                                                                          Text(
+                                                                        value[index]
+                                                                            .name,
+                                                                        maxLines:
+                                                                            1,
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                19,
+                                                                            fontWeight:
+                                                                                FontWeight.w500),
+                                                                      ),
+                                                                      trailing: SizedBox(
+                                                                          height:
+                                                                              55,
+                                                                          width:
+                                                                              35,
+                                                                          child:
+                                                                              AddRemoveButton(isclickedd: value[index].isValuein(songModell.id))),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              );
-                                                            },
-                                                          );
-                                                  }),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                }),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
-                            );
-                          },
-                        );
+                            ),
+                          );
+                        },
+                      );
                     }),
                     icon: Icons.playlist_add,
                     backgroundColor: const Color.fromARGB(145, 158, 158, 158),
@@ -287,19 +301,19 @@ class ListCard extends StatelessWidget {
                   ),
                   likeBuilder: (islikedd) {
                     return FavoritesDB.isfavorite(songModell)
-                        ? Icon(
+                        ? const Icon(
                             Icons.favorite,
-                            color: const Color.fromARGB(255, 129, 9, 0),
+                            color: Color.fromARGB(255, 129, 9, 0),
                             size: 32,
                           )
-                        : Icon(
+                        : const Icon(
                             Icons.favorite_border_outlined,
                             color: Color.fromARGB(225, 0, 0, 0),
                             size: 32,
                           );
                   },
                   onTap: (islikedd) async {
-                   await addingfav();
+                    await addingfav();
                     Variableclass.instance.isclickedd.notifyListeners();
 
                     return !islikedd;

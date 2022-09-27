@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+
 import 'dart:ui';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
@@ -11,6 +13,7 @@ import 'package:project1_ui1/animated_neu.dart';
 import 'package:project1_ui1/dbmodel/foldermodel.dart';
 import 'package:project1_ui1/neumorphism.dart';
 import 'package:project1_ui1/pages/custom_animated.dart';
+import 'package:project1_ui1/pages/front_screen.dart';
 
 import '../Database/favoritesdb.dart';
 import '../Database/playlist_db.dart';
@@ -500,17 +503,17 @@ class _HomeScreenState extends State<HomeScreen>
                   },
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const <Widget>[
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
                       LoopButton(),
+                      SizedBox(
+                        width: 290,
+                      ),
                       ShuffleButton(),
                     ],
                   ),
-                ),
-                const SizedBox(
-                  height: 30,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 23),
@@ -523,6 +526,8 @@ class _HomeScreenState extends State<HomeScreen>
                             await Variableclass.audioPlayer.seekToPrevious();
                             await Variableclass.audioPlayer.play();
                             Variableclass.passedindexx = currentIndex;
+                            mycolors.shufflemycolors();
+
 
                             Variableclass.instance.isclickedd.notifyListeners();
                           } else {
@@ -543,6 +548,7 @@ class _HomeScreenState extends State<HomeScreen>
                             await Variableclass.audioPlayer.seekToNext();
                             await Variableclass.audioPlayer.play();
                             Variableclass.passedindexx = currentIndex;
+                            mycolors.shufflemycolors();
 
                             Variableclass.instance.isclickedd.notifyListeners();
                           } else {

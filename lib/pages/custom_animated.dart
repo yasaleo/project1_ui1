@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:project1_ui1/commonvariables.dart';
@@ -57,48 +59,50 @@ class _ShuffleButtonState extends State<ShuffleButton>
         valueListenable: Variableclass.isshuffled,
         builder: (context, value, Widget? _) {
           scale = 1.2 + controller.value;
-          return StreamBuilder<bool>(
-              stream: Variableclass.audioPlayer.shuffleModeEnabledStream,
-              builder: (context, AsyncSnapshot snapshot) {
-                Variableclass.isshuffled.value = snapshot.data;
-
-                return GestureDetector(
-                  onTapUp: _ontapup,
-                  onTapDown: _ontapdown,
-                  onTapCancel: _ontapcancel,
-                  onTap: () {
-                    if (Variableclass.isshuffled.value) {
-                   
-                      Variableclass.audioPlayer.setShuffleModeEnabled(false);
-                   
-                    } else {
-                      
-                      Variableclass.audioPlayer.setShuffleModeEnabled(true);
-
+          return Expanded(
+            child: StreamBuilder<bool>(
+                stream: Variableclass.audioPlayer.shuffleModeEnabledStream,
+                builder: (context, AsyncSnapshot snapshot) {
+                  Variableclass.isshuffled.value = snapshot.data;
+          
+                  return GestureDetector(
+                    onTapUp: _ontapup,
+                    onTapDown: _ontapdown,
+                    onTapCancel: _ontapcancel,
+                    onTap: () {
+                      if (Variableclass.isshuffled.value) {
                      
-                    }
-                  },
-                  child: Transform.scale(
-                    scale: scale,
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 500),
-                      child: Variableclass.isshuffled.value
-                          ? Icon(
-                              Icons.shuffle_on_outlined,
-                              key: UniqueKey(),
-                              color: const Color.fromARGB(255, 13, 104, 16),
-                              size: 27,
-                            )
-                          : Icon(
-                              Icons.shuffle_on_outlined,
-                              key: UniqueKey(),
-                              color: Colors.black,
-                              size: 27,
-                            ),
+                        Variableclass.audioPlayer.setShuffleModeEnabled(false);
+                     
+                      } else {
+                        
+                        Variableclass.audioPlayer.setShuffleModeEnabled(true);
+          
+                       
+                      }
+                    },
+                    child: Transform.scale(
+                      scale: scale,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 500),
+                        child: Variableclass.isshuffled.value
+                            ? Icon(
+                                Icons.shuffle_on_outlined,
+                                key: UniqueKey(),
+                                color: const Color.fromARGB(255, 13, 104, 16),
+                                size: 27,
+                              )
+                            : Icon(
+                                Icons.shuffle_on_outlined,
+                                key: UniqueKey(),
+                                color: Colors.black,
+                                size: 27,
+                              ),
+                      ),
                     ),
-                  ),
-                );
-              });
+                  );
+                }),
+          );
         });
   }
 }

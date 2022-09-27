@@ -1,6 +1,7 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+
 import 'dart:ui';
 
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -9,6 +10,8 @@ import 'package:page_transition/page_transition.dart';
 import 'package:project1_ui1/Database/favoritesdb.dart';
 import 'package:project1_ui1/commonvariables.dart';
 import 'package:project1_ui1/pages/home_page.dart';
+
+import 'front_screen.dart';
 
 class Favoritescreen extends StatefulWidget {
   const Favoritescreen({Key? key}) : super(key: key);
@@ -120,7 +123,7 @@ class _FavoritescreenState extends State<Favoritescreen> {
                                       child: ListTile(
                                         horizontalTitleGap: 8,
                                         onTap: () {
-                                          List<SongModel> newlist = value;
+                                          List<SongModel> newlist = [...value];
                                           Variableclass.miniplsonglist = value;
                                           Variableclass.audioPlayer.stop();
                                           Variableclass.audioPlayer
@@ -134,6 +137,8 @@ class _FavoritescreenState extends State<Favoritescreen> {
                                           Variableclass.minivisible = true;
                                           Variableclass.instance.isclickedd
                                               .notifyListeners();
+                            mycolors.shufflemycolors();
+
 
                                           Navigator.of(context)
                                               .push(PageTransition(

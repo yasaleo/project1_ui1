@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -44,6 +46,7 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     precacheImage(const AssetImage('assets/imageee2.jpg'), context);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
           primaryColor: Colors.black,

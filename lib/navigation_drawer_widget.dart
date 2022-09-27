@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:project1_ui1/Database/playlist_db.dart';
 import 'package:project1_ui1/pages/searchpage.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   const NavigationDrawerWidget({Key? key}) : super(key: key);
@@ -162,41 +163,79 @@ class NavigationDrawerWidget extends StatelessWidget {
             endIndent: 42,
             height: 40,
           ),
-          const ListTile(
-            leading: Icon(
+          ListTile(
+            onTap: () {
+              FutureBuilder(
+                future: Future.delayed(
+                  const Duration(milliseconds: 30),
+                  () {
+                    // return
+                  },
+                ),
+                builder: (context, AsyncSnapshot snapshot) {
+                  return snapshot.data;
+                },
+              );
+            },
+            leading: const Icon(
               Icons.share,
               size: 25,
               color: Colors.black26,
             ),
-            title: Text(
+            title: const Text(
               'Share',
               style: TextStyle(fontSize: 24, color: Colors.black38),
             ),
           ),
-          const ListTile(
-            leading: Icon(
+          ListTile(
+            onTap: () {
+              mail();
+            },
+            leading: const Icon(
               Icons.contact_support,
               size: 25,
               color: Colors.black26,
             ),
-            title: Text(
+            title: const Text(
               'Contact',
               style: TextStyle(fontSize: 24, color: Colors.black38),
             ),
           ),
-          const ListTile(
-            leading: Icon(
+          ListTile(
+            onTap: () {
+              about();
+            },
+            leading: const Icon(
               Icons.person,
               size: 25,
               color: Colors.black26,
             ),
-            title: Text(
-              'about',
+            title: const Text(
+              'About Developer',
               style: TextStyle(fontSize: 24, color: Colors.black38),
             ),
           ),
+          const SizedBox(
+            height: 233,
+          ),
+          const Center(
+            child: Text('V.1.0.0',
+                style: TextStyle(fontSize: 17, color: Colors.black38),),
+          )
         ],
       ),
     );
+  }
+
+  Future<void> mail() async {
+    if (await launchUrlString('mailto:yadhusanil26@gmail.com')) {
+      throw 'tryagain';
+    }
+  }
+
+  Future<void> about() async {
+    if (await launchUrlString('https://github.com/yasaleo')) {
+      throw 'tryagain';
+    }
   }
 }

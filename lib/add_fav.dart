@@ -3,13 +3,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AddFavCard extends StatelessWidget {
-  Widget widget;
-  String? playlistname;
-  double borderRadius;
-  double height;
-  double width;
-  Widget widget2;
-  AddFavCard(
+final  Widget widget;
+final  String? playlistname;
+final  double borderRadius;
+final  double height;
+final  double width;
+final  Widget widget2;
+const  AddFavCard(
       {Key? key,
        this.playlistname,
       required this.widget,

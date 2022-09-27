@@ -1,6 +1,7 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:like_button/like_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:on_audio_query/on_audio_query.dart';
