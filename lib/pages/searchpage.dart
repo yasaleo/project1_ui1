@@ -16,7 +16,7 @@ class SearchPage extends StatefulWidget {
 
   @override
   State<SearchPage> createState() => _SearchPageState();
-}
+  }
 
 class _SearchPageState extends State<SearchPage> {
   List<SongModel> searchinglist = [];

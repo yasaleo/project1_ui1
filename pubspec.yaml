@@ -29,12 +29,14 @@ environment:
 dependencies:
   animations: ^2.0.3
   audio_video_progress_bar: ^0.10.0
+  bloc: ^8.1.0
   build_runner: ^2.2.0
   cupertino_icons: ^1.0.2
   draggable_scrollbar: ^0.1.0
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
-  flutter_audio_waveforms: ^1.2.1+6
+  flutter_bloc: ^8.1.1
   flutter_launcher_icons: ^0.10.0
   flutter_slidable: ^2.0.0
   flutter_svg: ^1.1.4

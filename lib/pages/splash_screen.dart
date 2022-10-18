@@ -51,14 +51,15 @@ class _SplashScreenState extends State<SplashScreen> {
                 duration: const Duration(milliseconds: 2020),
                 opacity: animate ? 1 : 0,
                 child: Text(
-                  'Musify',
+                  'MUSIFY',
                   style: GoogleFonts.k2d(
                     textStyle: const TextStyle(
                         shadows: [
                           Shadow(
                               color: Colors.black45,
                               offset: Offset(2, 3),
-                              blurRadius: 8)
+                              blurRadius: 8
+                              )
                         ],
                         color: Colors.black,
                         fontSize: 93,

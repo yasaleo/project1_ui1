@@ -172,7 +172,7 @@ class _LoopButtonState extends State<LoopButton>
     return StreamBuilder<LoopMode>(
         stream: Variableclass.audioPlayer.loopModeStream,
         builder: (context, AsyncSnapshot snapshot) {
-          final loopmode = snapshot.data;
+          final loopmode = snapshot.requireData;
           return GestureDetector(
             onTap: () {
               setState(() {

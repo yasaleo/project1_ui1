@@ -23,11 +23,12 @@ class PlaylistDB {
     playlistnotifier.value.add(model);
   }
 
-  Future<void> getallfolder() async {
+  Future<List<FolderModel>> getallfolder() async {
     final pdb = Hive.box<FolderModel>(playlistdbname);
     playlistnotifier.value.clear();
     playlistnotifier.value.addAll(pdb.values);
     playlistnotifier.notifyListeners();
+    return pdb.values.toList();
   }
 
   Future<void> deletefolder(int index) async {
