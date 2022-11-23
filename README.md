@@ -4,7 +4,12 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is simply a offline music player that can fetch local mp3 files from the device,
+users can play,Pause,skip,forward,repeat,shuffle songs.
+and also added some nice animations.
+
+Demo video
+https://user-images.githubusercontent.com/97823060/203560977-07e2ec90-5ee4-4b79-b3f7-9c0a346a288f.mp4
 
 A few resources to get you started if this is your first Flutter project:
 
