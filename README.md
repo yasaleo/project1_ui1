@@ -8,7 +8,7 @@ This project is simply a offline music player that can fetch local mp3 files fro
 users can play,Pause,skip,forward,repeat,shuffle songs.
 and also added some nice animations.
 
-ScreenSots
+ScreenSots & video
 
 ![Screenshot_20221115-220641](https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png)
 
