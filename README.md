@@ -11,7 +11,7 @@ ScreenSots & video
 
 
 
-![Screenshot_20221115-220641](https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png| height= 100)
+![Screenshot_20221115-220641](https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png)
 
 ![Screenshot_20221115-220648](https://user-images.githubusercontent.com/97823060/203565334-9be92bf7-0c3b-483f-af85-0614f55844f0.png)
 
