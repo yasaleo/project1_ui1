@@ -9,7 +9,7 @@ and also added some nice animations.
 
 ScreenSots & video
 
-![]([https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png](https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png) | height=100)
+[]([https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png](https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png) | height=100)
 
 ![Screenshot_20221115-220641](https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png)
 
