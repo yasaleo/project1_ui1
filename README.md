@@ -4,8 +4,7 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is simply a offline music player that can fetch local mp3 files from the device,
-users can play,Pause,skip,forward,repeat,shuffle songs.
+This project is simply a offline music player that can fetch local mp3 files from the device,users can  play,Pause,skip,forward,repeat,shuffle songs.                        
 and also added some nice animations.
 
 ScreenSots & video
@@ -19,7 +18,9 @@ ScreenSots & video
 ![Screenshot_20221115-220704](https://user-images.githubusercontent.com/97823060/203565348-844cebe7-f2d5-481a-b39d-22efe9d6c11d.png)
 
 ![Screenshot_20221115-220707](https://user-images.githubusercontent.com/97823060/203565359-9d725273-a9e2-4ca1-ad7f-d27d9058dd48.png)
+
 ![Screenshot_20221115-220725](https://user-images.githubusercontent.com/97823060/203565364-05a52929-5fd2-4652-b63d-03ca7e8bd79a.png)
+
 ![Screenshot_20221115-220843](https://user-images.githubusercontent.com/97823060/203565373-7db3aa23-a8c7-49d8-927c-2c735e66e7b4.png)
 
 Demo video
