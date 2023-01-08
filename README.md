@@ -8,7 +8,7 @@ This project is simply a offline music player that can fetch local mp3 files fro
 and also added some nice animations.
 
 ScreenSots & video
-
+ ![Screenshot from 2023-01-03 16-12-32](https://user-images.githubusercontent.com/97823060/211206158-7927f123-03b8-44d4-ae6d-d65151731b2c.png)
 
 
 ![Screenshot_20221115-220641](https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png)
