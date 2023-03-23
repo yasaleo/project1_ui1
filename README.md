@@ -9,7 +9,7 @@ and also added some nice animations.
 
 ScreenSots & video
 
-<img align="center" alt=Coding" width="400" height="300"  src=https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png>
+<img align="center" alt=Coding" width="400" height="300"  src="https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png">
 
 ![Screenshot_20221115-220641](https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png)
 
