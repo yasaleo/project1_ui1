@@ -14,7 +14,7 @@ ScreenSots & video
 <!-- ![Screenshot_20221115-220641](https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png)
 <img src="https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png" width="48" height="50" align="center"> -->
 
-<img src="https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png" width="220" height="400">|
+<img src="https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png" width="220" height="400">
 
 <img src="https://user-images.githubusercontent.com/97823060/203565334-9be92bf7-0c3b-483f-af85-0614f55844f0.png" width="220" height="400">
 
@@ -25,6 +25,8 @@ ScreenSots & video
 <img src="https://user-images.githubusercontent.com/97823060/203565359-9d725273-a9e2-4ca1-ad7f-d27d9058dd48.png" width="220" height="400">
 
 <img src="https://user-images.githubusercontent.com/97823060/203565373-7db3aa23-a8c7-49d8-927c-2c735e66e7b4.png" width="220" height="400">
+
+<td><img src="https://user-images.githubusercontent.com/97823060/203565373-7db3aa23-a8c7-49d8-927c-2c735e66e7b4.png" width=270 height=480></td>
 
 <!-- ![Screenshot_20221115-220648](https://user-images.githubusercontent.com/97823060/203565334-9be92bf7-0c3b-483f-af85-0614f55844f0.png) -->
 
