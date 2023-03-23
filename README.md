@@ -14,7 +14,7 @@ ScreenSots & video
 <!-- ![Screenshot_20221115-220641](https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png)
 <img src="https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png" width="48" height="50" align="center"> -->
 
-<img src="https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png.type" width="100" height="100">
+<img src="https://user-images.githubusercontent.com/97823060/203565330-cd59a9ba-446d-4df2-bcb8-34fb3f834aad.png.type" width="300" height="400">
 
 ![Screenshot_20221115-220648](https://user-images.githubusercontent.com/97823060/203565334-9be92bf7-0c3b-483f-af85-0614f55844f0.png)
 
